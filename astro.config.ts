@@ -1,10 +1,9 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import { SITE } from './src/config/site';
 
 export default defineConfig({
-  // TODO: set the real domain before deploying to Cloudflare Pages
-  site: 'https://example.com',
+  site: SITE.url,
   vite: {
     plugins: [tailwindcss()],
   },

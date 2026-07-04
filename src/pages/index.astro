@@ -1,4 +1,5 @@
 ---
+import { SITE } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Work from '../components/Work.astro';
@@ -6,10 +7,7 @@ import Services from '../components/Services.astro';
 import Contact from '../components/Contact.astro';
 ---
 
-<BaseLayout
-  title="Studio name — web studio"
-  description="A freelance web studio building fast, accessible sites for local organisations."
->
+<BaseLayout title={`${SITE.name} — ${SITE.role}`} description={SITE.description}>
   <Hero />
   <hr />
   <Work />

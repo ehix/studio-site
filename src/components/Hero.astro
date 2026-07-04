@@ -2,15 +2,15 @@
 // Hero: name, one-line positioning, and reserved space for the future
 // signature element. No script here — the interactive centrepiece arrives
 // as a separate island later.
+import { SITE } from '../config/site';
 ---
 
 <section aria-labelledby="hero-heading" class="py-16">
-  <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// studio</p>
-  <h1 id="hero-heading" class="text-step-4 mt-4 font-bold">Studio name</h1>
-  <p class="text-step-1 mt-4 max-w-[var(--measure-prose)]">
-    One-line positioning statement goes here: plain English, deliberate, no
-    jargon.
+  <p class="tracking-label text-step--1 uppercase" aria-hidden="true">
+    // {SITE.shortName.toLowerCase()}
   </p>
+  <h1 id="hero-heading" class="text-step-4 mt-4 font-bold">{SITE.name}</h1>
+  <p class="text-step-1 mt-4 max-w-[var(--measure-prose)]">{SITE.tagline}</p>
 
   {/* Reserved mount point for the signature hero element (future work). */}
   <figure

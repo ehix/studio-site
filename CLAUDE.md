@@ -87,6 +87,9 @@ Motion is seasoning:
 ## Tech conventions
 
 - Astro + Tailwind v4 (CSS-first `@theme`; tokens in `src/styles/tokens.css`).
+- Brand strings (name, tagline, domain, handles) live in `src/config/site.ts`
+  only — components, meta tags, and `astro.config.ts` import from it. Never
+  write the studio name or domain inline.
 - Static output; Cloudflare Pages from GitHub.
 - No client-side framework. The only script island will be the future cube
   (`client:visible`).
