@@ -1,0 +1,27 @@
+<button
+  type="button"
+  id="theme-toggle"
+  class="tracking-label text-step--1 hover:bg-paper-raised cursor-pointer border border-ink px-2 py-1 uppercase transition-colors duration-150"
+  aria-pressed="false"
+>
+  <span aria-hidden="true">[</span>dark<span aria-hidden="true">]</span>
+</button>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+
+  const sync = () => {
+    const dark = root.dataset.theme === 'dark';
+    toggle?.setAttribute('aria-pressed', String(dark));
+  };
+
+  toggle?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    sync();
+  });
+
+  sync();
+</script>

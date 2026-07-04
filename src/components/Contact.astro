@@ -1,0 +1,66 @@
+---
+// Form skeleton only — submission wiring (form service or Worker + email)
+// comes later. Honeypot field included now so the markup is final.
+---
+
+<section aria-labelledby="contact-heading" class="py-16">
+  <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// contact</p>
+  <h2 id="contact-heading" class="text-step-3 mt-4 font-bold">Get in touch</h2>
+
+  <form method="post" action="#" class="mt-8 max-w-[var(--measure-prose)]">
+    <fieldset class="bg-paper-raised shadow-raised border border-ink p-6">
+      <legend class="tracking-label bg-paper-raised border border-ink px-3 py-1 uppercase">
+        Message
+      </legend>
+
+      <div class="space-y-6">
+        <div class="flex flex-col gap-1">
+          <label for="name" class="tracking-label text-step--1 uppercase">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            autocomplete="name"
+            class="bg-paper border border-ink px-3 py-2"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="email" class="tracking-label text-step--1 uppercase">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+            class="bg-paper border border-ink px-3 py-2"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="message" class="tracking-label text-step--1 uppercase">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="6"
+            class="bg-paper border border-ink px-3 py-2"></textarea>
+        </div>
+
+        {/* Honeypot: hidden from people, tempting to bots. */}
+        <div class="sr-only" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button
+          type="submit"
+          class="tracking-label bg-ink text-paper hover:text-ember cursor-pointer px-6 py-2 uppercase transition-colors duration-150"
+        >
+          Send <span aria-hidden="true">[ok]</span>
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</section>

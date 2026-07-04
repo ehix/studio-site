@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/CommitMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script is:inline>
+      // Set the theme before first paint so there is no flash.
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body class="text-step-0 min-h-svh">
+    <header class="mx-auto flex max-w-[var(--measure-wide)] items-baseline justify-between px-4 py-6">
+      <a href="/" class="tracking-label text-step-0 font-bold uppercase">Studio</a>
+      <ThemeToggle />
+    </header>
+    <main class="mx-auto max-w-[var(--measure-wide)] px-4">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

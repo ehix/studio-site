@@ -1,0 +1,69 @@
+/*
+ * Design tokens — source of truth in CSS custom properties.
+ * Light is default; dark inverts the metaphor (ink becomes ground,
+ * paper becomes text) while keeping the grid texture.
+ * Components must never branch on theme — only these values change.
+ */
+
+:root {
+  /* colour */
+  --paper: #d1cdb7;
+  --paper-grid: #ccc8b1;
+  --paper-raised: #dcd8c0;
+  --stone: #bab5a1;
+  --ink: #454138;
+  --ember: #cd664d;
+
+  /* type scale — 1.25 modular, 1rem base */
+  --step--2: 0.64rem;
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.9531rem;
+  --step-4: 2.4414rem;
+  --step-5: 3.0518rem;
+
+  /* letter-spacing */
+  --tracking-body: 0.03rem;
+  --tracking-label: 0.1rem;
+  --tracking-display: 0.5rem;
+
+  /* depth — hard offset only, nothing floats */
+  --shadow-raised: 0.2em 0.2em 0 0 var(--stone);
+
+  /* motion */
+  --ease-mechanical: cubic-bezier(0.2, 0, 0, 1);
+  --duration-instant: 150ms;
+  --duration-reveal: 300ms;
+
+  /* layout */
+  --measure-prose: 68ch;
+  --measure-wide: 1100px;
+
+  /* grid texture cell */
+  --grid-cell: 0.3rem;
+}
+
+/* Dark: explicit user choice via toggle */
+:root[data-theme='dark'] {
+  --paper: #454138;
+  --paper-grid: #4b473d;
+  --paper-raised: #524d42;
+  --stone: #6b6557;
+  --ink: #d1cdb7;
+  --ember: #cd664d;
+}
+
+/* Dark: system preference, before/without JS. The theme-init script always
+   sets an explicit data-theme, so this only covers first paint and no-JS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #454138;
+    --paper-grid: #4b473d;
+    --paper-raised: #524d42;
+    --stone: #6b6557;
+    --ink: #d1cdb7;
+    --ember: #cd664d;
+  }
+}

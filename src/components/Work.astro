@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+
+const caseStudies = (await getCollection('caseStudies', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section aria-labelledby="work-heading" class="py-16">
+  <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// selected work</p>
+  <h2 id="work-heading" class="text-step-3 mt-4 font-bold">Work</h2>
+
+  <ul class="mt-8 space-y-8">
+    {
+      caseStudies.map((entry) => (
+        <li class="max-w-[var(--measure-prose)]">
+          <h3 class="text-step-1 font-bold">
+            <a href={`/work/${entry.id}/`} class="hover:text-ember transition-colors duration-150">
+              {entry.data.title}
+            </a>
+          </h3>
+          <p class="text-step--1 text-ink/80 mt-1">{entry.data.client}</p>
+          <p class="mt-2">{entry.data.summary}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

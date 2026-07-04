@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('caseStudies', ({ data }) => !data.draft);
+  return caseStudies.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} — case study`} description={entry.data.summary}>
+  <article class="py-16">
+    <header class="max-w-[var(--measure-prose)]">
+      <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// case study</p>
+      <h1 class="text-step-3 mt-4 font-bold">{entry.data.title}</h1>
+      <p class="text-step--1 mt-2">
+        {entry.data.client} &middot;{' '}
+        <time datetime={entry.data.date.toISOString().slice(0, 10)}>
+          {entry.data.date.getFullYear()}
+        </time>
+      </p>
+      <p class="mt-4">{entry.data.summary}</p>
+    </header>
+
+    <hr class="my-10" />
+
+    <div
+      class="prose-case max-w-[var(--measure-prose)] space-y-4 [&_h2]:text-step-1 [&_h2]:mt-10 [&_h2]:font-bold"
+    >
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,109 @@
+@import './tokens.css';
+@import 'tailwindcss';
+
+/* Map tokens into Tailwind so utilities (bg-paper, text-ink, shadow-raised,
+   text-step-1, tracking-label …) follow the active theme. */
+@theme inline {
+  --color-*: initial;
+  --color-paper: var(--paper);
+  --color-paper-grid: var(--paper-grid);
+  --color-paper-raised: var(--paper-raised);
+  --color-stone: var(--stone);
+  --color-ink: var(--ink);
+  --color-ember: var(--ember);
+
+  --font-*: initial;
+  --font-mono: 'Commit Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --text-*: initial;
+  --text-step--2: var(--step--2);
+  --text-step--1: var(--step--1);
+  --text-step-0: var(--step-0);
+  --text-step-1: var(--step-1);
+  --text-step-2: var(--step-2);
+  --text-step-3: var(--step-3);
+  --text-step-4: var(--step-4);
+  --text-step-5: var(--step-5);
+
+  --tracking-*: initial;
+  --tracking-body: var(--tracking-body);
+  --tracking-label: var(--tracking-label);
+  --tracking-display: var(--tracking-display);
+
+  --shadow-*: initial;
+  --shadow-raised: var(--shadow-raised);
+
+  --ease-mechanical: var(--ease-mechanical);
+
+  --radius-*: initial;
+}
+
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/CommitMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/CommitMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/CommitMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  /* Sharp corners are policy. */
+  *,
+  *::before,
+  *::after {
+    border-radius: 0;
+  }
+
+  html {
+    font-family: var(--font-mono);
+    color: var(--ink);
+    letter-spacing: var(--tracking-body);
+  }
+
+  /* Signature texture: fine grid on every page. Panels layer on top. */
+  body {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(to right, var(--paper-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--paper-grid) 1px, transparent 1px);
+    background-size: var(--grid-cell) var(--grid-cell);
+  }
+
+  ::selection {
+    background-color: var(--stone);
+    color: var(--ink);
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--stone);
+  }
+
+  /* Honour reduced motion completely. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
