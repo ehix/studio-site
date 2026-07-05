@@ -19,6 +19,31 @@ npm run build
 npx wrangler pages dev dist
 ```
 
+## Deployment (Cloudflare Pages)
+
+The site is fully static (`astro build` → `dist/`); the contact form runs as
+a Pages Function from `functions/`, which Cloudflare deploys automatically
+alongside the static assets. No SSR adapter is needed.
+
+Connect the GitHub repo in the Cloudflare dashboard (Workers & Pages →
+Create → Pages) with these build settings:
+
+| Setting                | Value           |
+| ---------------------- | --------------- |
+| Framework preset       | Astro           |
+| Build command          | `npm run build` |
+| Build output directory | `dist`          |
+| Root directory         | `/` (default)   |
+
+Node version: Cloudflare Pages reads `.nvmrc` (Node 22 — Astro 7 requires
+≥ 22.12). No `NODE_VERSION` variable needed.
+
+Then set the contact form variables (below) for Production — add
+`RESEND_API_KEY` as a **secret**. Every push to `main` deploys; other
+branches get preview deployments. A GitHub Actions check
+(`.github/workflows/ci.yml`) runs `astro build` on every push so broken
+builds are caught before they reach a deploy.
+
 ## Contact form
 
 The form posts to `/api/contact`, a Cloudflare Pages Function
