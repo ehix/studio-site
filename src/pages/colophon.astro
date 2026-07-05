@@ -1,0 +1,191 @@
+---
+// Colophon: how the site is made and why. The page doubles as a specimen —
+// the palette row and type scale below are built from the same tokens they
+// describe, so they stay correct in both themes by construction.
+import { SITE } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const palette = [
+  { token: '--paper', cls: 'bg-paper', role: 'ground' },
+  { token: '--paper-raised', cls: 'bg-paper-raised', role: 'panels' },
+  { token: '--stone', cls: 'bg-stone', role: 'shadows' },
+  { token: '--ink', cls: 'bg-ink', role: 'text' },
+  { token: '--ember', cls: 'bg-ember', role: 'accent' },
+];
+
+const scale = [
+  { token: '--step-4', size: '2.441rem', cls: 'text-step-4' },
+  { token: '--step-3', size: '1.953rem', cls: 'text-step-3' },
+  { token: '--step-2', size: '1.563rem', cls: 'text-step-2' },
+  { token: '--step-1', size: '1.25rem', cls: 'text-step-1' },
+  { token: '--step-0', size: '1rem', cls: 'text-step-0' },
+  { token: '--step--1', size: '0.8rem', cls: 'text-step--1' },
+];
+---
+
+<BaseLayout
+  title={`Colophon — ${SITE.name}`}
+  description="How this site is made: the design thinking, the type, the palette and the stack behind it."
+>
+  <article class="py-16">
+    <header class="max-w-[var(--measure-prose)]">
+      <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// colophon</p>
+      <h1 class="text-step-4 mt-4 font-bold">About this site</h1>
+      <p class="text-step-1 mt-6">
+        This site is its own case study. Here is how it is made, and why it looks the way it
+        does.
+      </p>
+    </header>
+
+    <hr class="my-14" />
+
+    <section aria-labelledby="design-heading" class="max-w-[var(--measure-prose)]">
+      <h2 id="design-heading" class="text-step-2 font-bold">The design</h2>
+      <p class="mt-6">
+        I think of the style as a field terminal: graph-paper warmth with terminal precision, a
+        well-kept engineer's notebook rendered by a machine. It has to read as deliberate to a
+        churchwarden and competent to a developer with the source open, so every choice leans
+        towards restraint.
+      </p>
+      <p class="mt-4">
+        The palette is six values, each with one job. Paper is the ground, printed with a fine
+        grid. Ink carries all text and borders. Stone does the quiet work of shadows and
+        hairlines. Ember is the only accent, and it is rationed to one highlight per view.
+        Colour here is a role, not decoration.
+      </p>
+
+      <figure class="mt-8">
+        <div class="flex flex-wrap gap-4">
+          {
+            palette.map(({ token, cls, role }) => (
+              <div class="flex w-28 flex-col gap-2">
+                <div class:list={['h-16 w-16 border border-ink', cls]} />
+                <p class="text-step--1">
+                  {token}
+                  <br />
+                  <span class="tracking-label uppercase">{role}</span>
+                </p>
+              </div>
+            ))
+          }
+        </div>
+        <figcaption class="text-step--1 mt-4">
+          The swatches are live tokens, not images. Flip the theme in the header and watch them
+          trade places: ink becomes the ground, paper becomes the text, and the grid stays.
+        </figcaption>
+      </figure>
+
+      <p class="mt-8">
+        Depth is literal. Panels are raised paper with a hard offset shadow, no blur, because
+        nothing on this site floats. Corners are square everywhere; that is policy, not
+        oversight. Sections are separated by rules and whitespace rather than cards, since in a
+        layout this plain, space is the luxury signal.
+      </p>
+      <p class="mt-4">
+        The dark theme is not a second palette. Six custom properties swap and every component
+        follows; none of them knows which theme it is in.
+      </p>
+    </section>
+
+    <hr class="my-14" />
+
+    <section aria-labelledby="type-heading" class="max-w-[var(--measure-prose)]">
+      <h2 id="type-heading" class="text-step-2 font-bold">The type</h2>
+      <p class="mt-6">
+        Everything is set in Commit Mono, self-hosted as subset woff2 files so nothing is
+        fetched from a third party. One face for headings, body and labels sounds like a
+        limitation; in practice the discipline is the identity. A monospace face keeps
+        alignment honest and gives the page its measured voice.
+      </p>
+      <p class="mt-4">
+        Sizes come from a strict modular scale, ratio 1.25 on a 1rem base. There are no
+        arbitrary values anywhere; every size on this page is one of these:
+      </p>
+
+      <figure class="bg-paper-raised shadow-raised mt-8 border border-ink p-6">
+        <dl class="space-y-5">
+          {
+            scale.map(({ token, size, cls }) => (
+              <div>
+                {/* Lowercase on purpose: the labels quote real token names. */}
+                <dt class="text-step--1 tracking-label">
+                  {token} &middot; {size}
+                </dt>
+                <dd class:list={['mt-1', cls]}>Paper, ink, stone, ember</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </figure>
+
+      <p class="mt-8">
+        Letter-spacing is tokenised too: 0.03rem for body text, 0.1rem for navigation and
+        labels, and a wide 0.5rem held in reserve for rare display moments. No faux weights;
+        the regular, bold and italic cuts are the only ones shipped.
+      </p>
+    </section>
+
+    <hr class="my-14" />
+
+    <section aria-labelledby="cube-heading" class="max-w-[var(--measure-prose)]">
+      <h2 id="cube-heading" class="text-step-2 font-bold">
+        The cube <span class="tracking-label text-step--1 align-middle uppercase" aria-hidden="true">[wip]</span>
+      </h2>
+      <p class="mt-6">
+        The hero holds a reserved square, and the reservation is deliberate. It belongs to the
+        site's one signature interaction: a WebGL cube, each face textured with real project
+        work and tinted to the palette so photography cannot break the world. It will idle
+        slowly, spin under drag, stop idling entirely when you ask for reduced motion, and fall
+        back to a static image without JavaScript.
+      </p>
+      <p class="mt-4">
+        It ships as the only script island on the site, initialised lazily after first paint.
+        Everything else stays still so that one thing can move. It is on the workbench now;
+        until it lands, the hero says so.
+      </p>
+    </section>
+
+    <hr class="my-14" />
+
+    <section aria-labelledby="stack-heading" class="max-w-[var(--measure-prose)]">
+      <h2 id="stack-heading" class="text-step-2 font-bold">The stack</h2>
+      <p class="mt-6">
+        The tools are chosen for the same reason as the whitespace: to stay out of the way.
+      </p>
+
+      <dl class="mt-8">
+        {
+          [
+            ['framework', 'Astro, static output. Every page is HTML before it is anything else.'],
+            [
+              'styling',
+              'Tailwind CSS v4, CSS-first. The tokens live as custom properties and map straight into the theme.',
+            ],
+            ['type', 'Commit Mono, subset woff2, font-display swap.'],
+            [
+              'hosting',
+              'Cloudflare Pages, deployed from GitHub on push. The contact form runs as a Pages Function.',
+            ],
+            [
+              'scripts',
+              'A few lines of vanilla JS for the theme toggle and the contact form. The cube will be the only island.',
+            ],
+            ['budget', 'Under 300KB on first load, fonts and cube included.'],
+          ].map(([term, detail]) => (
+            <div class="border-stone flex flex-col gap-1 border-t py-4 sm:flex-row sm:gap-6">
+              <dt class="tracking-label text-step--1 uppercase sm:w-32 sm:shrink-0 sm:pt-1">
+                {term}
+              </dt>
+              <dd>{detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class="mt-8">
+        If you would like to check any of this, view source. That is partly who I built it
+        for.
+      </p>
+    </section>
+  </article>
+</BaseLayout>

@@ -11,6 +11,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, SITE.url);
+const onColophon = Astro.url.pathname.replace(/\/$/, '') === '/colophon';
 ---
 
 <!doctype html>
@@ -52,7 +53,18 @@ const canonicalUrl = new URL(Astro.url.pathname, SITE.url);
   <body class="text-step-0 min-h-svh">
     <header class="mx-auto flex max-w-[var(--measure-wide)] items-baseline justify-between px-4 py-6">
       <a href="/" class="tracking-label text-step-0 font-bold uppercase">{SITE.shortName}</a>
-      <ThemeToggle />
+      <div class="flex items-baseline gap-6">
+        <nav aria-label="Site">
+          <a
+            href="/colophon/"
+            aria-current={onColophon ? 'page' : undefined}
+            class="tracking-label text-step--1 hover:text-ember uppercase underline-offset-4 transition-colors duration-150 aria-[current]:underline"
+          >
+            colophon
+          </a>
+        </nav>
+        <ThemeToggle />
+      </div>
     </header>
     <main class="mx-auto max-w-[var(--measure-wide)] px-4">
       <slot />
