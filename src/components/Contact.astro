@@ -1,13 +1,15 @@
 ---
-// Form skeleton only — submission wiring (form service or Worker + email)
-// comes later. Honeypot field included now so the markup is final.
+// Submissions go to the Pages Function at /api/contact (Resend relay).
+// With JS the form posts via fetch and shows the inline states below;
+// without JS the function redirects to /contact/sent/ or /contact/error/.
+// Honeypot field stands in for a CAPTCHA.
 ---
 
 <section aria-labelledby="contact-heading" class="py-16">
   <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// contact</p>
   <h2 id="contact-heading" class="text-step-3 mt-4 font-bold">Get in touch</h2>
 
-  <form method="post" action="#" class="mt-8 max-w-[var(--measure-prose)]">
+  <form id="contact-form" method="post" action="/api/contact" class="mt-8 max-w-[var(--measure-prose)]">
     <fieldset class="bg-paper-raised shadow-raised border border-ink p-6">
       <legend class="tracking-label bg-paper-raised border border-ink px-3 py-1 uppercase">
         Message
@@ -21,6 +23,7 @@
             id="name"
             name="name"
             required
+            maxlength="200"
             autocomplete="name"
             class="bg-paper border border-ink px-3 py-2"
           />
@@ -33,6 +36,7 @@
             id="email"
             name="email"
             required
+            maxlength="254"
             autocomplete="email"
             class="bg-paper border border-ink px-3 py-2"
           />
@@ -44,6 +48,7 @@
             id="message"
             name="message"
             required
+            maxlength="5000"
             rows="6"
             class="bg-paper border border-ink px-3 py-2"></textarea>
         </div>
@@ -56,11 +61,67 @@
 
         <button
           type="submit"
-          class="tracking-label bg-ink text-paper hover:text-ember cursor-pointer px-6 py-2 uppercase transition-colors duration-150"
+          class="tracking-label bg-ink text-paper hover:text-ember cursor-pointer px-6 py-2 uppercase transition-colors duration-150 disabled:cursor-wait"
         >
           Send <span aria-hidden="true">[ok]</span>
         </button>
       </div>
     </fieldset>
+
+    <div role="status" aria-live="polite">
+      <p id="contact-sent" hidden class="bg-paper-raised shadow-raised mt-6 border border-ink p-4">
+        <span class="tracking-label text-step--1 mr-2 uppercase" aria-hidden="true">[sent]</span>
+        Message sent. I read everything and will reply soon.
+      </p>
+      <p id="contact-error" hidden class="bg-ink text-paper mt-6 p-4">
+        <span class="tracking-label text-step--1 text-ember mr-2 uppercase" aria-hidden="true">
+          [error]
+        </span>
+        <span id="contact-error-text">The message did not send. Please try again.</span>
+      </p>
+    </div>
   </form>
 </section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const sent = document.getElementById('contact-sent');
+  const failed = document.getElementById('contact-error');
+  const failedText = document.getElementById('contact-error-text');
+  const FALLBACK_ERROR = 'The message did not send. Please try again.';
+
+  // Native validation (required, type=email, maxlength) runs before the
+  // submit event fires, so anything that reaches here is client-valid.
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (sent) sent.hidden = true;
+    if (failed) failed.hidden = true;
+    if (button) button.disabled = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: { accept: 'application/json' },
+        body: new FormData(form),
+      });
+      const data = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        error?: string;
+      } | null;
+
+      if (response.ok && data?.ok) {
+        form.reset();
+        if (sent) sent.hidden = false;
+      } else {
+        if (failedText) failedText.textContent = data?.error || FALLBACK_ERROR;
+        if (failed) failed.hidden = false;
+      }
+    } catch {
+      if (failedText) failedText.textContent = FALLBACK_ERROR;
+      if (failed) failed.hidden = false;
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+</script>

@@ -1,0 +1,21 @@
+---
+// No-JS landing for a failed form post; with JS the state shows inline.
+import { SITE } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title={`Message not sent — ${SITE.name}`}
+  description="Your message was not sent."
+>
+  <section class="py-16">
+    <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// contact [error]</p>
+    <h1 class="text-step-4 mt-4 font-bold">That did not send</h1>
+    <p class="mt-4 max-w-[var(--measure-prose)]">
+      Something went wrong on the way out. Check the form was filled in and{' '}
+      <a href="/#contact-heading" class="hover:text-ember underline transition-colors duration-150"
+        >try again</a
+      >.
+    </p>
+  </section>
+</BaseLayout>

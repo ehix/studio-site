@@ -1,0 +1,21 @@
+---
+// No-JS landing for a successful form post; with JS the state shows inline.
+import { SITE } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title={`Message sent — ${SITE.name}`}
+  description="Your message was sent."
+>
+  <section class="py-16">
+    <p class="tracking-label text-step--1 uppercase" aria-hidden="true">// contact [sent]</p>
+    <h1 class="text-step-4 mt-4 font-bold">Message sent</h1>
+    <p class="mt-4 max-w-[var(--measure-prose)]">
+      It landed. I read everything and will reply to the address you gave.{' '}
+      <a href="/" class="hover:text-ember underline transition-colors duration-150"
+        >Back to the front page</a
+      >.
+    </p>
+  </section>
+</BaseLayout>
