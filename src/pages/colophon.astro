@@ -128,20 +128,18 @@ const scale = [
     <hr class="my-14" />
 
     <section aria-labelledby="cube-heading" class="max-w-[var(--measure-prose)]">
-      <h2 id="cube-heading" class="text-step-2 font-bold">
-        The cube <span class="tracking-label text-step--1 align-middle uppercase" aria-hidden="true">[wip]</span>
-      </h2>
+      <h2 id="cube-heading" class="text-step-2 font-bold">The cube</h2>
       <p class="mt-6">
-        The hero holds a reserved square, and the reservation is deliberate. It belongs to the
-        site's one signature interaction: a WebGL cube, each face textured with real project
-        work and tinted to the palette so photography cannot break the world. It will idle
-        slowly, spin under drag, stop idling entirely when you ask for reduced motion, and fall
-        back to a static image without JavaScript.
+        The hero carries the site's one signature interaction: a WebGL cube cast in a single
+        porous stone texture, generated at load time from the palette tokens, so it is duotone
+        by construction and follows the theme. It idles slowly, spins under drag with a little
+        inertia, stops idling entirely when you ask for reduced motion, and falls back to a
+        static ink sketch without JavaScript.
       </p>
       <p class="mt-4">
-        It ships as the only script island on the site, initialised lazily after first paint.
-        Everything else stays still so that one thing can move. It is on the workbench now;
-        until it lands, the hero says so.
+        It is the only Three.js on the site, fetched lazily once the hero is on screen and the
+        browser is idle, and it stops rendering the moment it leaves the viewport. Everything
+        else stays still so that one thing can move.
       </p>
     </section>
 
@@ -168,7 +166,7 @@ const scale = [
             ],
             [
               'scripts',
-              'A few lines of vanilla JS for the theme toggle and the contact form. The cube will be the only island.',
+              'Vanilla JS for the theme toggle and the contact form. The cube is the one island: Three.js, loaded only when the hero is on screen.',
             ],
             ['budget', 'Under 300KB on first load, fonts and cube included.'],
           ].map(([term, detail]) => (
