@@ -136,8 +136,11 @@ em{font-style:normal;color:var(--accent)}
 /* ── hero ──────────────────────────────────────────────────────────────── */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;
   justify-content:flex-end;padding-bottom:clamp(28px,5vh,64px);overflow:hidden}
-.hero__field{position:absolute;inset:0;z-index:0}
-.hero__field canvas{width:100%;height:100%}
+/* The snippet's own compositing: the shader layer sits at dark:opacity-30 with
+   dark:mix-blend-screen, which is the branch this page is permanently in. */
+.hero__field{position:absolute;inset:0;z-index:0;
+  opacity:.30;mix-blend-mode:screen;pointer-events:none}
+.hero__field canvas{width:100%!important;height:100%!important;display:block}
 /* Three layers, each doing one job: a bed under the nav so the links stay
    legible without the nav needing its own opaque bar (which drew a hard seam
    across the top of the frame); a directional wash from the left so the
@@ -150,15 +153,15 @@ em{font-style:normal;color:var(--accent)}
     oklch(0.128 0.006 58 / .30) 66px,
     transparent 160px),
   linear-gradient(to right,
-    oklch(0.118 0.005 58 / .80) 0%,
-    oklch(0.118 0.005 58 / .44) 32%,
-    transparent 62%),
+    oklch(0.118 0.005 58 / .58) 0%,
+    oklch(0.118 0.005 58 / .26) 30%,
+    transparent 58%),
   linear-gradient(to top,
-    oklch(0.128 0.006 58 / .92) 0%,
-    oklch(0.128 0.006 58 / .58) 22%,
-    oklch(0.128 0.006 58 / .12) 54%,
-    transparent 78%),
-  radial-gradient(125% 95% at 58% 42%,transparent 34%,oklch(0.10 0.005 58 / .58) 100%)}
+    oklch(0.128 0.006 58 / .74) 0%,
+    oklch(0.128 0.006 58 / .38) 22%,
+    oklch(0.128 0.006 58 / .08) 52%,
+    transparent 74%),
+  radial-gradient(125% 95% at 58% 42%,transparent 40%,oklch(0.10 0.005 58 / .42) 100%)}
 /* width:100% is load-bearing. .wrap sets margin-inline:auto, and an auto
    margin on a flex item cancels the default stretch — both of these were
    shrink-wrapping to their content and centring themselves in the column. */
@@ -309,9 +312,14 @@ footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
        page would load with its own hero dimmed to 0.6. */
     .hero__field{animation:heroPar linear both;
       animation-timeline:scroll(root block);animation-range:0 100svh}
+    /* translate only, no scale: the shader mount tracks its host's box with a
+       ResizeObserver, and a scroll-driven scale walked the width from 1454 to
+       1568 and made it reallocate the canvas the whole way down. The opacity
+       starts at the snippet's 0.30 rather than 1, because this keyframe
+       otherwise overrides the base value outright. */
     @keyframes heroPar{
-      from{transform:scale(1.02) translateY(0);opacity:1}
-      to{transform:scale(1.10) translateY(7%);opacity:.28}}
+      from{transform:translateY(0);opacity:.30}
+      to{transform:translateY(7%);opacity:.09}}
     .plate canvas,.band canvas{animation:plateIn linear both;
       animation-timeline:view();animation-range:entry 0% cover 48%}
     @keyframes plateIn{from{transform:scale(1.13)}to{transform:scale(1)}}
@@ -338,10 +346,8 @@ footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
 <main id="main">
 
-  <header class="hero" id="top">
-    <div class="hero__field">
-      <canvas data-field='{"scene":"horizon","ramp":"amber","cell":8,"drift":0.55,"streak":true,"seed":4.2}' aria-hidden="true"></canvas>
-    </div>
+  <header class="hero" id="top" data-dither-hover>
+    <div class="hero__field" data-dither aria-hidden="true"></div>
     <div class="hero__scrim" aria-hidden="true"></div>
     <div class="hero__inner wrap">
       <h1 data-split>Websites, games and publications.</h1>
@@ -458,6 +464,7 @@ footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
   </footer>
 </main>
 
+<script src="hero-dither.js"></script>
 <script src="field.js"></script>
 <script src="motion.js"></script>
 </body>
