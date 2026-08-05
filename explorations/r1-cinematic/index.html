@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio — cinematic</title>
+<meta name="description" content="Direction 1 of 5. Quiet, considered, confident.">
+<style>
+/* ===========================================================================
+   r1 — CINEMATIC
+   Register: brand. Personality: quiet, considered, confident.
+
+   The library's language, not its subjects: atmosphere gives soft falloff and
+   one light direction; dark-cinematic-studio gives a glow placed on black.
+   Neither appears as a picture of anything. They become ground, light and the
+   way an image sits on the page.
+
+   Graphics here are STAND-INS. They hold the right mass, tone and shape so
+   the composition can be judged before real imagery exists.
+   =========================================================================== */
+
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+:root{
+  /* not cream, not warm-neutral-near-white. a true deep ground with a trace
+     of the accent's own hue in it. */
+  --bg:oklch(0.155 0.008 62);
+  --raised:oklch(0.205 0.010 62);
+  --edge:oklch(0.285 0.012 62);
+  --ink:oklch(0.945 0.012 78);
+  --muted:oklch(0.735 0.014 74);
+  --accent:oklch(0.700 0.130 58);
+
+  --serif:"Young Serif",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime",ui-monospace,Menlo,monospace;
+  --sans:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+
+  --pad:clamp(20px,4.2vw,72px);
+  --gap:clamp(72px,13vh,168px);
+
+  --z-sticky:100;
+
+  --out:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:oklch(0.16 0.01 62)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ── type ──────────────────────────────────────────────────────────────── */
+.display{font-family:var(--serif);font-weight:400;line-height:1.02;
+  letter-spacing:-0.028em;text-wrap:balance}
+.display em{font-family:Georgia,"Times New Roman",serif;font-style:italic;
+  letter-spacing:-0.012em}
+h1{font-size:clamp(2.6rem,7.2vw,5.6rem)}
+h2{font-size:clamp(1.9rem,4.4vw,3.4rem)}
+h3{font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.15}
+p{text-wrap:pretty}
+.lede{font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.62;color:var(--muted);
+  max-width:62ch}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted)}
+
+/* ── shell ─────────────────────────────────────────────────────────────── */
+.wrap{max-width:1360px;margin:0 auto;padding-inline:var(--pad)}
+
+.nav{position:sticky;top:0;z-index:var(--z-sticky);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px var(--pad);
+  background:color-mix(in oklch,var(--bg) 82%,transparent);
+  border-bottom:1px solid transparent;
+  transition:border-color .4s var(--out),background .4s var(--out)}
+.nav.is-stuck{border-bottom-color:var(--edge);
+  background:color-mix(in oklch,var(--bg) 94%,transparent)}
+.nav__mark{font-family:var(--serif);font-size:19px;letter-spacing:-0.01em}
+.nav__links{display:flex;gap:clamp(16px,2.4vw,34px);align-items:center}
+.nav__links a{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);transition:color .25s var(--out)}
+.nav__links a:hover{color:var(--ink)}
+@media(max-width:720px){.nav__links a:not(.pill){display:none}}
+
+.pill{display:inline-flex;align-items:center;gap:10px;
+  padding:9px 9px 9px 18px;border-radius:999px;
+  background:var(--ink);color:var(--bg);
+  font-family:var(--mono);font-size:11px;letter-spacing:0.12em;
+  text-transform:uppercase;
+  transition:background .3s var(--out),color .3s var(--out)}
+.pill span{display:grid;place-items:center;width:26px;height:26px;
+  border-radius:999px;background:var(--bg);color:var(--ink);
+  font-size:13px;transition:transform .35s var(--out)}
+.pill:hover{background:var(--accent);color:oklch(0.16 0.01 62)}
+.pill:hover span{transform:translateX(3px)}
+.pill--ghost{background:transparent;color:var(--ink);
+  box-shadow:inset 0 0 0 1px var(--edge)}
+.pill--ghost span{background:var(--ink);color:var(--bg)}
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero{padding-top:clamp(18px,3vh,34px)}
+.hero__frame{position:relative;border-radius:14px;overflow:hidden;
+  aspect-ratio:16/8.4;min-height:min(74vh,660px);background:var(--raised)}
+@media(max-width:820px){.hero__frame{aspect-ratio:4/5;min-height:0}}
+.hero__frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* the stand-in says so, quietly, rather than pretending to be finished art */
+.hero__standin{position:absolute;top:16px;right:18px;z-index:2;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:color-mix(in oklch,var(--ink) 55%,transparent)}
+
+/* the wordmark straddles the image edge, half on and half off */
+.hero__mark{position:relative;z-index:3;margin-top:-0.34em;
+  padding-left:clamp(4px,1.4vw,22px);pointer-events:none;
+  mix-blend-mode:normal}
+.hero__foot{display:flex;justify-content:space-between;align-items:flex-end;
+  gap:clamp(24px,5vw,80px);flex-wrap:wrap;margin-top:clamp(18px,3vh,36px)}
+.hero__foot p{max-width:46ch;color:var(--muted);font-size:15px}
+
+/* ── sections ──────────────────────────────────────────────────────────── */
+section{padding-block:var(--gap)}
+.statement{text-align:center;max-width:20ch;margin-inline:auto}
+.statement + p{text-align:center;max-width:52ch;margin:24px auto 0;
+  color:var(--muted)}
+
+/* work: alternating, not a card grid */
+.work{display:grid;gap:clamp(56px,9vh,120px)}
+.piece{display:grid;grid-template-columns:1fr;gap:clamp(18px,2.4vw,34px);
+  align-items:center}
+@media(min-width:900px){
+  .piece{grid-template-columns:1.25fr 1fr}
+  .piece:nth-child(even) .piece__media{order:2}
+}
+.piece__media{position:relative;border-radius:12px;overflow:hidden;
+  aspect-ratio:4/3;background:var(--raised)}
+.piece__media canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.piece__body{max-width:44ch}
+.piece__body h3{margin-bottom:10px}
+.piece__body p{color:var(--muted);font-size:15px;margin-bottom:18px}
+.piece__tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--muted);
+  padding:5px 11px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--edge)}
+.gap{color:color-mix(in oklch,var(--muted) 62%,transparent)}
+
+/* capability: prose and a list, deliberately not three icon cards */
+.cap{display:grid;gap:clamp(28px,5vw,72px)}
+@media(min-width:900px){.cap{grid-template-columns:1fr 1.1fr;align-items:start}}
+.cap__list{display:grid}
+.cap__row{display:grid;grid-template-columns:1fr auto;gap:12px 24px;
+  align-items:baseline;padding:20px 0;border-top:1px solid var(--edge)}
+.cap__row:last-child{border-bottom:1px solid var(--edge)}
+.cap__row h3{font-family:var(--serif);font-size:1.2rem}
+.cap__row p{grid-column:1/-1;color:var(--muted);font-size:14.5px;max-width:56ch}
+
+/* credibility: a quiet row, no logos invented */
+.cred{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:1px;background:var(--edge);border-block:1px solid var(--edge)}
+.cred div{background:var(--bg);padding:26px 22px}
+.cred b{display:block;font-family:var(--serif);font-size:1.5rem;
+  font-weight:400;margin-bottom:6px}
+
+/* closing */
+.close{text-align:center}
+.close h2{max-width:16ch;margin-inline:auto}
+.close .pill{margin-top:32px}
+
+/* the sign-off: the studio's own name at the largest scale on the page */
+.signoff{padding-block:clamp(40px,7vh,96px) 0;overflow:hidden}
+.signoff span{display:block;font-family:var(--serif);
+  font-size:clamp(3.4rem,17vw,15rem);line-height:0.82;letter-spacing:-0.04em;
+  color:var(--raised);white-space:nowrap;text-align:center}
+
+footer{padding:clamp(32px,5vh,60px) 0 clamp(28px,4vh,48px);
+  border-top:1px solid var(--edge);margin-top:clamp(32px,5vh,64px);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* ── motion: enhances an already-visible default, never gates content.
+   the hidden state is applied by JS only, and only once the observer that
+   removes it is known to exist. without JS, headless, or in a hidden tab,
+   everything is simply visible. */
+@media(prefers-reduced-motion:no-preference){
+  html.js-reveal .rise{opacity:0;transform:translateY(18px);
+    transition:opacity .9s var(--out),transform .9s var(--out)}
+  html.js-reveal .rise.is-in{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:1ms!important;animation-duration:1ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a class="nav__mark" href="#top">Studio</a>
+  <div class="nav__links">
+    <a href="#work">Work</a>
+    <a href="#capability">Capability</a>
+    <a class="pill" href="#contact">Start a conversation <span>&rarr;</span></a>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero wrap">
+    <div class="hero__frame">
+      <canvas data-field="hero"></canvas>
+      <p class="hero__standin">Stand-in &middot; final image pending</p>
+    </div>
+    <h1 class="display hero__mark">Studio</h1>
+    <div class="hero__foot">
+      <p>Websites, games and publications. Designed, built and finished by one pair of hands.</p>
+      <a class="pill pill--ghost" href="#work">See the work <span>&rarr;</span></a>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <h2 class="display statement rise">Small studio. <em>Whole projects.</em></h2>
+    <p class="rise">Not a stage in someone else's process. The thing gets designed, built and shipped by the person you spoke to.</p>
+  </section>
+
+  <section class="wrap" id="work">
+    <div class="work">
+      <article class="piece rise">
+        <div class="piece__media"><canvas data-field="w1"></canvas></div>
+        <div class="piece__body">
+          <h3 class="display">Malmesbury Abbey</h3>
+          <p class="gap">Summary not written yet.</p>
+          <div class="piece__tags"><span class="tag">Website</span><span class="tag gap">Year —</span></div>
+        </div>
+      </article>
+      <article class="piece rise">
+        <div class="piece__media"><canvas data-field="w2"></canvas></div>
+        <div class="piece__body">
+          <h3 class="display gap">Second project</h3>
+          <p class="gap">Not filled in.</p>
+          <div class="piece__tags"><span class="tag">Game</span><span class="tag gap">Year —</span></div>
+        </div>
+      </article>
+      <article class="piece rise">
+        <div class="piece__media"><canvas data-field="w3"></canvas></div>
+        <div class="piece__body">
+          <h3 class="display gap">Third project</h3>
+          <p class="gap">Not filled in.</p>
+          <div class="piece__tags"><span class="tag">Publication</span><span class="tag gap">Year —</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" id="capability">
+    <div class="cap">
+      <div>
+        <h2 class="display rise">What a project <em>actually</em> involves.</h2>
+        <p class="lede rise" style="margin-top:22px">
+          Most of the value is in the decisions, not the hours. These are the
+          three things a piece of work usually needs, and they are rarely
+          cleanly separable.
+        </p>
+      </div>
+      <div class="cap__list rise">
+        <div class="cap__row">
+          <h3>Design</h3><span class="meta">Interface, identity, type</span>
+          <p>Deciding what the thing looks like and why, down to the parts nobody consciously notices.</p>
+        </div>
+        <div class="cap__row">
+          <h3>Build</h3><span class="meta">Front end, back end, deploy</span>
+          <p>Making it real, fast and maintainable, on infrastructure that will not surprise you later.</p>
+        </div>
+        <div class="cap__row">
+          <h3>Data</h3><span class="meta">Modelling, pipelines, measurement</span>
+          <p>Knowing what the thing should record, and making the record trustworthy enough to act on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="cred">
+      <div><b>One</b><span class="meta">Case study published</span></div>
+      <div><b class="gap">—</b><span class="meta">Projects in flight</span></div>
+      <div><b class="gap">—</b><span class="meta">Years in practice</span></div>
+      <div><b class="gap">—</b><span class="meta">Based in</span></div>
+    </div>
+  </section>
+
+  <section class="wrap close" id="contact">
+    <h2 class="display rise">Tell me what you're <em>trying to build.</em></h2>
+    <p class="lede rise" style="margin:22px auto 0">
+      I'll tell you honestly whether I'm the right person to make it.
+    </p>
+    <a class="pill rise" href="mailto:hello@studio.example">Start a conversation <span>&rarr;</span></a>
+  </section>
+
+  <div class="signoff" aria-hidden="true"><span>Studio</span></div>
+
+  <footer class="wrap">
+    <p class="meta">&copy; Studio 2026</p>
+    <p class="meta gap">studio.example</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── stand-in fields. one light direction, soft falloff, no hotspot. these
+  //    hold mass and tone so the composition can be judged before real art.
+  function field(cv, seed, warm) {
+    var ctx = cv.getContext('2d');
+    function draw() {
+      var w = cv.clientWidth, h = cv.clientHeight;
+      var dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // ground
+      ctx.fillStyle = '#231f1b';
+      ctx.fillRect(0, 0, w, h);
+
+      // a single light, off-centre, falling away. never a vignette.
+      var cx = w * (0.32 + (seed % 7) * 0.045);
+      var cy = h * (0.30 + (seed % 5) * 0.05);
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.92);
+      g.addColorStop(0,   warm ? 'rgba(206,150,88,0.62)' : 'rgba(150,160,178,0.50)');
+      g.addColorStop(0.34, warm ? 'rgba(126,88,56,0.30)' : 'rgba(84,96,112,0.26)');
+      g.addColorStop(1,   'rgba(18,16,15,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+
+      // a horizon-ish mass so it reads as a scene rather than a blur
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (var x = 0; x <= w; x += 8) {
+        var t = x / w;
+        var y = h * (0.70 + 0.10 * Math.sin(t * 3.1 + seed) + 0.05 * Math.sin(t * 7.7 + seed * 2));
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, h); ctx.closePath();
+      ctx.fillStyle = 'rgba(12,11,10,0.72)'; ctx.fill();
+
+      // grain, heavier where the value is lowest
+      var img = ctx.getImageData(0, 0, cv.width, cv.height), d = img.data;
+      for (var i = 0; i < d.length; i += 4) {
+        var lum = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) / 255;
+        var n = (Math.random() - 0.5) * 26 * (1 - lum);
+        d[i] += n; d[i + 1] += n; d[i + 2] += n;
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    draw();
+    var t; addEventListener('resize', function () {
+      clearTimeout(t); t = setTimeout(draw, 160);
+    });
+  }
+
+  var fields = { hero: [3, true], w1: [11, true], w2: [5, false], w3: [8, true] };
+  document.querySelectorAll('canvas[data-field]').forEach(function (cv) {
+    var cfg = fields[cv.dataset.field] || [1, true];
+    field(cv, cfg[0], cfg[1]);
+  });
+
+  // ── nav gains its rule once you've left the top
+  var nav = document.getElementById('nav');
+  addEventListener('scroll', function () {
+    nav.classList.toggle('is-stuck', scrollY > 24);
+  }, { passive: true });
+
+  // ── reveals. the hidden state is only ever applied here, after we know the
+  //    observer exists to take it off again. no JS, no IO, reduced motion, a
+  //    headless renderer or a background tab all just get the visible page.
+  var rise = [].slice.call(document.querySelectorAll('.rise'));
+  var canReveal = 'IntersectionObserver' in window &&
+    matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+  if (canReveal) {
+    document.documentElement.classList.add('js-reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = (i * 70) + 'ms';
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    rise.forEach(function (el) { io.observe(el); });
+
+    // last resort: if anything is still hidden after 3s, the reveal has
+    // failed and the content matters more than the animation.
+    setTimeout(function () {
+      document.documentElement.classList.remove('js-reveal');
+    }, 3000);
+  }
+})();
+</script>
+</body>
+</html>
