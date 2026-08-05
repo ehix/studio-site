@@ -1,0 +1,331 @@
+---
+// ---------------------------------------------------------------------------
+// The rebuild, first real page.
+//
+// One idea, executed: the work is an INSTRUMENT. Each thing the studio makes
+// is rendered as a designed physical object, and the site is its catalogue.
+//
+// The hero RESOLVES. It opens as a coarse ordered dither at two colours and
+// settles into the photograph over about two seconds, using
+// @paper-design/shaders' imageDithering — the shader from the reference
+// snippet, pointed at a generated asset rather than at nothing.
+//
+// The image is not a texture behind the page. It is the subject, it occupies
+// the right, and the left is deliberately empty because that is where the
+// type lives. That emptiness is the composition, not an absence.
+// ---------------------------------------------------------------------------
+const build = {
+  commit: 'rebuild-directions',
+  routes: 6,
+  cases: 1,
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO — · instruments</title>
+<meta name="description" content="A studio that makes websites, games and publications.">
+
+<style is:global>
+@font-face{font-family:"Young Serif";src:url("/fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("/fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("/fonts/courier-prime-700.woff2") format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  /* sampled from the render itself, so page and object are one material */
+  --void:#08090A;
+  --bone:#E8E2D2;
+  --shell:#1E4034;
+  --amber:#E2600F;
+  --quiet:rgba(232,226,210,.52);
+  --rule:rgba(232,226,210,.14);
+  --serif:"Young Serif",Georgia,serif;
+  --mono:"Courier Prime",ui-monospace,Menlo,monospace;
+  --edge:clamp(18px,3.2vw,46px);
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{color-scheme:dark;-webkit-text-size-adjust:100%}
+body{background:var(--void);color:var(--bone);font-family:var(--mono);
+  font-size:12px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--amber);color:var(--void)}
+
+/* ── nav ───────────────────────────────────────────────────────────────── */
+.nav{position:fixed;inset:var(--edge) var(--edge) auto;z-index:30;
+  display:flex;justify-content:space-between;align-items:baseline;gap:24px;
+  mix-blend-mode:difference}
+.nav a,.nav span{font-size:10px;letter-spacing:.20em;text-transform:uppercase}
+.nav nav{display:flex;gap:clamp(14px,2.4vw,34px)}
+.nav nav a{opacity:.62;transition:opacity .2s}
+.nav nav a:hover{opacity:1}
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero{position:relative;min-height:100svh;display:grid;
+  grid-template-columns:1fr;align-items:center;
+  padding:calc(var(--edge) * 3) var(--edge) var(--edge)}
+
+/* the subject: right of frame, bleeding off the edge, oversized */
+.subject{position:absolute;inset:0;z-index:0;pointer-events:none;
+  clip-path:inset(0)}
+.subject__mount{position:absolute;top:50%;left:52%;
+  width:min(112vw,1680px);aspect-ratio:16/9;
+  transform:translate(-40%,-50%) scale(1.06);
+  opacity:0;transition:opacity .9s ease}
+.subject__mount.is-live{opacity:1}
+.subject__mount canvas{display:block;width:100%;height:100%}
+/* the void reclaims the left third, so type never fights the object */
+.subject::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,
+    var(--void) 0%, var(--void) 20%,
+    rgba(8,9,10,.90) 34%, rgba(8,9,10,.45) 50%, rgba(8,9,10,0) 68%)}
+
+.hero__type{position:relative;z-index:2;max-width:min(58ch,52vw)}
+
+/* type at extremes: this, or 10px mono. nothing between. */
+h1{font-family:var(--serif);font-weight:400;
+  font-size:clamp(3.4rem,11.4vw,11rem);
+  line-height:.86;letter-spacing:-.035em;
+  /* the wordmark is a SLOT — sized for a real name of 6 to 14 characters */
+  max-width:14ch}
+h1 .mark{color:var(--amber)}
+
+.hero__sub{margin-top:clamp(20px,2.6vh,34px);max-width:38ch;
+  font-size:13px;line-height:1.7;color:var(--quiet)}
+.hero__sub b{color:var(--bone);font-weight:400}
+
+/* block-level, or the CTA flows onto the same line and collides with it */
+.slot{margin-top:clamp(18px,2.4vh,30px);display:flex;flex-direction:column;
+  gap:9px;max-width:34ch;align-items:stretch}
+.slot span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(232,226,210,.40)}
+.slot i{display:block;height:1px;background:var(--rule)}
+.slot i:nth-of-type(2){width:78%}
+
+.cta{margin-top:clamp(24px,3.2vh,42px);display:inline-flex;align-self:flex-start;
+  align-items:center;
+  gap:12px;border:1px solid var(--rule);padding:14px 20px;
+  font-size:10px;letter-spacing:.20em;text-transform:uppercase;
+  transition:border-color .25s,color .25s,background .25s}
+.cta:hover{border-color:var(--amber);color:var(--amber);
+  background:rgba(226,96,15,.07)}
+.cta .arw{transition:transform .25s}
+.cta:hover .arw{transform:translateX(5px)}
+
+/* live readout, bottom of the hero — measured, never invented */
+.read{position:absolute;left:var(--edge);bottom:var(--edge);z-index:2;
+  display:grid;grid-template-columns:auto auto;gap:1px 16px;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  transition:opacity .3s}
+/* the readout belongs to the hero. it must not ride up through the nav. */
+.read.is-gone,.scroll.is-gone{opacity:0}
+.read dt{color:rgba(232,226,210,.38)}
+.read dd{color:var(--quiet)}
+@media(max-height:720px){.read{display:none}}
+
+.scroll{position:absolute;right:var(--edge);bottom:var(--edge);z-index:2;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(232,226,210,.42);transition:opacity .3s}
+
+/* ── catalogue ─────────────────────────────────────────────────────────── */
+.sheet{position:relative;z-index:2;background:var(--void);
+  padding:clamp(72px,12vh,160px) var(--edge) clamp(56px,9vh,120px)}
+.rule{height:1px;background:var(--rule);margin-bottom:clamp(28px,4vh,54px)}
+.lede{font-family:var(--serif);font-size:clamp(1.5rem,3.4vw,2.6rem);
+  line-height:1.18;letter-spacing:-.015em;max-width:22ch}
+
+.items{margin-top:clamp(44px,7vh,88px);display:grid;gap:0}
+.item{display:grid;grid-template-columns:5rem minmax(0,1fr) minmax(0,1.1fr) auto;
+  gap:10px clamp(18px,3vw,44px);align-items:baseline;
+  padding:22px 0;border-top:1px solid var(--rule);
+  transition:background .2s}
+.item:last-child{border-bottom:1px solid var(--rule)}
+.item:hover{background:rgba(232,226,210,.03)}
+.item__no{font-size:10px;letter-spacing:.18em;color:rgba(232,226,210,.38)}
+.item__name{font-family:var(--serif);font-size:1.2rem;line-height:1.2}
+.item__desc{color:var(--quiet);font-size:11px}
+.item__meta{font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(232,226,210,.38);white-space:nowrap}
+.empty{color:rgba(232,226,210,.34)}
+@media(max-width:820px){
+  .item{grid-template-columns:3.4rem 1fr}
+  .item__desc,.item__meta{grid-column:2}
+}
+
+footer{padding:clamp(40px,6vh,80px) var(--edge);border-top:1px solid var(--rule);
+  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(232,226,210,.42)}
+
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="/new"><span>Studio&nbsp;—</span></a>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#work">Approach</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="subject" aria-hidden="true">
+    <div class="subject__mount" id="mount"></div>
+  </div>
+
+  <div class="hero__type">
+    <h1>Studio<span class="mark">&nbsp;—</span></h1>
+
+    <p class="hero__sub">
+      Websites, games and publications, made as <b>instruments</b>. Each one
+      designed, built and finished by one pair of hands.
+    </p>
+
+    <div class="slot">
+      <span>Positioning line &middot; slot empty</span>
+      <i></i><i></i>
+    </div>
+
+    <a class="cta" href="#contact">Start a project <span class="arw">&rarr;</span></a>
+  </div>
+
+  <dl class="read">
+    <dt>Plate</dt><dd id="r-plate">—</dd>
+    <dt>Grid</dt><dd id="r-grid">—</dd>
+    <dt>Steps</dt><dd id="r-steps">—</dd>
+    <dt>Viewport</dt><dd id="r-vp">—</dd>
+  </dl>
+  <div class="scroll">Scroll</div>
+</section>
+
+<section class="sheet" id="work">
+  <div class="rule"></div>
+  <p class="lede">
+    Every piece of work is an object. It has a housing, a set of controls, and
+    a job it does when you pick it up.
+  </p>
+
+  <div class="items">
+    <article class="item">
+      <span class="item__no">Website</span>
+      <span class="item__name">Malmesbury Abbey</span>
+      <span class="item__desc empty">———</span>
+      <span class="item__meta empty">———</span>
+    </article>
+    <article class="item">
+      <span class="item__no">Game</span>
+      <span class="item__name empty">PROJECT B</span>
+      <span class="item__desc empty">———</span>
+      <span class="item__meta empty">———</span>
+    </article>
+    <article class="item">
+      <span class="item__no">Publication</span>
+      <span class="item__name empty">PROJECT C</span>
+      <span class="item__desc empty">———</span>
+      <span class="item__meta empty">———</span>
+    </article>
+  </div>
+</section>
+
+<footer id="contact">
+  <span>&copy; Studio&nbsp;— 2026</span>
+  <span>{build.routes} routes &middot; {build.cases} case study &middot; {build.commit}</span>
+  <span>studio.example</span>
+</footer>
+
+<script>
+  import { ShaderMount, imageDitheringFragmentShader, defaultObjectSizing }
+    from '@paper-design/shaders';
+
+  const mount = document.getElementById('mount');
+  if (mount) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = '/img/hero-instruments.png';
+
+    img.onload = () => {
+      // ── opening state: two colours on a coarse grid. the object is barely
+      //    an object. it resolves from here.
+      const uniforms = {
+        ...defaultObjectSizing,
+        u_fit: 2,                                   // cover
+        u_scale: 1,
+        u_image: img,
+        u_imageAspectRatio: img.naturalWidth / img.naturalHeight,
+        u_colorBack:      [0.031, 0.035, 0.039, 1],
+        u_colorFront:     [0.910, 0.886, 0.824, 1],
+        u_colorHighlight: [0.886, 0.376, 0.059, 1],
+        u_originalColors: false,
+        u_inverted: false,
+        u_type: 3,                                  // 4x4 Bayer — ordered, not random
+        u_pxSize: 15,
+        u_colorSteps: 2,
+      };
+
+      const sm = new ShaderMount(mount, imageDitheringFragmentShader, uniforms, undefined, 0);
+      mount.classList.add('is-live');
+
+      const plate = document.getElementById('r-plate');
+      const grid  = document.getElementById('r-grid');
+      const steps = document.getElementById('r-steps');
+      const vp    = document.getElementById('r-vp');
+      plate.textContent = img.naturalWidth + '×' + img.naturalHeight;
+      const setVp = () => vp.textContent = innerWidth + '×' + innerHeight;
+      addEventListener('resize', setVp); setVp();
+
+      // ── the resolve. coarse two-colour dither settles into the indexed
+      //    palette over ~2.2s. eased, so it lands rather than stops.
+      const D = 2200, t0 = performance.now();
+      const ease = (t) => 1 - Math.pow(1 - t, 3);
+      let done = false;
+
+      (function settle(now) {
+        const k = ease(Math.min((now - t0) / D, 1));
+        const px = 15 - k * 13.4;                    // 15px cells -> 1.6px
+        const st = Math.round(2 + k * 5);            // 2 colours -> 7, the
+                                                     // capture's "roughly seven"
+        sm.setUniforms({ u_pxSize: px, u_colorSteps: st, u_originalColors: k > 0.62 });
+        grid.textContent  = px.toFixed(1) + 'px';
+        steps.textContent = String(st);
+        if (k < 1) requestAnimationFrame(settle);
+        else done = true;
+      })(t0);
+
+      // the readout describes the hero, so it leaves with the hero
+      const readEl = document.querySelector('.read');
+      const scrollEl = document.querySelector('.scroll');
+      const onScroll = () => {
+        const gone = window.scrollY > innerHeight * 0.42;
+        readEl.classList.toggle('is-gone', gone);
+        scrollEl.classList.toggle('is-gone', gone);
+      };
+      addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+      // ── hover the hero and it goes back to the grid: the picture is made
+      //    of countable cells, and the page will show you if you ask.
+      const hero = document.querySelector('.hero');
+      let raf = null, cur = 1.6, target = 1.6;
+      hero.addEventListener('pointerenter', () => { if (done) target = 9.5; });
+      hero.addEventListener('pointerleave', () => { if (done) target = 1.6; });
+      (function drift() {
+        if (done && Math.abs(cur - target) > 0.02) {
+          cur += (target - cur) * 0.09;
+          const st = Math.round(7 - ((cur - 1.6) / 7.9) * 4);
+          sm.setUniforms({ u_pxSize: cur, u_colorSteps: st, u_originalColors: cur < 4 });
+          grid.textContent = cur.toFixed(1) + 'px';
+          steps.textContent = String(st);
+        }
+        raf = requestAnimationFrame(drift);
+      })();
+    };
+  }
+</script>
+</body>
+</html>
