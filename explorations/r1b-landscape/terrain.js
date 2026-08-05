@@ -158,10 +158,16 @@
     }
   }
 
+  /* Both samplers interpolate with smoothstepped weights rather than raw
+     linear ones. At 3px cells a map cell covers a lot of near-field screen, and
+     plain bilinear showed its facet creases as visible flat plates in the
+     foreground. Smoothstepping the weights costs two multiplies and removes
+     them, because the surface stops being piecewise-planar. */
   function heightAt(wx, wz) {
     var fx = wx / CELL_WORLD, fz = wz / CELL_WORLD;
     var xi = Math.floor(fx), zi = Math.floor(fz);
     var tx = fx - xi, tz = fz - zi;
+    tx = tx * tx * (3 - 2 * tx); tz = tz * tz * (3 - 2 * tz);
     var x0 = ((xi % N) + N) % N, x1 = (x0 + 1) % N;
     var z0 = ((zi % N) + N) % N, z1 = (z0 + 1) % N;
     var a = HEIGHT[z0 * N + x0], b = HEIGHT[z0 * N + x1];
@@ -169,10 +175,19 @@
     var top = a + (b - a) * tx, bot = c + (d - c) * tx;
     return top + (bot - top) * tz;
   }
+  /* was nearest-neighbour, which drew the shading in hard rectangular blocks
+     wherever one map cell spanned more than a few pixels */
   function shadeAt(wx, wz) {
-    var x0 = ((Math.floor(wx / CELL_WORLD) % N) + N) % N;
-    var z0 = ((Math.floor(wz / CELL_WORLD) % N) + N) % N;
-    return SHADE[z0 * N + x0];
+    var fx = wx / CELL_WORLD, fz = wz / CELL_WORLD;
+    var xi = Math.floor(fx), zi = Math.floor(fz);
+    var tx = fx - xi, tz = fz - zi;
+    tx = tx * tx * (3 - 2 * tx); tz = tz * tz * (3 - 2 * tz);
+    var x0 = ((xi % N) + N) % N, x1 = (x0 + 1) % N;
+    var z0 = ((zi % N) + N) % N, z1 = (z0 + 1) % N;
+    var a = SHADE[z0 * N + x0], b = SHADE[z0 * N + x1];
+    var c = SHADE[z1 * N + x0], d = SHADE[z1 * N + x1];
+    var top = a + (b - a) * tx, bot = c + (d - c) * tx;
+    return top + (bot - top) * tz;
   }
 
   /* ── palette ──────────────────────────────────────────────────────────────
@@ -195,7 +210,13 @@
   var buf = document.createElement('canvas');
   var bctx = buf.getContext('2d');
 
-  var CELL = 7;                  /* CSS px per rendered cell */
+  /* CSS px per rendered cell. 7 was far too coarse — it read as a low-res
+     mosaic rather than as a screened image, and the ridgelines lost their
+     shape to it. 3 is close to what the paper-design Dithering shader gives at
+     u_pxSize 2, which is the fineness this is meant to match: still visibly
+     dithered, but with enough resolution for the terrain to be legible. */
+  var CELL = 3;
+  var MAX_CELLS = 172000;   /* ~5.9ms a frame, measured */
   var bw = 0, bh = 0, img = null, data = null, W = 0, H = 0;
 
   function size() {
@@ -205,8 +226,19 @@
     W = w; H = h;
     cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    bw = Math.max(48, Math.ceil(w / CELL));
-    bh = Math.max(32, Math.ceil(h / CELL));
+    /* Cost scales with the buffer, and the buffer scales with the viewport, so
+       an ultrawide display would otherwise pay several times what a laptop
+       does for the same picture. Past the budget the cells grow instead —
+       coarser on a 34" monitor, which is where you are least likely to notice,
+       rather than a hero that stutters there. */
+    var cell = CELL;
+    var cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
+    if (cols * rows > MAX_CELLS) {
+      cell = Math.ceil(cell * Math.sqrt(cols * rows / MAX_CELLS));
+      cols = Math.ceil(w / cell); rows = Math.ceil(h / cell);
+    }
+    bw = Math.max(48, cols);
+    bh = Math.max(32, rows);
     buf.width = bw; buf.height = bh;
     img = bctx.createImageData(bw, bh);
     data = img.data;
@@ -268,7 +300,7 @@
       dirX *= inv; dirZ *= inv;
       var sunDot = dirX * SUN_H.x + dirZ * SUN_H.z;
 
-      z = ZNEAR; dz = 0.55;
+      z = ZNEAR; dz = 0.34;
       var yb = bh;
       while (z < ZFAR && yb > 0) {
         var wx = camX + dirX * z, wz = camZ + dirZ * z;
@@ -292,7 +324,7 @@
           }
           yb = top;
         }
-        z += dz; dz *= 1.0135;
+        z += dz; dz *= 1.0115;
       }
       /* whatever the terrain never reached is sky */
       for (y = 0; y < yb; y++) put((y * bw + x) * 4, skyLum(y, sunDot), x, y);
