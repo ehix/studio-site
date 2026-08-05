@@ -1,0 +1,514 @@
+/* ===========================================================================
+   v1 — NOTATION
+   The page as a technical drawing sheet.
+   Families: notation (9 items) · design-system (3 items)
+
+   The rule that governs everything here is the two-ink system from the A4.1
+   wall section: ink DRAWS what exists, assert only SAYS SOMETHING ABOUT what
+   exists — dimensions, callouts, revisions, the issue stamp. Not one assert
+   mark participates in describing the subject, which means the sheet can be
+   read with the assert layer switched off entirely. That is what the toggle
+   at the bottom left proves.
+
+   Second rule, from the Cyrillic Swiss poster: exactly TWO type sizes on the
+   whole sheet, with nothing in between. Removing the middle removes every
+   chance to fudge hierarchy. Display is spent on the wordmark and the sheet
+   number and on nothing else; everything else — including the callout keys —
+   is annotation at 11px. Hierarchy comes from position, never from thickness.
+   =========================================================================== */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo-var.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Two inks and a stock. There is no third value that carries a mark. */
+  --stock:  #faf8f3;  /* bright drawing stock                     16.42:1 vs ink */
+  --ink:    #1a1a18;  /* draws                                                   */
+  --quiet:  #5c594f;  /* annotation set down a step                6.60:1 on stock */
+  --hair:   #c9c6bd;  /* hairline / lattice — never carries text   1.61:1, graphic */
+  --assert: #a35139;  /* TRUFFLE TROUBLE — asserts only            5.22:1 on stock */
+  --plate:  #efece3;  /* reserved image ground                                   */
+
+  /* Two sizes. The absence of a step between them is the point. */
+  --t:         0.6875rem;                       /* 11px — every annotation      */
+  --t-display: clamp(2.75rem, 7vw, 7.5rem);     /* wordmark + sheet number only */
+
+  --band: 14rem;      /* full-height title band down the right edge */
+  --gutter: 3.5rem;
+  --scale-w: 2.75rem; /* depth scale reserved at the left edge      */
+  --hairline: 1px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--stock);
+  color: var(--ink);
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--t);
+  font-variation-settings: "wdth" 100, "wght" 400;
+  line-height: 1.55;
+  letter-spacing: 0.055em;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+.vh {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Placeholders declare themselves. A reader must never be able to mistake a
+   reserved slot for a fact, so every empty value is set in the hairline value
+   that carries no other text on the sheet. */
+.void { color: var(--hair); }
+a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
+
+/* --- the assert layer -----------------------------------------------------
+   Every assert-coloured mark on the sheet lives under .assert. */
+.assert { transition: opacity 180ms var(--ease); }
+[data-assert="off"] .assert { opacity: 0; }
+[data-assert="off"] .assert :is(a, button) { pointer-events: none; }
+
+/* --- sheet ---------------------------------------------------------------- */
+
+.sheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--band);
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* Registration lattice: an even field of crosses asserting that this sheet has
+   been located and measured. Drawn at hairline value — the lattice locates,
+   it does not annotate. */
+.field {
+  position: relative;
+  padding: 2.75rem var(--gutter) 3.5rem;
+  padding-left: calc(var(--gutter) + var(--scale-w));
+  /* the tile is the full cell, so the cross stays 13px however far apart the
+     cells sit — scaling the tile would scale the mark with it */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88'%3E%3Cpath d='M44.5 38v13M38 44.5h13' stroke='%23c9c6bd' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 5.5rem 5.5rem;
+  background-position: calc(var(--gutter) + var(--scale-w)) 2.75rem;
+}
+
+.drawn { max-width: 58rem; }
+
+/* Exactly one cross is coloured. In a regular field of identical marks,
+   changing a single one is the cheapest possible emphasis — no size change,
+   no weight change, no extra element. */
+/* lands on a true intersection: the lattice origin is (gutter + scale-w,
+   2.75rem) and the first cross sits at the tile centre, 2.75rem in, with a
+   5.5rem pitch after that. This one is the 9th across and the 7th down. */
+.marked-cross {
+  position: absolute;
+  top: calc(2.75rem + 2.75rem + 6 * 5.5rem - 6.5px);
+  left: calc(var(--gutter) + var(--scale-w) + 2.75rem + 8 * 5.5rem - 6.5px);
+  width: 13px; height: 13px;
+  pointer-events: none;
+}
+.marked-cross::before,
+.marked-cross::after { content: ""; position: absolute; background: var(--assert); }
+.marked-cross::before { left: 6px; top: 0; width: 1px; height: 13px; }
+.marked-cross::after  { top: 6px; left: 0; height: 1px; width: 13px; }
+
+/* --- depth scale ----------------------------------------------------------
+   A vertical scale running the full left edge with regular intervals, so any
+   part of the sheet can be read off against a distance. The marker reports
+   signed distance from the datum and is therefore an assertion, not a mark
+   describing the subject — so it is set in assert and disappears with it. */
+.depth {
+  position: absolute;
+  top: 2.75rem; bottom: 3.5rem;
+  left: var(--gutter);
+  width: var(--scale-w);
+  border-right: var(--hairline) solid var(--hair);
+  /* ticks run across the axis, minor every 1.5rem and major every 7.5rem */
+  background-image:
+    linear-gradient(to bottom, var(--hair) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hair) 1px, transparent 1px);
+  background-size: 0.7rem 1.5rem, 100% 7.5rem;
+  background-position: 100% 0, 100% 0;
+  background-repeat: repeat-y;
+  pointer-events: none;
+}
+.depth__marker {
+  position: absolute; right: 0; top: 0;
+  width: 100%; height: 1px;
+  background: var(--assert);
+  will-change: transform;
+}
+.depth__read {
+  position: absolute; right: 0; top: 0.3rem;
+  color: var(--assert);
+  letter-spacing: 0.1em;
+  font-variation-settings: "wdth" 85, "wght" 500;
+}
+
+/* --- masthead ------------------------------------------------------------- */
+
+.eyebrow {
+  display: flex; flex-wrap: wrap; gap: 0 1.5rem;
+  margin: 0;
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+.eyebrow .assert { color: var(--assert); }
+.eyebrow--split { margin-top: 1.4rem; }
+
+/* The wordmark is a slot. It is set so a real name of up to 14 characters
+   drops in on one line with no reflow. */
+.wordmark {
+  font-size: var(--t-display);
+  font-variation-settings: "wdth" 100, "wght" 700;
+  line-height: 0.86;
+  letter-spacing: -0.025em;
+  margin: 1.1rem 0 0;
+  max-width: 14ch;
+}
+
+.lede {
+  margin: 1.5rem 0 0;
+  max-width: 52ch;
+  font-variation-settings: "wdth" 100, "wght" 400;
+}
+
+/* Datum: one rule establishes zero, and everything is read as a signed
+   distance from it rather than as a position in the frame. */
+.datum {
+  position: relative;
+  border: 0;
+  border-top: var(--hairline) solid var(--ink);
+  margin: 2.5rem 0 0;
+}
+.datum::after {
+  content: "\00b10 DATUM";
+  position: absolute; right: 0; top: 0.35rem;
+  color: var(--assert);
+  letter-spacing: 0.19em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+
+/* --- plate (hero slot) ----------------------------------------------------
+   Reserved at 3:2 landscape in the drawing field, left of the title band. The
+   stand-in is flat; every measure around it is set as if the image were here. */
+
+.plate-wrap { margin: 3rem 0 0; max-width: 46rem; }
+
+.plate {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border: var(--hairline) solid var(--ink);
+  background: var(--plate);
+  display: grid; place-items: center;
+}
+.plate span {
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+/* Corner ticks: the plate is located, not merely placed. */
+.plate i { position: absolute; width: 10px; height: 10px; border: 0 solid var(--ink); }
+.plate i:nth-child(1) { top: -1px;   left: -1px;  border-top-width: 1px;    border-left-width: 1px; }
+.plate i:nth-child(2) { top: -1px;   right: -1px; border-top-width: 1px;    border-right-width: 1px; }
+.plate i:nth-child(3) { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
+.plate i:nth-child(4) { bottom: -1px; right: -1px;border-bottom-width: 1px; border-right-width: 1px; }
+
+.dimension {
+  position: relative;
+  margin: 0.85rem 0 0;
+  height: 1.5rem;
+  color: var(--assert);
+}
+.dimension::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0.4rem;
+  border-top: var(--hairline) solid var(--assert);
+}
+.dimension b, .dimension i {
+  position: absolute; top: 0; width: 1px; height: 0.8rem; background: var(--assert);
+}
+.dimension b { left: 0; }
+.dimension i { right: 0; }
+.dimension span {
+  position: absolute; left: 50%; top: 0.6rem;
+  transform: translateX(-50%);
+  background: var(--stock);
+  padding: 0 0.6rem;
+  letter-spacing: 0.19em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+
+/* --- sections and callouts ------------------------------------------------
+   Every callout leaves its target on a horizontal leader and lands on a
+   left-aligned block, so all annotation reads down one common edge. */
+
+.section { margin-top: 4rem; }
+
+.section > h2 {
+  font-size: var(--t);          /* no intermediate size exists on this sheet */
+  font-variation-settings: "wdth" 92, "wght" 500;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--quiet);
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: var(--hairline) solid var(--ink);
+}
+
+.callout {
+  display: grid;
+  grid-template-columns: 3rem 4.5rem minmax(0, 1fr);
+  align-items: start;
+  padding: 1.2rem 0;
+  border-bottom: var(--hairline) solid var(--hair);
+}
+
+/* The key is an annotation, not a headline. It is set at annotation size and
+   distinguished by sitting in its own column — position, not scale. */
+.callout__index {
+  margin: 0;
+  color: var(--quiet);
+  letter-spacing: 0.14em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+
+/* Leader line: assert, because it points rather than describes. */
+.callout__leader {
+  position: relative;
+  height: 1px;
+  margin-top: 0.55rem;
+  background: var(--assert);
+  transform-origin: left center;
+  transform: scaleX(0.5);
+  transition: transform 150ms var(--ease), opacity 180ms var(--ease);
+}
+.callout__leader::after {
+  content: ""; position: absolute; right: -1px; top: -2px;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--assert);
+}
+.callout:hover .callout__leader,
+.callout:focus-within .callout__leader { transform: scaleX(1); }
+
+.callout__body h3 {
+  margin: 0;
+  font-size: var(--t);
+  font-variation-settings: "wdth" 100, "wght" 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+.callout__body > p { margin: 0.45rem 0 0; max-width: 48ch; }
+
+.spec {
+  margin: 0.7rem 0 0;
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.15rem 1rem;
+}
+.spec--wide { grid-template-columns: 6.5rem minmax(0, 1fr); margin-top: 1.5rem; }
+.spec dt {
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+.spec dd { margin: 0; }
+
+/* --- contact --------------------------------------------------------------- */
+
+.section--contact { margin-top: 4.5rem; }
+.contact { padding-top: 1.4rem; }
+.contact__line { margin: 0; max-width: 46ch; }
+.contact__act { margin: 1.6rem 0 0; }
+
+/* The only filled area on the sheet. It is ink, not assert: the invitation is
+   part of what the sheet is, not a claim about it. */
+.act {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--stock);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-variation-settings: "wdth" 92, "wght" 600;
+  padding: 0.85rem 1.6rem;
+  border: var(--hairline) solid var(--ink);
+  transition: background 130ms var(--ease), color 130ms var(--ease);
+}
+.act:hover, .act:focus-visible { background: var(--stock); color: var(--ink); }
+
+/* Provenance and measurement are different kinds of claim, and the sheet never
+   lets them touch — the stamp sits outside the measured field. */
+.stamp {
+  display: inline-block;
+  margin: 2.5rem 0 0;
+  border: var(--hairline) solid var(--assert);
+  color: var(--assert);
+  padding: 0.55rem 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+
+/* --- colophon -------------------------------------------------------------- */
+
+.colophon {
+  margin-top: 3.5rem;
+  padding-top: 1.2rem;
+  border-top: var(--hairline) solid var(--hair);
+  color: var(--quiet);
+}
+.colophon dl { margin: 0; display: grid; gap: 0.3rem 2.5rem; }
+.colophon div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
+.colophon dt { text-transform: uppercase; letter-spacing: 0.14em; font-variation-settings: "wdth" 92, "wght" 500; }
+.colophon dd { margin: 0; }
+.colophon__note { margin: 1.4rem 0 0; }
+
+/* --- title band ------------------------------------------------------------
+   Project, revisions, scale, north point and sheet number in a full-height
+   strip, so every sheet in a set aligns at the same edge. */
+
+.band {
+  border-left: var(--hairline) solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding-top: 2.75rem;
+}
+
+/* Set vertically, reading bottom to top, so it occupies the height without
+   stealing width from the drawing. */
+.band__name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0 auto 2.25rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 92, "wght" 700;
+}
+
+.band__block, .rev { border-top: var(--hairline) solid var(--hair); padding: 0.7rem 0.9rem 0.8rem; }
+.band__block { margin: 0; }
+.band__block dt {
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+}
+.band__block dd { margin: 0 0 0.7rem; }
+.band__block dd:last-child { margin-bottom: 0; }
+
+.rev table { border-collapse: collapse; width: 100%; }
+.rev th {
+  text-align: left;
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+  padding: 0 0.5rem 0.3rem 0;
+}
+.rev td { padding: 0.15rem 0.5rem 0.15rem 0; vertical-align: top; }
+.rev td.assert { color: var(--assert); }
+
+.band__north {
+  border-top: var(--hairline) solid var(--hair);
+  padding: 1rem 0.9rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  color: var(--ink);
+}
+.band__north span { letter-spacing: 0.19em; color: var(--quiet); }
+
+/* Set alone and largest, at the bottom corner: the last thing on the page and
+   the first thing found in a stack. */
+.band__number {
+  margin: auto 0 0;
+  border-top: var(--hairline) solid var(--ink);
+  padding: 1rem 0.9rem 1.6rem;
+  text-align: right;
+}
+.band__number b {
+  display: block;
+  font-size: var(--t-display);
+  font-variation-settings: "wdth" 75, "wght" 800;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+}
+.band__number span {
+  display: block;
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+  font-variation-settings: "wdth" 92, "wght" 500;
+  margin-top: 0.5rem;
+}
+
+/* --- controls -------------------------------------------------------------- */
+
+/* The control panel occludes the sheet rather than colliding with it, so it
+   reads as an instrument laid on the drawing and not as part of it. */
+.controls {
+  position: fixed; left: var(--gutter); bottom: 1.5rem; z-index: 5;
+  display: flex; align-items: stretch;
+  background: var(--stock);
+  border: var(--hairline) solid var(--ink);
+}
+.controls button {
+  font: inherit;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 92, "wght" 500;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  border-right: var(--hairline) solid var(--ink);
+  border-radius: 0;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+.controls button b { font-variation-settings: "wdth" 92, "wght" 700; }
+.controls__dot { width: 7px; height: 7px; background: var(--assert); display: block; }
+.controls button[aria-pressed="false"] { color: var(--quiet); }
+.controls__hint {
+  display: flex; align-items: center;
+  padding: 0 0.9rem;
+  color: var(--quiet);
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+:focus-visible { outline: 2px solid var(--assert); outline-offset: 3px; }
+
+/* --- narrow ---------------------------------------------------------------
+   Scope: does not break. Responsive refinement is out of scope for a
+   springboard. */
+@media (max-width: 60rem) {
+  :root { --gutter: 1.25rem; --scale-w: 0; }
+  .sheet { grid-template-columns: minmax(0, 1fr); }
+  .depth { display: none; }
+  .field { background-position: var(--gutter) 2.75rem; }
+  .marked-cross { left: calc(var(--gutter) + 11rem - 6.5px); }
+  .band { border-left: 0; border-top: var(--hairline) solid var(--ink); padding: 1.5rem var(--gutter) 0; }
+  .band__name { writing-mode: horizontal-tb; transform: none; margin: 0 0 1.5rem; }
+  .band__block, .rev, .band__north { padding-left: 0; padding-right: 0; }
+  .band__number { text-align: left; padding: 1rem 0 2rem; }
+  .callout { grid-template-columns: 2.25rem 2.5rem minmax(0, 1fr); }
+  .controls { left: var(--gutter); right: var(--gutter); }
+  .controls__hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 1ms !important; }
+  .callout__leader { transform: scaleX(1); }
+}

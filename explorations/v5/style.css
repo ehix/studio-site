@@ -1,0 +1,367 @@
+/* ===========================================================================
+   v5 — SUBSTRATE
+   The page as material.
+   Families: substrate (17) · wet-pigment (2)
+
+   Three rules govern this, and each one is a place a rendered version usually
+   fails.
+
+   1. Illumination is even. No vignette, no hotspot, no directional drama.
+      Warmth comes from the material itself, never a colour wash laid over it,
+      so the ground is a mid-tone stock rather than a pale one that has been
+      tinted warm.
+
+   2. Depth is read from overlap order and one step of value. Nothing on this
+      page casts a shadow. Torn edges show the pale fibre lip where the sheet
+      parted, and those lips are the brightest values here — brighter than any
+      surface, because they are the inside of the paper.
+
+   3. Where pigment appears it bleeds and collects at its edge, so the boundary
+      is the sharpest and most saturated thing in the frame, never a blur. A
+      soft gradient is soft everywhere; this is soft everywhere EXCEPT at the
+      boundary. Getting that backwards is the standard failure.
+
+   The other discipline is range. Every value here sits within a step or two of
+   its neighbours. Widen that and it becomes a composition about contrast;
+   keep it narrow and it stays a material.
+   =========================================================================== */
+
+/* Young Serif: one weight, heavy wedge serifs, cut rather than drawn. Chosen
+   against the polished editorial serif this ground would otherwise attract —
+   a material page wants a face that reads as pressed into the sheet. Used at
+   display sizes only; Courier Prime carries every annotation. */
+@font-face {
+  font-family: "Young Serif";
+  src: url("fonts/young-serif.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face { font-family: "Courier Prime"; src: url("fonts/courier-prime-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("fonts/courier-prime-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+:root {
+  --stock:  #c9c1b1;  /* Oatmeal — the pulp, warmth all the way through      */
+  --warm:   #d4cbb7;  /* second batch, warmer                                */
+  --cool:   #bdb7aa;  /* third batch, cooler                                 */
+  --lip:    #e4dece;  /* the fibre core at a torn edge — brightest value here */
+  --ink:    #2e2a24;  /* 7.98:1 on stock · 10.62:1 on lip                    */
+  --quiet:  #514b40;  /* 4.83:1 on stock                                     */
+  --sienna: #a4623e;  /* BURNT SIENNA — 2.67:1, so pigment carries no text   */
+
+  --t:         0.75rem;
+  --t-display: clamp(2.75rem, 7.4vw, 6.5rem);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --pad: clamp(1.5rem, 5vw, 5rem);
+  --measure: 74rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Courier Prime", ui-monospace, Menlo, monospace;
+  font-size: var(--t);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+
+  /* The stock. Inclusions vary in scale from a speck to a strand many times
+     its length, and it is that RANGE rather than the density that stops a
+     scatter reading as generated noise. Coverage drifts into slightly heavier
+     regions with no boundary anywhere: uniform noise reads as a screen, and
+     any noise with a visible edge reads as a stain. */
+  background-color: var(--stock);
+  background-image:
+    /* Foxing: rust specks, concentrated toward the margins rather than spread. */
+    radial-gradient(circle at 2.5% 11%, rgba(164,98,62,0.13) 0 2.5px, transparent 3px),
+    radial-gradient(circle at 97% 29%,  rgba(164,98,62,0.11) 0 3px,   transparent 3.5px),
+    radial-gradient(circle at 1.5% 71%, rgba(164,98,62,0.10) 0 2px,   transparent 2.5px),
+    radial-gradient(circle at 98.5% 86%,rgba(164,98,62,0.12) 0 2.5px, transparent 3px),
+
+    /* Inclusions, tile one. Several marks per tile at irregular positions and
+       radii spanning an order of magnitude — a speck up to a strand many times
+       its length. It is that RANGE, not the density, that stops a scatter
+       reading as generated. */
+    radial-gradient(ellipse 5px 0.8px at 23% 17%, rgba(74,63,46,0.095) 0 100%, transparent 100%),
+    radial-gradient(circle 1.4px    at 61% 34%, rgba(74,63,46,0.08) 0 100%, transparent 100%),
+    radial-gradient(circle 0.8px    at 12% 58%, rgba(74,63,46,0.095) 0 100%, transparent 100%),
+    radial-gradient(ellipse 0.8px 4px at 84% 71%, rgba(74,63,46,0.085) 0 100%, transparent 100%),
+    radial-gradient(circle 2.1px    at 44% 88%, rgba(74,63,46,0.08) 0 100%, transparent 100%),
+    radial-gradient(circle 0.9px    at 77% 8%,  rgba(74,63,46,0.11) 0 100%, transparent 100%),
+
+    /* Tile two, at a size coprime with tile one, so the two beat against each
+       other and no repeat is findable. */
+    radial-gradient(circle 1.1px    at 8% 26%,  rgba(74,63,46,0.10) 0 100%, transparent 100%),
+    radial-gradient(ellipse 4px 0.8px at 52% 63%, rgba(74,63,46,0.08) 0 100%, transparent 100%),
+    radial-gradient(circle 1.7px    at 88% 41%, rgba(74,63,46,0.09) 0 100%, transparent 100%),
+    radial-gradient(circle 0.7px    at 34% 92%, rgba(74,63,46,0.11) 0 100%, transparent 100%),
+
+    /* Density drift: coverage pools into slightly heavier regions with no
+       boundary anywhere. Uniform noise reads as a screen; noise with an edge
+       reads as a stain. This sits between the two. */
+    radial-gradient(64% 48% at 19% 27%, rgba(90,78,58,0.05)  0%, transparent 72%),
+    radial-gradient(56% 52% at 81% 69%, rgba(90,78,58,0.045) 0%, transparent 74%),
+    radial-gradient(48% 40% at 55% 96%, rgba(90,78,58,0.04)  0%, transparent 76%);
+  background-size:
+    100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    263px 211px, 263px 211px, 263px 211px, 263px 211px, 263px 211px, 263px 211px,
+    179px 149px, 179px 149px, 179px 149px, 179px 149px,
+    100% 100%, 100% 100%, 100% 100%;
+}
+
+.void { color: var(--quiet); }
+a { color: inherit; text-underline-offset: 0.25em; }
+:focus-visible { outline: 2px solid var(--sienna); outline-offset: 3px; }
+
+.sheet { max-width: var(--measure); margin: 0 auto; padding: 0 var(--pad) 4rem; }
+
+/* Set below the threshold of reading and cropped by the edge: it announces a
+   printed page without offering content. */
+.crop-line {
+  margin: 0;
+  padding-top: 0.9rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--quiet);
+  opacity: 0.55;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* --- masthead --------------------------------------------------------------
+   The plate sits off-centre with generous reserved ground around it. */
+
+.mast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  padding: clamp(3rem, 8vw, 7rem) 0 clamp(3rem, 7vw, 6rem);
+}
+
+.stamp {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--quiet);
+}
+
+.wordmark {
+  font-family: "Young Serif", Georgia, serif;
+  font-size: var(--t-display);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin: 1rem 0 0;
+  max-width: 14ch;          /* a real name of 6–14 characters drops in */
+}
+
+.lede {
+  margin: 1.5rem 0 0;
+  max-width: 44ch;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* --- the plate -------------------------------------------------------------
+   Two sheets. Same paper, different batch: recognisably the same kind and
+   visibly not the same sheet. That small disagreement is what makes a layered
+   ground read as accumulated rather than as constructed. */
+
+.plate { position: relative; margin: 0; aspect-ratio: 4 / 5; }
+
+.plate__under {
+  position: absolute; inset: 0;
+  background: var(--cool);
+  padding: 1.5rem 1.4rem;
+  /* the upper sheet uncovers this from the right, so the content it is
+     hiding sits at that edge and is readable as soon as the sheet moves */
+  display: grid; align-content: end; justify-items: end; gap: 0.9rem;
+}
+.under__label {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--quiet);
+}
+.under__spec { margin: 0; display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.15rem 1rem; }
+.under__spec dt { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.12em; }
+.under__spec dd { margin: 0; }
+
+/* The upper sheet. One step warmer than the one beneath, so the overlap is
+   read from value and batch alone — there is no shadow anywhere. */
+.plate__over {
+  position: absolute; inset: 0;
+  background: var(--warm);
+  touch-action: none;
+  cursor: grab;
+  will-change: transform;
+  /* the tear runs down the left edge, so the lip is exposed as it moves */
+  clip-path: polygon(
+    3% 0, 100% 0, 100% 100%, 4% 100%,
+    2.4% 92%, 4.4% 84%, 1.8% 76%, 4% 67%, 2% 59%,
+    4.6% 51%, 2.2% 43%, 4.2% 34%, 1.6% 26%, 3.8% 17%, 2.6% 9%
+  );
+}
+.plate__over:active { cursor: grabbing; }
+
+.over__face { padding: 1.5rem 1.4rem 1.4rem 2.4rem; display: grid; gap: 0.3rem; }
+.over__label, .over__ratio {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--quiet);
+}
+
+/* Where the sheet parted, the pale fibre core is exposed. It is the brightest
+   value on the page, because it is the inside of the paper. */
+.over__tear {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: 1.1rem;
+  background: linear-gradient(to right, var(--lip) 0%, var(--lip) 55%, rgba(228,222,206,0) 100%);
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.over__grip {
+  position: absolute; right: 1.2rem; bottom: 1.2rem;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink);
+  background: var(--lip);
+  border: 0; border-radius: 0;
+  padding: 0.5rem 0.8rem;
+  cursor: grab;
+}
+.over__grip span {
+  width: 1.1rem; height: 7px;
+  background: repeating-linear-gradient(to bottom, var(--ink) 0 1px, transparent 1px 3px);
+}
+
+.plate__caption {
+  position: absolute; left: 0; right: 0; bottom: -2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--quiet);
+}
+
+/* --- the wet edge ----------------------------------------------------------
+   Pigment collects wherever the liquid stopped, so the boundary is darker and
+   more saturated than the wash behind it. Soft everywhere, sharp at the edge. */
+
+.wet {
+  position: relative;
+  height: 4.5rem;
+  margin: 2.5rem 0 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(164,98,62,0)    0%,
+    rgba(164,98,62,0.10) 42%,
+    rgba(164,98,62,0.26) 88%,
+    rgba(164,98,62,0.34) 99%,
+    rgba(164,98,62,0.34) 100%
+  );
+}
+.wet::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--sienna);
+  /* the solvent front is ragged, not ruled */
+  clip-path: polygon(
+    0 0, 6% 40%, 13% 0, 21% 55%, 29% 10%, 37% 45%, 45% 0,
+    53% 50%, 61% 15%, 70% 45%, 78% 0, 86% 40%, 93% 10%, 100% 35%,
+    100% 100%, 0 100%
+  );
+}
+
+/* --- sections --------------------------------------------------------------- */
+
+.section { padding-top: clamp(2.5rem, 6vw, 4.5rem); }
+
+.head {
+  font-family: "Young Serif", Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.75rem;
+}
+
+.specimens { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 2.5rem 3rem; }
+.specimen { max-width: 34ch; }
+.specimen__no {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--quiet);
+  margin-bottom: 0.5rem;
+}
+.specimen h3 {
+  font-family: "Young Serif", Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  margin: 0;
+}
+.specimen > p { margin: 0.5rem 0 0; }
+
+.spec { margin: 1rem 0 0; display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.1rem 1rem; }
+.spec dt { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.12em; }
+.spec dd { margin: 0; }
+.spec--contact { margin-top: 1.75rem; max-width: 30rem; }
+
+.services { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 40rem; }
+.services li {
+  display: grid; grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.9rem 0;
+  /* one step of value, not a rule */
+  border-bottom: 1px solid rgba(81,75,64,0.22);
+}
+.services li:first-child { border-top: 1px solid rgba(81,75,64,0.22); }
+.services li > span:last-child {
+  font-family: "Young Serif", Georgia, serif;
+  font-size: 1.125rem;
+}
+
+.contact__line { margin: 0; max-width: 46ch; font-size: 0.875rem; }
+
+/* Pigment as an area, never as small text. Set large enough that the lip on
+   sienna clears AA at 3.56:1. */
+.act {
+  display: inline-block;
+  margin-top: 1.4rem;
+  background: var(--sienna);
+  color: var(--lip);
+  text-decoration: none;
+  font-family: "Young Serif", Georgia, serif;
+  font-size: 1.25rem;
+  padding: 0.65rem 1.4rem;
+  transition: background 140ms var(--ease);
+}
+.act:hover, .act:focus-visible { background: #8f4f30; }
+
+.colophon {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(81,75,64,0.22);
+  color: var(--quiet);
+}
+.colophon dl { margin: 0; display: grid; gap: 0.5rem; }
+.colophon div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.25rem; }
+.colophon dt { text-transform: uppercase; letter-spacing: 0.12em; }
+.colophon dd { margin: 0; max-width: 68ch; }
+.colophon__note { margin: 1.75rem 0 0; }
+
+/* --- narrow — scope: does not break ------------------------------------------ */
+@media (max-width: 58rem) {
+  .mast { grid-template-columns: minmax(0, 1fr); }
+  .plate { max-width: 24rem; }
+  .plate__caption { position: static; margin-top: 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}

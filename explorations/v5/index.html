@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v5 — Substrate · STUDIO —</title>
+<meta name="description" content="Direction 5 of 5. The landing page as material.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- Type set below the threshold of reading, cropped by the top edge. It
+       announces that this was once a printed page without offering content. -->
+  <p class="crop-line" aria-hidden="true">
+    STUDIO&nbsp;— &middot; specimen sheet &middot; uncoated stock &middot; oatmeal #C9C1B1 &middot;
+    even illumination &middot; no vignette &middot; no hotspot &middot; warmth in the pulp &middot;
+    taste library ce649c6 &middot; 102 items &middot; 12 families &middot; 2026-08-04 &middot;
+  </p>
+
+  <!-- ══ MASTHEAD ══════════════════════════════════════════════════════════
+       The plate is inset off-centre with generous reserved ground around it.
+       A large uninterrupted field surrounded by activity reads as deliberate
+       emptiness rather than as an unfinished area. -->
+  <header class="mast">
+
+    <div class="mast__type">
+      <p class="stamp">Sheet 1 of 5 &middot; direction 5 of 5 &middot; 2026&#8209;08&#8209;04</p>
+      <h1 class="wordmark">STUDIO&nbsp;—</h1>
+      <p class="lede">
+        A small team's unfair advantage. Design, engineering and data made by
+        one pair of hands, on one sheet, in one pass.
+      </p>
+    </div>
+
+    <!-- ══ THE PLATE ══════════════════════════════════════════════════════
+         Two sheets, not one. The upper one is torn and can be moved aside;
+         the lower one carries what it was covering. Depth is read from
+         overlap order and a step of value, never from a shadow. -->
+    <figure class="plate" id="plate">
+      <div class="plate__under">
+        <p class="under__label">Under sheet</p>
+        <dl class="under__spec">
+          <dt>Stock</dt><dd>Oatmeal #C9C1B1, uncoated</dd>
+          <dt>Batch</dt><dd>Two, warm against cool</dd>
+          <dt>Formed</dt><dd>By hand, long fibre</dd>
+          <dt>Light</dt><dd>Even, no direction</dd>
+          <dt>Measured</dt><dd>Ink on stock 7.98:1</dd>
+        </dl>
+      </div>
+
+      <div class="plate__over" id="over">
+        <div class="over__face">
+          <p class="over__label">Plate 1 &middot; image reserved</p>
+          <p class="over__ratio">4:5 portrait</p>
+        </div>
+        <!-- the torn edge, with the pale fibre lip the sheet parted along -->
+        <div class="over__tear" aria-hidden="true"></div>
+        <button type="button" class="over__grip" id="grip"
+                aria-label="Move the upper sheet aside to uncover the sheet beneath">
+          <span aria-hidden="true"></span>
+          Move sheet
+        </button>
+      </div>
+
+      <figcaption class="plate__caption">
+        Two sheets. Same paper, different batch.
+      </figcaption>
+    </figure>
+  </header>
+
+  <!-- ══ WET EDGE ══════════════════════════════════════════════════════════
+       A wet edge is darker than the field it bounds, because pigment collects
+       wherever the liquid stopped. Soft everywhere except at the boundary,
+       which is the sharpest thing in the frame. -->
+  <div class="wet" role="separator" aria-hidden="true"></div>
+
+  <main>
+    <section class="section" aria-labelledby="s-work">
+      <h2 id="s-work" class="head">Selected work</h2>
+
+      <div class="specimens">
+        <article class="specimen">
+          <p class="specimen__no">Specimen A</p>
+          <h3>Malmesbury Abbey</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+
+        <article class="specimen">
+          <p class="specimen__no">Specimen B</p>
+          <h3 class="void">CLIENT A</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+
+        <article class="specimen">
+          <p class="specimen__no">Specimen C</p>
+          <h3 class="void">CLIENT B</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="s-cap">
+      <h2 id="s-cap" class="head">What I do</h2>
+      <ul class="services">
+        <li><span class="specimen__no">Specimen D</span><span class="void">SERVICE A</span></li>
+        <li><span class="specimen__no">Specimen E</span><span class="void">SERVICE B</span></li>
+        <li><span class="specimen__no">Specimen F</span><span class="void">SERVICE C</span></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="s-contact">
+      <h2 id="s-contact" class="head">Contact</h2>
+      <div class="contact">
+        <p class="contact__line">
+          Tell me what you are trying to build. I will tell you whether I am the
+          right person to make it.
+        </p>
+        <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+        <dl class="spec spec--contact">
+          <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+          <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+          <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <dl>
+        <div><dt>Stock</dt><dd>Oatmeal #C9C1B1. The warmth is in the pulp, never a wash laid over it.</dd></div>
+        <div><dt>Light</dt><dd>Even throughout. No vignette, no hotspot, no directional drama anywhere on the sheet.</dd></div>
+        <div><dt>Depth</dt><dd>Read from overlap order and one step of value. Nothing casts a shadow.</dd></div>
+        <div><dt>Pigment</dt><dd>Burnt Sienna #A4623E. Soft everywhere except at the boundary, where it collects and is the sharpest thing here.</dd></div>
+        <div><dt>Type</dt><dd>Young Serif 400 and Courier Prime 400/700 &mdash; both SIL OFL 1.1</dd></div>
+        <div><dt>Measured</dt><dd>Ink on stock 7.98:1 &middot; on fibre lip 10.62:1 &middot; label 4.83:1 &middot; sienna 2.67:1, so pigment never carries small text</dd></div>
+        <div><dt>Drawn from</dt><dd>substrate (17), wet-pigment (2) &mdash; taste library ce649c6</dd></div>
+      </dl>
+      <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+    </footer>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

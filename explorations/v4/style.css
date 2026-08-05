@@ -1,0 +1,310 @@
+/* ===========================================================================
+   v4 — INSTRUMENT UI
+   The page as a live readout.
+   Family: instrument-ui (7 items)
+
+   The family was renamed from dark-instrument-ui after an audit, because none
+   of its principles — data density, single-accent state, tabular numerals —
+   says anything about the ground, and its purest member is light. So this one
+   is light: pale sage, near-black ink. Darkness here would only buy mood, and
+   a readout has no use for mood.
+
+   State is carried by fill length and ring completion, never by hue. That is
+   more robust than colour — it survives greyscale and it survives colour
+   blindness — and it leaves the accent free for something exceptional. Here
+   the accent is spent twice, and both times it means the same thing: NOW.
+
+   Figures are tabular so a changing value cannot shift the layout around it.
+   That is the whole reason this family insists on monospace: everything on
+   the page is about to change.
+   =========================================================================== */
+
+@font-face {
+  font-family: "Martian";
+  src: url("fonts/martian-var.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-stretch: 75% 112.5%;
+  font-display: swap;
+}
+
+:root {
+  --ground: #d7dacb;  /* pale sage, flat                                     */
+  --panel:  #e3e5d9;  /* one step of value — no rule anywhere on the page     */
+  --well:   #c9cdbc;  /* the trace ground                                    */
+  --ink:    #22251f;  /* 10.93:1 on ground · 12.18:1 on panel                */
+  --quiet:  #565a4e;  /* 4.98:1 on ground                                    */
+  --hair:   #b6bbaa;  /* 1.38:1 — graphic only                               */
+  --now:    #b17457;  /* DESERT CLAY — 2.68:1, so it never carries text      */
+
+  --t:         0.6875rem;
+  --t-display: clamp(2.25rem, 5.6vw, 4.75rem);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --pad: clamp(1.5rem, 4vw, 3.25rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Martian", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: var(--t);
+  font-variation-settings: "wdth" 100, "wght" 400;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+.void { color: var(--quiet); }
+a { color: inherit; text-underline-offset: 0.25em; }
+:focus-visible { outline: 2px solid var(--now); outline-offset: 3px; }
+
+.unit {
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variation-settings: "wdth" 88, "wght" 400;
+}
+
+/* --- viewport ------------------------------------------------------------
+   Four short rules at the corners imply a frame without drawing one. It costs
+   four hairlines and does the work of a container. */
+
+.viewport {
+  position: relative;
+  max-width: 84rem;
+  margin: 0 auto;
+  padding: var(--pad);
+}
+.bracket { position: absolute; width: 1.5rem; height: 1.5rem; border: 0 solid var(--ink); }
+.bracket:nth-of-type(1) { top: 0.75rem; left: 0.75rem;  border-top-width: 1px; border-left-width: 1px; }
+.bracket:nth-of-type(2) { top: 0.75rem; right: 0.75rem; border-top-width: 1px; border-right-width: 1px; }
+.bracket:nth-of-type(3) { bottom: 0.75rem; left: 0.75rem;  border-bottom-width: 1px; border-left-width: 1px; }
+.bracket:nth-of-type(4) { bottom: 0.75rem; right: 0.75rem; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* --- head ----------------------------------------------------------------- */
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem 3rem;
+  align-items: end;
+  padding-bottom: 2.25rem;
+}
+
+.wordmark {
+  margin: 0;
+  font-size: var(--t-display);
+  font-variation-settings: "wdth" 88, "wght" 700;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  max-width: 14ch;          /* a real name of 6–14 characters drops in */
+}
+.lede { margin: 1.1rem 0 0; max-width: 50ch; color: var(--ink); }
+
+/* Counts flush right: the block stops being decoration and becomes a standing
+   summary, so the same real estate carries two jobs. */
+.counts { margin: 0; display: grid; gap: 0.2rem; }
+.counts div { display: grid; grid-template-columns: 5rem auto; gap: 1.25rem; align-items: baseline; }
+.counts dt { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.14em; font-variation-settings: "wdth" 88; }
+.counts dd { margin: 0; text-align: right; font-variation-settings: "wdth" 88, "wght" 600; }
+.counts dd span { color: var(--quiet); font-variation-settings: "wght" 400; margin-left: 0.35rem; }
+
+/* --- monitoring strip ------------------------------------------------------ */
+
+.monitor {
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--hair);
+}
+.monitor__legend {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1rem;
+  margin-bottom: 0.7rem;
+}
+.monitor__legend h2 {
+  margin: 0;
+  font-size: var(--t);
+  font-variation-settings: "wdth" 88, "wght" 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+.strip {
+  position: relative;
+  margin: 0;
+  /* 21:9, full width — max-height would have capped the width and left the
+     strip narrower than the panels reading off it */
+  aspect-ratio: 21 / 9;
+  background: var(--well);
+  cursor: crosshair;
+  overflow: hidden;
+}
+.strip canvas { display: block; width: 100%; height: 100%; }
+
+/* The accent, first of exactly two appearances. It marks NOW. */
+.strip__cursor {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: 1px;
+  background: var(--now);
+  opacity: 0;
+  pointer-events: none;
+}
+.strip.is-held .strip__cursor { opacity: 1; }
+
+.strip__caption {
+  position: absolute; left: 0.75rem; bottom: 0.6rem; right: 0.75rem;
+  display: flex; gap: 1rem; align-items: baseline;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-variation-settings: "wdth" 88, "wght" 600;
+}
+.strip__hint { color: var(--quiet); font-variation-settings: "wght" 400; }
+.strip.is-held .strip__hint { visibility: hidden; }
+
+/* --- readout panels --------------------------------------------------------
+   Separated by one step of value with the ground showing between them, rather
+   than by borders or shadows. There is not a single rule between panels. */
+
+.panels {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+.panel { background: var(--panel); padding: 1rem 1.1rem 1.15rem; display: grid; align-content: start; gap: 0.5rem; }
+.panel--primary { gap: 0.35rem; }
+
+.panel__label {
+  margin: 0;
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-variation-settings: "wdth" 88, "wght" 500;
+}
+
+/* the value is framed as a reading, with its unit set outside the figure */
+.panel__figure { margin: 0; display: flex; align-items: baseline; gap: 0.4rem; }
+.panel__figure b {
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-variation-settings: "wdth" 88, "wght" 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.panel__figure--small b { font-size: 1.25rem; letter-spacing: 0; }
+.panel__figure span { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.14em; }
+
+/* Every panel ends on a plain-language reading of the number above it. A
+   figure alone asks the reader to know what good looks like. */
+.panel__qualifier { margin: 0; color: var(--quiet); }
+
+/* ring completion, not hue */
+.ring { position: relative; width: 4.5rem; }
+.ring svg { display: block; width: 100%; transform: rotate(-90deg); }
+.ring__track { fill: none; stroke: var(--hair); stroke-width: 6; }
+.ring__fill {
+  fill: none; stroke: var(--ink); stroke-width: 6;
+  stroke-dasharray: 263.9; stroke-dashoffset: 263.9;
+  transition: stroke-dashoffset 90ms linear;
+}
+.ring__read {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 0.15rem;
+  margin: 0;
+  font-size: 0.9375rem;
+  font-variation-settings: "wdth" 88, "wght" 600;
+}
+.ring__read span { color: var(--quiet); font-size: var(--t); font-variation-settings: "wght" 400; }
+
+/* a level built from countable blocks reads as a measurement */
+.meter { display: flex; gap: 2px; height: 1.5rem; }
+.meter i { flex: 1; background: var(--hair); }
+.meter i.is-lit { background: var(--ink); }
+
+/* --- sections --------------------------------------------------------------- */
+
+.section { padding-top: 2.75rem; }
+.section__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1rem;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--hair);
+  font-size: var(--t);
+  font-variation-settings: "wdth" 88, "wght" 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.row {
+  background: var(--panel);
+  padding: 1rem 1.1rem;
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: start;
+}
+.row--slim { grid-template-columns: 16rem minmax(0, 1fr); }
+.row__name {
+  margin: 0;
+  font-variation-settings: "wdth" 88, "wght" 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.row__note { margin: 0; max-width: 54ch; color: var(--ink); }
+.row__note.void { color: var(--quiet); }
+
+.row__values { margin: 0; display: grid; gap: 0.15rem; }
+.row__values div { display: grid; grid-template-columns: 5.5rem 7rem; gap: 1rem; }
+.row__values dt { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.14em; }
+.row__values dd { margin: 0; text-align: right; }
+.row__values--contact { margin-top: 1.5rem; }
+.row__values--contact div { grid-template-columns: 5.5rem minmax(0, 1fr); }
+.row__values--contact dd { text-align: left; }
+
+/* --- contact ---------------------------------------------------------------- */
+
+.contact { background: var(--panel); padding: 1.4rem 1.5rem 1.6rem; }
+.contact__line { margin: 0; max-width: 48ch; }
+
+.act {
+  display: inline-block;
+  margin-top: 1.25rem;
+  background: var(--ink);
+  color: var(--ground);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-variation-settings: "wdth" 88, "wght" 600;
+  padding: 0.75rem 1.4rem;
+  transition: background 130ms var(--ease);
+}
+.act:hover, .act:focus-visible { background: var(--now); }
+
+/* --- colophon --------------------------------------------------------------- */
+
+.colophon {
+  margin-top: 3rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--hair);
+  color: var(--quiet);
+}
+.colophon dl { margin: 0; display: grid; gap: 0.45rem; }
+.colophon div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.25rem; }
+.colophon dt { text-transform: uppercase; letter-spacing: 0.14em; }
+.colophon dd { margin: 0; max-width: 76ch; }
+.colophon em { font-style: normal; font-variation-settings: "wght" 700; }
+.colophon__note { margin: 1.5rem 0 0; }
+
+/* --- narrow — scope: does not break ----------------------------------------- */
+@media (max-width: 64rem) {
+  .panels { grid-template-columns: 1fr 1fr; }
+  .head { grid-template-columns: minmax(0, 1fr); }
+  .row, .row--slim { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
+  .row__values div { grid-template-columns: 5.5rem minmax(0, 1fr); }
+  .row__values dd { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}

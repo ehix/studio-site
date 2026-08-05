@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio site — direction index</title>
+<meta name="description" content="Index of the landing-page directions, each opened full-screen.">
+<style>
+:root{
+  --ink:#14151A;
+  --paper:#F1EFE8;
+  --dim:rgba(20,21,26,.52);
+  --rule:rgba(20,21,26,.16);
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --disp:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{color-scheme:light}
+body{background:var(--paper);color:var(--ink);font-family:var(--mono);
+  font-size:13px;line-height:1.6;padding:clamp(20px,5vw,72px);
+  max-width:1180px;margin:0 auto}
+
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,4.6vw,3rem);
+  letter-spacing:-.03em;line-height:1.02;text-transform:uppercase}
+.lede{margin-top:14px;max-width:78ch;color:var(--dim);font-size:12px;
+  letter-spacing:.04em;line-height:1.75}
+.lede b{color:var(--ink);font-weight:400}
+
+h2{font-family:var(--mono);font-size:10px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--dim);font-weight:400;
+  margin:clamp(38px,6vh,64px) 0 0;padding-bottom:9px;
+  border-bottom:1px solid var(--rule)}
+
+/* an index is a list that links out, never a wall of scaled iframes.
+   thumbnails reward whatever reads at 20%, which is the opposite of the aim.
+   the old grid is kept alongside as comparison-grid.html. */
+ul{list-style:none}
+li{border-bottom:1px solid var(--rule)}
+a.row{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.7fr) auto;
+  gap:8px 22px;align-items:baseline;padding:17px 4px;
+  color:inherit;text-decoration:none;
+  transition:background .16s,transform .16s}
+a.row:hover{background:rgba(20,21,26,.045);transform:translateX(8px)}
+@media(prefers-reduced-motion:reduce){a.row{transition:background .16s}
+  a.row:hover{transform:none}}
+.id{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.fam{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.tech{color:var(--dim);font-size:11px;letter-spacing:.03em;line-height:1.7}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:10px;
+  letter-spacing:.10em;color:var(--dim);white-space:nowrap}
+.sw i{width:11px;height:11px;display:block;border:1px solid rgba(0,0,0,.22)}
+
+.old a.row{opacity:.46}
+.old a.row:hover{opacity:.85}
+
+footer{margin-top:clamp(38px,6vh,64px);padding-top:18px;
+  border-top:1px solid var(--rule);color:var(--dim);font-size:11px;
+  letter-spacing:.04em;line-height:1.8}
+footer a{color:var(--dim)}
+@media(max-width:760px){
+  a.row{grid-template-columns:44px 1fr;gap:4px 14px}
+  .tech,.sw{grid-column:2}
+}
+</style>
+</head>
+<body>
+
+<h1>Studio site<br>direction index</h1>
+<p class="lede">
+  Each direction is one self-contained file: WebGL, no dependencies, no
+  generated imagery. Every surface is procedural, and every quality is taken
+  from a taste-library item as a <b>technique</b> rather than as a mood. Open
+  one full-screen and move the pointer; each carries a single interaction that
+  only makes sense for its own family. Wordmark and copy are
+  <b>placeholders</b> throughout, and empty slots are drawn as empty.
+</p>
+
+<h2>Current set · material implemented</h2>
+<ul>
+  <li><a class="row" href="v6/index.html">
+    <span class="id">v6</span>
+    <span class="fam">Pixel</span>
+    <span class="tech">Ordered dither on a 4×4 Bayer matrix through seven indexed colours. Cells are anchored in screen space so the field pops through them cell by cell instead of sliding. Edges left aliased.</span>
+    <span class="sw"><i style="background:#E06A1F"></i>#E06A1F</span>
+  </a></li>
+  <li><a class="row" href="v7/index.html">
+    <span class="id">v7</span>
+    <span class="fam">Screened field</span>
+    <span class="tech">Orthogonal dot screen, never rotated to a rosette. Dot diameter tracks luminance alone; the chromatic fringe lives only in the falloff. The screen is placed, not applied edge to edge.</span>
+    <span class="sw"><i style="background:#B5502A"></i>#B5502A</span>
+  </a></li>
+  <li><a class="row" href="v8/index.html">
+    <span class="id">v8</span>
+    <span class="fam">Instrument</span>
+    <span class="tech">Bone-plastic fascia in unequal panels meeting at hard seams. Chamfered rather than radiused, visible fasteners, a clear shell over a forest chassis. The selector detents; it never eases.</span>
+    <span class="sw"><i style="background:#E2600F"></i>#E2600F</span>
+  </a></li>
+  <li><a class="row" href="v9/index.html">
+    <span class="id">v9</span>
+    <span class="fam">Notation</span>
+    <span class="tech">Two inks: near-black draws what exists, red asserts something about it. An isometric cube plots itself edge by edge over a registration lattice. Emptiness is the dominant surface.</span>
+    <span class="sw"><i style="background:#C8322A"></i>#C8322A</span>
+  </a></li>
+  <li><a class="row" href="v10/index.html">
+    <span class="id">v10</span>
+    <span class="fam">Substrate</span>
+    <span class="tech">Even illumination, no vignette anywhere. Fibre at two scales, flecks, foxing toward the margins, and a lime skin fallen away to rust render that stains outward across the break.</span>
+    <span class="sw"><i style="background:#A85D3C"></i>#A85D3C</span>
+  </a></li>
+</ul>
+
+<h2>Superseded</h2>
+<ul class="old">
+  <li><a class="row" href="v3b/index.html">
+    <span class="id">v3b</span>
+    <span class="fam">Screened field</span>
+    <span class="tech">The proof that live material carries atmosphere without generated imagery. Folded into v7.</span>
+    <span class="sw"><i style="background:#B5502A"></i>#B5502A</span>
+  </a></li>
+  <li><a class="row" href="v1/index.html">
+    <span class="id">v1</span><span class="fam">First pass</span>
+    <span class="tech">No filters, blend modes, noise, masks or keyframes in the whole file.</span><span class="sw"></span>
+  </a></li>
+  <li><a class="row" href="v2/index.html">
+    <span class="id">v2</span><span class="fam">First pass</span>
+    <span class="tech">No filters, blend modes, noise, masks or keyframes in the whole file.</span><span class="sw"></span>
+  </a></li>
+  <li><a class="row" href="v3/index.html">
+    <span class="id">v3</span><span class="fam">First pass</span>
+    <span class="tech">Superseded by v3b, then by v7.</span><span class="sw"></span>
+  </a></li>
+  <li><a class="row" href="v4/index.html">
+    <span class="id">v4</span><span class="fam">First pass</span>
+    <span class="tech">Superseded.</span><span class="sw"></span>
+  </a></li>
+  <li><a class="row" href="v5/index.html">
+    <span class="id">v5</span><span class="fam">First pass</span>
+    <span class="tech">Superseded.</span><span class="sw"></span>
+  </a></li>
+</ul>
+
+<footer>
+  Placeholder slots present in every direction: wordmark, positioning line,
+  services. Still pending real values — services list, projects beyond
+  Malmesbury Abbey, Abbey figures, coordinates, studio start date, contact
+  address.<br>
+  Repo at a94bcca on main · astro 7.0.6 · Cloudflare Pages · 6 routes ·
+  1 case study. The old thumbnail grid is kept at
+  <a href="comparison-grid.html">comparison-grid.html</a>.
+</footer>
+
+</body>
+</html>

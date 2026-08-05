@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v4 — Instrument UI · STUDIO —</title>
+<meta name="description" content="Direction 4 of 5. The landing page as a live readout.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Four short rules at the corners imply a frame without drawing one: an
+     edge to align against, leaving the ground whole. -->
+<div class="viewport">
+  <i class="bracket" aria-hidden="true"></i>
+  <i class="bracket" aria-hidden="true"></i>
+  <i class="bracket" aria-hidden="true"></i>
+  <i class="bracket" aria-hidden="true"></i>
+
+  <!-- ══ HEAD ═════════════════════════════════════════════════════════════ -->
+  <header class="head">
+    <div>
+      <h1 class="wordmark">STUDIO&nbsp;—</h1>
+      <p class="lede">
+        A small team's unfair advantage. Design, engineering and data on one
+        set of hands, so nothing is handed over and nothing is lost.
+      </p>
+    </div>
+
+    <!-- counted rows: the same real estate carries navigation and a standing
+         summary of where the work is -->
+    <dl class="counts">
+      <div><dt>Sheet</dt><dd>1<span>/5</span></dd></div>
+      <div><dt>Corpus</dt><dd>102<span>items</span></dd></div>
+      <div><dt>Adopt</dt><dd>87<span>/102</span></dd></div>
+      <div><dt>Build</dt><dd>a94bcca</dd></div>
+    </dl>
+  </header>
+
+  <!-- ══ MONITORING STRIP ═════════════════════════════════════════════════
+       Hero: wide strip across the top third at 21:9. Time on one axis, level
+       on the other. It traces the page's own frame time, which is a real
+       measurement of a real thing — this page, rendering, on this machine. -->
+  <section class="monitor" aria-labelledby="s-monitor">
+    <div class="monitor__legend">
+      <h2 id="s-monitor">Frame time</h2>
+      <p class="unit">ms per frame &middot; 240 sample buffer</p>
+    </div>
+
+    <figure class="strip" id="strip" tabindex="0"
+            aria-label="Frame time trace. Move across it to hold and read a sample.">
+      <canvas id="trace" width="2100" height="900"></canvas>
+      <div class="strip__cursor" id="cursor" aria-hidden="true"></div>
+      <figcaption class="strip__caption">
+        <span id="mode">Live</span>
+        <span class="strip__hint">Move across the trace to hold a sample</span>
+      </figcaption>
+    </figure>
+
+    <!-- readout panels flanking below -->
+    <div class="panels">
+
+      <!-- the primary metric is given twice the area of any other, so the
+           hierarchy is stated in geometry before any styling is applied -->
+      <div class="panel panel--primary">
+        <p class="panel__label">Current frame</p>
+        <p class="panel__figure"><b id="ms">0.00</b><span>ms</span></p>
+        <p class="panel__qualifier" id="verdict">Measuring</p>
+      </div>
+
+      <div class="panel">
+        <p class="panel__label">Budget used</p>
+        <div class="ring" id="ring" role="img" aria-labelledby="ring-read">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="ring__track" cx="50" cy="50" r="42"/>
+            <circle class="ring__fill" id="ring-fill" cx="50" cy="50" r="42"/>
+          </svg>
+          <p class="ring__read" id="ring-read">0<span>%</span></p>
+        </div>
+        <p class="panel__qualifier">of 16.67 ms</p>
+      </div>
+
+      <div class="panel">
+        <p class="panel__label">Rate</p>
+        <!-- a level built from countable blocks reads as a measurement; a
+             smooth bar reads as a proportion -->
+        <div class="meter" id="meter" role="img" aria-labelledby="fps-read"></div>
+        <p class="panel__figure panel__figure--small"><b id="fps">00</b><span>fps</span></p>
+        <p class="panel__qualifier" id="fps-read">Frames per second, rolling</p>
+      </div>
+
+      <div class="panel">
+        <p class="panel__label">Sample taken</p>
+        <p class="panel__figure panel__figure--small"><b id="stamp">--:--:--.---</b></p>
+        <p class="panel__qualifier">Local time, to the millisecond</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WORK ═════════════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="s-work">
+    <h2 id="s-work" class="section__head">Selected work <span class="unit">3 rows</span></h2>
+
+    <ol class="rows">
+      <li class="row">
+        <p class="row__name">Malmesbury Abbey</p>
+        <p class="row__note void">&mdash;&mdash;&mdash;</p>
+        <dl class="row__values">
+          <div><dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd></div>
+        </dl>
+      </li>
+
+      <li class="row">
+        <p class="row__name void">CLIENT A</p>
+        <p class="row__note void">&mdash;&mdash;&mdash;</p>
+        <dl class="row__values">
+          <div><dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd></div>
+        </dl>
+      </li>
+
+      <li class="row">
+        <p class="row__name void">CLIENT B</p>
+        <p class="row__note void">&mdash;&mdash;&mdash;</p>
+        <dl class="row__values">
+          <div><dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd></div>
+          <div><dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd></div>
+        </dl>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ══ CAPABILITY ═══════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="s-cap">
+    <h2 id="s-cap" class="section__head">What I do <span class="unit">3 rows</span></h2>
+    <ol class="rows rows--tight">
+      <li class="row row--slim"><p class="row__name void">SERVICE A</p><p class="row__note void">&mdash;&mdash;&mdash;</p></li>
+      <li class="row row--slim"><p class="row__name void">SERVICE B</p><p class="row__note void">&mdash;&mdash;&mdash;</p></li>
+      <li class="row row--slim"><p class="row__name void">SERVICE C</p><p class="row__note void">&mdash;&mdash;&mdash;</p></li>
+    </ol>
+  </section>
+
+  <!-- ══ CONTACT ══════════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="s-contact">
+    <h2 id="s-contact" class="section__head">Contact</h2>
+    <div class="contact">
+      <p class="contact__line">
+        Tell me what you are trying to build. I will tell you whether I am the
+        right person to build it.
+      </p>
+      <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+      <dl class="row__values row__values--contact">
+        <div><dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd></div>
+        <div><dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd></div>
+        <div><dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ══ COLOPHON ═════════════════════════════════════════════════════════ -->
+  <footer class="colophon">
+    <dl>
+      <div><dt>State</dt><dd>Carried by fill length and ring completion, never by hue. The accent appears twice and both times it means <em>now</em>.</dd></div>
+      <div><dt>Ground</dt><dd>Pale sage #D7DACB. Light, because darkness here would only buy mood, and a readout has no use for mood.</dd></div>
+      <div><dt>Type</dt><dd>Martian Mono variable, wdth 75&ndash;112.5 / wght 100&ndash;800 &mdash; SIL OFL 1.1. Figures tabular so a changing value cannot shift the layout around it.</dd></div>
+      <div><dt>Measured</dt><dd>Ink on ground 10.93:1 &middot; ink on panel 12.18:1 &middot; label 4.98:1 &middot; accent 2.68:1, so the accent never carries text</dd></div>
+      <div><dt>Drawn from</dt><dd>instrument-ui (7 items) &mdash; taste library ce649c6</dd></div>
+    </dl>
+    <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

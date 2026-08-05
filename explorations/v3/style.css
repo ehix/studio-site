@@ -1,0 +1,334 @@
+/* ===========================================================================
+   v3 — SCREENED FIELD
+   The page as processed image.
+   Families: screened-field (9) · reproduction (3) · pixel (2)
+
+   The governing item is the stitched cloud, and what is singular about it is
+   narrower than it first looks. Every other capture in the family runs its
+   screen edge to edge; that one screens the SUBJECT and leaves the ground
+   flat. The screen is placed rather than applied — a compositional decision,
+   not a filter — and that is exactly what stops the texture becoming
+   wallpaper.
+
+   So: the screen occupies the masthead field, runs edge to edge inside it,
+   and stops dead at its lower boundary. Nothing below carries a screen. The
+   boundary is labelled, because it is the argument.
+
+   Mechanism named, per the family's third principle: round dot, orthogonal
+   grid, constant pitch, never rotated. A screen turned to 45° reads as a
+   press rosette and disappears at distance; left square to the frame it stays
+   a display and keeps announcing itself. Squareness is the claim.
+
+   The screen modulates, it does not quantise — the field underneath stays
+   continuous and full colour survives between the dots. The moment it
+   quantises into countable marks it is reproduction instead.
+   =========================================================================== */
+
+@font-face {
+  font-family: "Bricolage";
+  src: url("fonts/bricolage-var.woff2") format("woff2-variations");
+  font-weight: 400 800;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+@font-face { font-family: "Space Mono"; src: url("fonts/space-mono-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Space Mono"; src: url("fonts/space-mono-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+:root {
+  --ground:   #2c3b4d;  /* Blue Fantastic — flat, unscreened, everywhere below */
+  --ground-2: #24313f;  /* the sample well                                     */
+  --cream:    #eee9df;  /* Palladian                       9.43:1 on ground    */
+  --margin:   #9fb0c2;  /* marginalia                      5.14:1 on ground    */
+  --ember:    #b5502a;  /* accent — 2.25:1 on ground, so graphic use only      */
+  --ochre:    #c98a3f;
+  --steel:    #4d7794;
+  --ink:      #1a2430;  /* on cream                       12.96:1              */
+
+  /* the screen, driven live by the pitch control */
+  --pitch: 9px;
+  --dot:   5.4px;
+
+  --t:         0.75rem;
+  --t-display: clamp(3rem, 10.5vw, 10rem);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --pad: clamp(1.25rem, 5vw, 4.5rem);
+  --measure: 62rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--cream);
+  font-family: "Space Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: var(--t);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.void { color: var(--margin); }
+a { color: inherit; text-underline-offset: 0.25em; }
+:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+
+/* ══ THE FIELD ═════════════════════════════════════════════════════════════ */
+
+.field {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: var(--pad);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.field__image { position: absolute; inset: 0; z-index: -1; }
+
+/* The image underneath stays continuous. Full colour is the point — the
+   screen modulates hue, it does not reduce it.
+   The field is composed around the type rather than behind it: the masthead
+   sits down the left, so the dark mass is weighted there and every bright
+   event is pushed right. The subject's own tonal range is the legibility
+   surface, which is cheaper and more honest than laying a scrim over it. */
+.field__continuous {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(46% 52% at 82% 18%, #e0913f 0%, rgba(224,145,63,0) 70%),
+    radial-gradient(42% 48% at 96% 46%, #b5502a 0%, rgba(181,80,42,0) 68%),
+    radial-gradient(50% 46% at 70% 92%, #2f7a92 0%, rgba(47,122,146,0) 72%),
+    radial-gradient(58% 44% at 88% 68%, #e6d9c0 0%, rgba(230,217,192,0) 62%),
+    radial-gradient(44% 40% at 30% 96%, #5c3f5e 0%, rgba(92,63,94,0) 74%),
+    radial-gradient(70% 80% at 6% 44%,  #16202c 0%, rgba(22,32,44,0) 76%),
+    linear-gradient(104deg, #1a2632 0%, #223447 46%, #3d3630 100%);
+}
+
+/* The screen itself. Dots are drawn in the ground colour, so what survives
+   between them is the continuous field — the mark subtracts, the image is
+   never rebuilt out of marks. */
+.field__screen {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 50% 50%,
+      var(--ground) 0 calc(var(--dot) / 2),
+      transparent calc(var(--dot) / 2) 100%);
+  background-size: var(--pitch) var(--pitch);
+  background-position: 0 0;   /* orthogonal. never rotated. */
+  /* Shadow-weighted, from the reeded-glass capture: the texture is not applied
+     evenly, it accumulates where the image behind it is dark. */
+  -webkit-mask-image: radial-gradient(70% 60% at 86% 34%, rgba(0,0,0,0.4) 0%, #000 70%);
+          mask-image: radial-gradient(70% 60% at 86% 34%, rgba(0,0,0,0.4) 0%, #000 70%);
+}
+
+/* --- type over the field --------------------------------------------------
+   Flat on top at full resolution, no blending, no shadow. The split between
+   a quantised ground and an unquantised interface is what keeps it usable. */
+
+.field__type { align-self: center; max-width: var(--measure); }
+
+.tag {
+  display: flex; flex-wrap: wrap; gap: 0 1.5rem;
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--cream);
+}
+
+.wordmark {
+  font-family: "Bricolage", system-ui, sans-serif;
+  font-variation-settings: "opsz" 96, "wdth" 92, "wght" 800;
+  font-size: var(--t-display);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 14ch;          /* a real name of 6–14 characters drops in */
+  color: var(--cream);
+}
+
+.lede {
+  margin: 1.75rem 0 0;
+  max-width: 46ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--cream);
+}
+
+/* --- the control ---------------------------------------------------------- */
+
+.pitch {
+  align-self: end;
+  display: grid;
+  grid-template-columns: auto minmax(9rem, 18rem) auto;
+  align-items: center;
+  gap: 0 1rem;
+  padding-bottom: 2.25rem;
+}
+.pitch label {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--cream);
+}
+
+.pitch input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 2rem;
+  background: none;
+  cursor: ew-resize;
+}
+.pitch input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px; background: var(--cream);
+}
+.pitch input[type="range"]::-moz-range-track {
+  height: 2px; background: var(--cream);
+}
+.pitch input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 22px;
+  margin-top: -10px;
+  border: 0; border-radius: 0;
+  background: var(--ochre);
+}
+.pitch input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 22px;
+  border: 0; border-radius: 0;
+  background: var(--ochre);
+}
+
+.pitch__read { margin: 0; display: flex; align-items: baseline; gap: 0.35rem; }
+.pitch__read b {
+  font-family: "Bricolage", sans-serif;
+  font-variation-settings: "opsz" 40, "wdth" 90, "wght" 700;
+  font-size: 2rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream);
+}
+.pitch__read > span { text-transform: uppercase; letter-spacing: 0.16em; color: var(--cream); }
+.pitch__mech { margin-left: 0.9rem; color: var(--cream); }
+
+/* The boundary is the whole argument, so it is drawn and named rather than
+   left to be noticed. */
+.boundary {
+  position: absolute;
+  left: var(--pad); right: var(--pad); bottom: 0;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ember);
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--cream);
+}
+
+/* ══ FLAT GROUND ═══════════════════════════════════════════════════════════
+   No screen anywhere below this line. That absence is the point. */
+
+.ground { padding: 0 var(--pad) 4rem; }
+.section { max-width: var(--measure); margin: 0 auto; padding-top: 4.5rem; }
+
+.rule {
+  margin: 0 0 1.75rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--margin);
+  font-family: "Space Mono", monospace;
+  font-size: var(--t);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--margin);
+}
+
+.work { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.5rem; }
+.item {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+/* A screened sample, kept small and captioned — evidence of the mechanism,
+   not a second field. The screen belongs to the masthead. */
+.item__sample {
+  aspect-ratio: 1 / 1;
+  background-image:
+    radial-gradient(circle at 50% 50%,
+      var(--ground) 0 calc(var(--dot) / 2),
+      transparent calc(var(--dot) / 2) 100%),
+    linear-gradient(150deg, var(--ochre) 0%, var(--ember) 55%, var(--steel) 100%);
+  background-size: var(--pitch) var(--pitch), cover;
+}
+
+.item__body h3 {
+  margin: 0;
+  font-family: "Bricolage", sans-serif;
+  font-variation-settings: "opsz" 24, "wdth" 92, "wght" 700;
+  font-size: 1.375rem;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--cream);
+}
+.item__body > p { margin: 0.5rem 0 0; max-width: 52ch; }
+
+.spec {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 0.1rem 1rem;
+}
+.spec dt { color: var(--margin); text-transform: uppercase; letter-spacing: 0.16em; }
+.spec dd { margin: 0; }
+.spec--contact { margin-top: 1.75rem; }
+
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.caps li {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(159,176,194,0.28);
+  font-family: "Bricolage", sans-serif;
+  font-variation-settings: "opsz" 24, "wdth" 92, "wght" 700;
+  font-size: 1.375rem;
+  letter-spacing: -0.005em;
+}
+.caps li:first-child { border-top: 1px solid rgba(159,176,194,0.28); }
+
+.contact__line { margin: 0; max-width: 46ch; font-size: 0.9375rem; }
+
+.act {
+  display: inline-block;
+  margin-top: 1.5rem;
+  background: var(--ember);
+  color: var(--cream);
+  text-decoration: none;
+  font-family: "Bricolage", sans-serif;
+  font-variation-settings: "opsz" 24, "wdth" 92, "wght" 700;
+  font-size: 1.25rem;                /* large text, so 4.19:1 clears AA */
+  padding: 0.7rem 1.5rem;
+  transition: background 140ms var(--ease);
+}
+.act:hover, .act:focus-visible { background: #c95c33; }
+
+.colophon {
+  max-width: var(--measure);
+  margin: 5rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(159,176,194,0.28);
+  color: var(--margin);
+}
+.colophon dl { margin: 0; display: grid; gap: 0.5rem; }
+.colophon div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1rem; }
+.colophon dt { text-transform: uppercase; letter-spacing: 0.16em; }
+.colophon dd { margin: 0; max-width: 62ch; }
+.colophon__note { margin: 1.75rem 0 0; }
+
+/* --- narrow — scope: does not break --------------------------------------- */
+@media (max-width: 46rem) {
+  .item { grid-template-columns: minmax(0, 1fr); }
+  .item__sample { width: 8.5rem; }
+  .pitch { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+  .pitch__mech { display: block; margin: 0; }
+  .boundary { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}

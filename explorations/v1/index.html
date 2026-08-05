@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en-GB" data-assert="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v1 — Notation · STUDIO —</title>
+<meta name="description" content="Direction 1 of 5. The landing page as a technical drawing sheet.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- ══ DRAWING FIELD ══════════════════════════════════════════════════ -->
+  <main class="field">
+
+    <!-- registration lattice covers the field; exactly one cross is coloured,
+         and it marks the reading position the way a cursor would -->
+    <div class="marked-cross assert" aria-hidden="true"></div>
+
+    <!-- depth scale, full height of the field, read against the datum -->
+    <div class="depth" aria-hidden="true">
+      <div class="depth__marker assert"><span class="depth__read">+0000</span></div>
+    </div>
+
+    <div class="drawn">
+
+      <header class="masthead">
+        <p class="eyebrow">
+          <span>SHEET 1 OF 5</span>
+          <span>DRAWING FIELD</span>
+          <span class="assert">ISSUED 2026-08-04</span>
+        </p>
+
+        <h1 class="wordmark">STUDIO&nbsp;—</h1>
+
+        <p class="lede">
+          A small team's unfair advantage. One hand draws the design, the
+          engineering and the data, so nothing is lost in the gaps between them.
+        </p>
+
+        <p class="eyebrow eyebrow--split">
+          <span>DESIGN</span><span>ENGINEERING</span><span>DATA</span>
+          <span class="assert">SCALE 1:1 AT 100&percnt;</span>
+        </p>
+      </header>
+
+      <!-- one rule establishes zero; everything below is read as a signed
+           distance from it rather than as a position in the frame -->
+      <hr class="datum">
+
+      <!-- ══ PLATE — hero slot, 3:2 landscape, left of the title band ═══ -->
+      <figure class="plate-wrap">
+        <div class="plate">
+          <i></i><i></i><i></i><i></i>
+          <span>PLATE 1 · IMAGE RESERVED</span>
+        </div>
+        <!-- a dimension is an assertion about the plate, so it is red -->
+        <figcaption class="dimension assert">
+          <b></b><i></i><span>1100 &times; 733 &mdash; 3:2</span>
+        </figcaption>
+      </figure>
+
+      <!-- ══ WORK ══════════════════════════════════════════════════════ -->
+      <section class="section" aria-labelledby="s-work">
+        <h2 id="s-work">Selected work</h2>
+
+        <article class="callout">
+          <p class="callout__index">01</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3>Malmesbury Abbey</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            <dl class="spec">
+              <dt>Role</dt>       <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt>  <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt>    <dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="callout">
+          <p class="callout__index">02</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3 class="void">CLIENT A</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            <dl class="spec">
+              <dt>Role</dt>       <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt>  <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt>    <dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="callout">
+          <p class="callout__index">03</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3 class="void">CLIENT B</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            <dl class="spec">
+              <dt>Role</dt>       <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt>  <dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt>    <dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+      </section>
+
+      <!-- ══ CAPABILITY ════════════════════════════════════════════════ -->
+      <section class="section" aria-labelledby="s-cap">
+        <h2 id="s-cap">What I do</h2>
+
+        <article class="callout">
+          <p class="callout__index">04</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3 class="void">SERVICE A</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+          </div>
+        </article>
+
+        <article class="callout">
+          <p class="callout__index">05</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3 class="void">SERVICE B</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+          </div>
+        </article>
+
+        <article class="callout">
+          <p class="callout__index">06</p>
+          <div class="callout__leader assert" aria-hidden="true"></div>
+          <div class="callout__body">
+            <h3 class="void">SERVICE C</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ══ CONTACT ═══════════════════════════════════════════════════ -->
+      <section class="section section--contact" aria-labelledby="s-contact">
+        <h2 id="s-contact">Contact</h2>
+        <div class="contact">
+          <p class="contact__line">
+            Tell me what you are trying to build. I will tell you whether I am
+            the right person to draw it.
+          </p>
+          <p class="contact__act">
+            <a class="act" href="mailto:hello@studio.example">Start a project</a>
+          </p>
+          <dl class="spec spec--wide">
+            <dt>Email</dt>    <dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+            <dt>Based</dt>    <dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+            <dt>Source</dt>   <dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+          </dl>
+        </div>
+
+        <!-- provenance and measurement are different kinds of claim; the stamp
+             sits outside the measured field, like an accession note -->
+        <p class="stamp assert">Issued for review &middot; not for construction</p>
+      </section>
+
+      <!-- ══ COLOPHON ══════════════════════════════════════════════════ -->
+      <footer class="colophon">
+        <dl>
+          <div><dt>Type</dt><dd>Archivo variable, wdth&nbsp;62&ndash;125 / wght&nbsp;100&ndash;900 &mdash; SIL OFL 1.1</dd></div>
+          <div><dt>Inks</dt><dd>Ink #1A1A18 &middot; assert #A35139 (Truffle Trouble) &middot; stock #FAF8F3</dd></div>
+          <div><dt>Measured</dt><dd>Ink on stock 16.42:1 &middot; assert on stock 5.22:1 &middot; label on stock 6.60:1</dd></div>
+          <div><dt>Drawn from</dt><dd>Taste library ce649c6 &mdash; 102 items, 12 families, 87 adopt / 13 borrow-structure / 2 reject</dd></div>
+          <div><dt>Source</dt><dd>studio-site a94bcca, 2026-07-06</dd></div>
+          <div><dt>Sheet count</dt><dd>src/pages &mdash; index, 404, colophon, contact/, work/</dd></div>
+        </dl>
+        <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+      </footer>
+
+    </div><!-- /.drawn -->
+  </main>
+
+  <!-- ══ TITLE BAND ═════════════════════════════════════════════════════
+       everything administrative in a full-height strip at one edge, so the
+       drawing field never has to accommodate it -->
+  <aside class="band">
+    <p class="band__name">STUDIO&nbsp;—</p>
+
+    <dl class="band__block">
+      <dt>Direction</dt><dd>V1 &mdash; NOTATION</dd>
+      <dt>Drawn from</dt><dd>notation (9)<br>design-system (3)</dd>
+      <dt>Scale</dt><dd>1:1</dd>
+      <dt>Medium</dt><dd>Screen, 1&nbsp;px&nbsp;=&nbsp;1&nbsp;unit</dd>
+      <dt>Projection</dt><dd>Orthographic</dd>
+    </dl>
+
+    <div class="rev">
+      <table>
+        <caption class="vh">Revisions</caption>
+        <thead><tr><th scope="col">Rev</th><th scope="col">Date</th><th scope="col">Note</th></tr></thead>
+        <tbody>
+          <tr><td class="assert">A</td><td>2026&#8209;08&#8209;04</td><td>Issued for review</td></tr>
+          <tr><td class="assert">&ndash;</td><td class="void">&mdash;&mdash;&mdash;</td><td class="void">&mdash;&mdash;&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="band__north" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="40" height="40">
+        <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="0.75"/>
+        <path d="M20 4 L24 20 L20 16 L16 20 Z" fill="currentColor"/>
+        <path d="M20 4 v32 M4 20 h32" stroke="currentColor" stroke-width="0.5" opacity="0.35"/>
+      </svg>
+      <span>N</span>
+    </div>
+
+    <p class="band__number">
+      <b>1</b>
+      <span>Sheet 1 of 5</span>
+    </p>
+  </aside>
+
+</div>
+
+<!-- ══ THE ONE INTERACTION ═══════════════════════════════════════════════
+     Two inks: ink draws, assert only says something about what is drawn.
+     Switching the assert layer off leaves a complete drawing behind, which
+     makes the claim checkable rather than asserted. -->
+<div class="controls">
+  <button type="button" id="assert-toggle" aria-pressed="true">
+    <span class="controls__dot assert" aria-hidden="true"></span>
+    Assert layer
+    <b id="assert-state">ON</b>
+  </button>
+  <span class="controls__hint">Ink draws &middot; assert measures</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

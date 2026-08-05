@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v3 — Screened Field · STUDIO —</title>
+<meta name="description" content="Direction 3 of 5. The landing page as a processed image.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══ THE SCREENED FIELD ═══════════════════════════════════════════════════
+     Full-bleed, full viewport height, type overlaid. The screen runs edge to
+     edge inside this region and stops dead at its lower boundary. Everything
+     below is flat ground with no screen on it anywhere — the screen is placed,
+     not applied. -->
+<header class="field" id="field">
+
+  <div class="field__image" aria-hidden="true">
+    <div class="field__continuous"></div>
+    <div class="field__screen"></div>
+  </div>
+
+  <!-- type sits flat on top at full resolution, with no blending -->
+  <div class="field__type">
+    <p class="tag">
+      <span>Screened field</span>
+      <span>Direction 3 of 5</span>
+      <span>Sheet 1 of 5</span>
+      <span>2026-08-04</span>
+    </p>
+
+    <h1 class="wordmark">STUDIO&nbsp;—</h1>
+
+    <p class="lede">
+      A small team's unfair advantage. Design, engineering and data held by one
+      hand, so the thing you get back is one thing.
+    </p>
+  </div>
+
+  <!-- ══ THE CONTROL ════════════════════════════════════════════════════════
+       Pitch is the variable that decides what a screen is. Fine, and it reads
+       as a continuous surface. Coarse, and it reads as a device you notice.
+       The control moves that boundary live, and reports the true value. -->
+  <div class="pitch">
+    <label for="pitch-input">Screen pitch</label>
+    <input type="range" id="pitch-input" min="3" max="34" step="1" value="9"
+           aria-describedby="pitch-read">
+    <p class="pitch__read" id="pitch-read">
+      <b id="pitch-value">9</b><span>px</span>
+      <span class="pitch__mech">Round dot &middot; orthogonal &middot; 0&deg;</span>
+    </p>
+  </div>
+
+  <!-- the boundary is the argument, so it is labelled -->
+  <p class="boundary">Screen ends here &middot; ground below is flat</p>
+</header>
+
+<!-- ══ FLAT GROUND ══════════════════════════════════════════════════════════ -->
+<main class="ground">
+
+  <section class="section" aria-labelledby="s-work">
+    <h2 id="s-work" class="rule">Selected work</h2>
+
+    <ol class="work">
+      <li class="item">
+        <div class="item__sample" aria-hidden="true"></div>
+        <div class="item__body">
+          <h3>Malmesbury Abbey</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </div>
+      </li>
+
+      <li class="item">
+        <div class="item__sample" aria-hidden="true"></div>
+        <div class="item__body">
+          <h3 class="void">CLIENT A</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </div>
+      </li>
+
+      <li class="item">
+        <div class="item__sample" aria-hidden="true"></div>
+        <div class="item__body">
+          <h3 class="void">CLIENT B</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section" aria-labelledby="s-cap">
+    <h2 id="s-cap" class="rule">What I do</h2>
+    <ul class="caps">
+      <li class="void">SERVICE A</li>
+      <li class="void">SERVICE B</li>
+      <li class="void">SERVICE C</li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="s-contact">
+    <h2 id="s-contact" class="rule">Contact</h2>
+    <div class="contact">
+      <p class="contact__line">
+        Tell me what you are trying to build. I will tell you whether I am the
+        right person to build it.
+      </p>
+      <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+      <dl class="spec spec--contact">
+        <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+        <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+        <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <dl>
+      <div><dt>Mechanism</dt><dd>Round dot, orthogonal grid, constant pitch, never rotated. A screen turned to 45&deg; reads as print; left square it stays a display.</dd></div>
+      <div><dt>Placement</dt><dd>Screen occupies the masthead field only. Ground below carries none.</dd></div>
+      <div><dt>Type</dt><dd>Bricolage Grotesque variable (opsz 12&ndash;96, wdth 75&ndash;100, wght 400&ndash;800) and Space Mono 400/700 &mdash; both SIL OFL 1.1</dd></div>
+      <div><dt>Ground</dt><dd>#2C3B4D Blue Fantastic &middot; #EEE9DF Palladian &middot; accent #B5502A</dd></div>
+      <div><dt>Measured</dt><dd>Palladian on ground 9.43:1 &middot; marginalia 5.14:1 &middot; accent on ground 2.25:1, so the accent never carries small text</dd></div>
+      <div><dt>Drawn from</dt><dd>screened-field (9), reproduction (3), pixel (2) &mdash; taste library ce649c6</dd></div>
+    </dl>
+    <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

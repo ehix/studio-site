@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v2 — Instrument · STUDIO —</title>
+<meta name="description" content="Direction 2 of 5. The landing page as a hard-surface industrial object.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- The whole page is one housing. Content sits in horizontal subsystem bands,
+     each band a complete function, divided by moulded seams rather than rules. -->
+<div class="housing">
+
+  <!-- ══ BAND A · IDENTITY ═══════════════════════════════════════════════ -->
+  <section class="band band--identity">
+    <p class="legend legend--band">A &middot; Identity</p>
+
+    <div class="band__inner identity">
+      <!-- brand block in three descending weights, the way a fascia carries a
+           maker, a model and a name -->
+      <div class="brand">
+        <h1 class="brand__maker">STUDIO&nbsp;—</h1>
+        <p class="brand__model">V2</p>
+        <p class="brand__name">instrument</p>
+      </div>
+
+      <dl class="plate-spec">
+        <dt>Housing</dt><dd>Forest green, bone plate</dd>
+        <dt>Fixings</dt><dd>Visible, 4 &times; M2</dd>
+        <dt>Finish</dt><dd>Matte, chamfered</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ══ BAND B · SUBJECT ════════════════════════════════════════════════
+       Hero: full-bleed object shot, centred, roughly square, on a flat
+       two-value split ground. The object sits across the division so it is
+       read against both fields at once. -->
+  <section class="band band--subject">
+    <h2 class="legend legend--band">B &middot; Subject</h2>
+
+    <div class="split">
+      <figure class="object">
+        <div class="object__plate">
+          <span class="screw" aria-hidden="true"></span>
+          <span class="screw" aria-hidden="true"></span>
+          <span class="screw" aria-hidden="true"></span>
+          <span class="screw" aria-hidden="true"></span>
+          <span class="object__label">Object reserved &middot; 1:1</span>
+        </div>
+        <figcaption class="legend">Elevation, square, lit flat</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ══ BAND C · READOUT ════════════════════════════════════════════════
+       Displays and controls do not interleave: the two recessed screens sit
+       to one side and the control that drives them to the other. Every label
+       sits outside its control, on the housing, never on the control face. -->
+  <section class="band band--readout">
+    <h2 class="legend legend--band">C &middot; Readout</h2>
+
+    <div class="band__inner readout">
+
+      <div class="screens">
+        <!-- narrow screen carries the statement, wide screen the explanation -->
+        <div class="screen screen--narrow">
+          <p class="screen__key legend">Statement</p>
+          <p class="screen__lit" id="lit">SOURCE</p>
+        </div>
+
+        <div class="screen screen--wide">
+          <p class="screen__key legend">Explanation</p>
+          <dl class="screen__rows" id="rows" aria-live="polite">
+            <dt>Build</dt><dd>studio-site a94bcca</dd>
+            <dt>Dated</dt><dd>2026-07-06</dd>
+            <dt>Stack</dt><dd>astro 7.0.6 &middot; tailwind 4.3.2 &middot; three 0.185.1</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- The one control. Knurled, so the form states the gesture; detented,
+           so the hand feels the positions; labelled on the housing beneath. -->
+      <div class="control">
+        <div class="dial">
+          <button type="button" class="knob" id="knob"
+                  aria-label="Mode selector, four detents. Currently: source."
+                  aria-describedby="knob-legend">
+            <span class="knob__index" aria-hidden="true"></span>
+          </button>
+          <ol class="detents" aria-hidden="true">
+            <li class="is-set"></li><li></li><li></li><li></li>
+          </ol>
+        </div>
+        <p class="legend" id="knob-legend">Mode &middot; 4 detent</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ BAND D · WORK ═══════════════════════════════════════════════════ -->
+  <section class="band band--work">
+    <h2 class="legend legend--band">D &middot; Selected work</h2>
+
+    <div class="band__inner">
+
+      <div class="entries">
+        <article class="entry">
+          <p class="legend">Entry 1</p>
+          <div class="entry__panel">
+            <div class="entry__text">
+            <h3>Malmesbury Abbey</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            </div>
+            <dl class="spec">
+              <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="entry">
+          <p class="legend">Entry 2</p>
+          <div class="entry__panel">
+            <div class="entry__text">
+            <h3 class="void">CLIENT A</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            </div>
+            <dl class="spec">
+              <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="entry">
+          <p class="legend">Entry 3</p>
+          <div class="entry__panel">
+            <div class="entry__text">
+            <h3 class="void">CLIENT B</h3>
+            <p class="void">&mdash;&mdash;&mdash;</p>
+            </div>
+            <dl class="spec">
+              <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+              <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BAND E · CAPABILITY ═════════════════════════════════════════════ -->
+  <section class="band band--capability">
+    <h2 class="legend legend--band">E &middot; What I do</h2>
+
+    <div class="band__inner">
+      <div class="keys">
+        <div class="key"><p class="legend">Key 1</p><div class="key__cap void">SERVICE A</div></div>
+        <div class="key"><p class="legend">Key 2</p><div class="key__cap void">SERVICE B</div></div>
+        <div class="key"><p class="legend">Key 3</p><div class="key__cap void">SERVICE C</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BAND F · CONTACT ════════════════════════════════════════════════ -->
+  <section class="band band--contact">
+    <h2 class="legend legend--band">F &middot; Contact</h2>
+
+    <div class="band__inner contact">
+      <div>
+        <p class="contact__line">
+          Tell me what you are trying to build. I will tell you whether I am the
+          right person to build it.
+        </p>
+        <dl class="spec spec--contact">
+          <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+          <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+          <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+        </dl>
+      </div>
+
+      <!-- one coloured control against an otherwise monochrome object: the
+           single primary action, made of pigment so it survives being off -->
+      <div class="primary">
+        <p class="legend">Primary</p>
+        <a class="act" href="mailto:hello@studio.example">Start a project</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UNDERSIDE ═══════════════════════════════════════════════════════
+       Real hardware carries markings nobody explains. Each of these is a true
+       value about this page. -->
+  <footer class="underside">
+    <dl class="marks">
+      <div><dt>Type</dt><dd>Barlow Condensed 500/700, Barlow Semi Condensed 400/500/600 &mdash; SIL OFL 1.1</dd></div>
+      <div><dt>Housing</dt><dd>#2E3A2F forest &middot; bone #DCD5C2 &middot; recess #26251F &middot; warn #FFB162 (Burning Flame)</dd></div>
+      <div><dt>Measured</dt><dd>Bone on housing 8.14:1 &middot; amber on recess 8.57:1 &middot; ink on bone 10.05:1</dd></div>
+      <div><dt>Drawn from</dt><dd>instrument (21 items), taste library ce649c6</dd></div>
+    </dl>
+    <p class="code">2E3A2F&nbsp;/&nbsp;B21&nbsp;/&nbsp;04&#8209;08&#8209;26</p>
+    <p class="colophon void">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

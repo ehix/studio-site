@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO — · sheet 1/5 · notation</title>
+<style>
+:root{
+  /* two inks only. near-black draws what exists; red asserts something
+     about it. quoted from the A4.1 technical drawing in notation. */
+  --ink:#16171A;
+  --acc:#C8322A;
+  --paper:#F1EFE8;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --disp:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --edge:clamp(14px,2.2vw,34px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:var(--paper);color:var(--ink)}
+body{font-family:var(--mono);overflow:hidden;cursor:crosshair}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+
+/* hairline weight throughout. hierarchy comes from position, not thickness. */
+.mono{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(22,23,26,.58);font-weight:400}
+.mono b{color:var(--ink);font-weight:400}
+.mono .a{color:var(--acc)}
+
+.shell{position:relative;z-index:2;height:100%;display:grid;
+  grid-template-rows:auto 1fr auto;
+  padding:var(--edge) var(--edge) var(--edge) calc(var(--edge) + 30px)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.bot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.wordmark{font-family:var(--disp);font-size:13px;letter-spacing:.30em;
+  text-transform:uppercase;color:var(--ink);font-weight:600}
+.gloss{margin-top:6px;max-width:46ch}
+
+/* emptiness is the dominant surface. the sheet is perhaps a tenth covered,
+   so the type block holds the left and nothing fills the rest. */
+.mid{display:flex;flex-direction:column;justify-content:center;
+  padding-block:2vh;min-height:0;max-width:min(52ch,54vw)}
+h1{font-family:var(--disp);font-weight:700;
+  font-size:clamp(2.4rem,9.6vw,10.5rem);
+  line-height:.84;letter-spacing:-.042em;text-transform:uppercase;
+  color:var(--ink);text-wrap:balance}
+h1 .em{color:var(--acc)}
+
+.slot{margin-top:clamp(16px,3vh,36px);display:flex;flex-direction:column;
+  gap:8px;align-items:flex-start}
+.empty{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(22,23,26,.40);
+  border:1px dashed rgba(22,23,26,.30);padding:8px 13px}
+
+/* the action is set as an addition — party plus party plus place — so the
+   block reads as a formula instead of a list */
+.cta{margin-top:clamp(20px,3.2vh,42px);align-self:flex-start;
+  display:inline-flex;align-items:baseline;gap:10px;background:transparent;
+  border:0;border-bottom:1px solid var(--ink);color:var(--ink);
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;padding:0 2px 7px;cursor:pointer}
+.cta .plus{color:var(--acc)}
+.cta:hover{border-bottom-color:var(--acc);color:var(--acc)}
+
+.read{display:grid;grid-template-columns:repeat(2,auto);gap:2px 18px}
+.read span:nth-child(odd){color:rgba(22,23,26,.42)}
+.rail{position:fixed;left:var(--edge);top:50%;transform:translateY(-50%) rotate(180deg);
+  writing-mode:vertical-rl;z-index:2}
+@media(max-width:900px){.rail{display:none}}
+/* a handwritten accession note sits outside the measured field, keeping the
+   record separate from the measurement */
+.acc{position:fixed;right:var(--edge);top:calc(var(--edge) + 92px);z-index:2;
+  font-family:var(--disp);font-style:italic;font-size:11px;
+  color:rgba(22,23,26,.44);text-align:right;max-width:20ch;line-height:1.5}
+@media(max-width:900px){.acc{display:none}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="rail mono">a94bcca · main · cloudflare pages</div>
+<div class="acc">accession note —<br>sheet held for revision</div>
+
+<div class="shell">
+  <header class="top">
+    <div>
+      <div class="wordmark">Studio&nbsp;—</div>
+      <div class="mono gloss">Wordmark placeholder · 6–14 characters · single source</div>
+    </div>
+    <div class="mono" style="text-align:right">
+      Sheet <b>1</b>/5 · Landing<br>
+      Rev <b>D</b> · <span class="a">Notation</span><br>
+      Iso 30° · two inks
+    </div>
+  </header>
+
+  <main class="mid">
+    <h1>Studio<span class="em">&nbsp;—</span></h1>
+    <div class="slot">
+      <span class="empty">Positioning line — slot empty</span>
+      <span class="empty">Services — slot empty</span>
+    </div>
+    <button class="cta" id="cta">
+      Studio <span class="plus">+</span> you <span class="plus">+</span> a brief
+    </button>
+  </main>
+
+  <footer class="bot">
+    <div class="mono read">
+      <span>Viewport</span><span id="r-vp">—</span>
+      <span>Ratio</span><span id="r-dpr">—</span>
+      <span>Lattice</span><span id="r-lat">—</span>
+      <span>Frame</span><span id="r-ms">—</span>
+      <span>Cursor</span><span id="r-cur">—</span>
+    </div>
+    <div class="mono" style="text-align:right">
+      <b>6</b> routes · <b>1</b> case study · <b>4</b> slots unfilled<br>
+      astro 7.0.6 · tailwind 4.3.2 · three 0.185.1<br>
+      Accent <span class="a">#C8322A</span> · system grotesque, no licence required
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var cv = document.getElementById('c');
+  var gl = cv.getContext('webgl', { antialias: false, alpha: false });
+  if (!gl) { document.body.style.background = '#F1EFE8'; return; }
+
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+
+  var FS = [
+    'precision highp float;',
+    'uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;',
+    'uniform float uPx; uniform float uDraw;',
+
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+
+    // distance from a point to a segment — every mark on this sheet is drawn
+    // with it, so nothing can be decorative by accident
+    'float seg(vec2 p,vec2 a,vec2 b){vec2 pa=p-a,ba=b-a;',
+    ' float h=clamp(dot(pa,ba)/dot(ba,ba),0.0,1.0);return length(pa-ba*h);}',
+
+    // hairline: one weight, everywhere. hierarchy is positional.
+    'float line(float d,float w){return 1.0-smoothstep(w-uPx*0.9,w+uPx*0.9,d);}',
+
+    // a segment that draws itself from a toward b as k goes 0 -> 1
+    'float drawSeg(vec2 p,vec2 a,vec2 b,float k,float w){',
+    ' float kk=clamp(k,0.0,1.0);',
+    ' return line(seg(p,a,mix(a,b,kk)),w);}',
+
+    'void main(){',
+    ' vec2 frag=gl_FragCoord.xy;',
+    ' float ar=uRes.x/uRes.y;',
+    ' vec2 uv=frag/uRes.y;',
+    ' float t=uTime;',
+
+    // ── the sheet. warm off-white, evenly lit, with the faintest tooth.
+    //    no vignette: a drawing sheet is lit flat or it is not a drawing sheet.
+    ' vec3 paper=vec3(.945,.937,.910);',
+    ' float tooth=hash(floor(frag/1.0))-0.5;',
+    ' vec3 c=paper*(1.0+tooth*0.016);',
+
+    ' float ink=0.0;',          // near-black: draws what exists
+    ' float red=0.0;',          // red: asserts something about it
+
+    // ── a regular field of registration crosses at even spacing, over the
+    //    whole frame. a measured lattice imposed on an unmeasured ground.
+    ' float LAT=0.1250;',
+    ' vec2 lid=floor(uv/LAT+0.5);',
+    // centre the cell coordinate on the mark. without the -0.5 this is
+    // fract(), whose origin is the cell CORNER, and every cross draws as an L.
+    ' vec2 lp=(uv/LAT+0.5-lid-0.5)*LAT;',
+    ' float cw=uPx*0.55;',
+    ' float cross=max(line(max(abs(lp.x)-0.0105,abs(lp.y)),cw),',
+    '                 line(max(abs(lp.y)-0.0105,abs(lp.x)),cw));',
+    ' ink+=cross*0.42;',
+
+    // ── the isometric cube. 30° projection, the direct reference for the
+    //    hero cube already in the repo. hexagon outline plus the internal Y.
+    ' vec2 O=vec2(ar*0.735,0.520);',
+    ' float R=0.1650;',
+    ' vec2 v0=O+R*vec2( 0.866,  0.500);',
+    ' vec2 v1=O+R*vec2( 0.000,  1.000);',
+    ' vec2 v2=O+R*vec2(-0.866,  0.500);',
+    ' vec2 v3=O+R*vec2(-0.866, -0.500);',
+    ' vec2 v4=O+R*vec2( 0.000, -1.000);',
+    ' vec2 v5=O+R*vec2( 0.866, -0.500);',
+
+    // the sheet draws itself, edge after edge, then holds. a plotter, not a
+    // fade: each edge is complete or it is not there.
+    ' float k=uDraw;',
+    ' ink+=drawSeg(uv,v0,v1,k*9.0-0.0,0.0);',
+    ' ink+=drawSeg(uv,v1,v2,k*9.0-1.0,0.0);',
+    ' ink+=drawSeg(uv,v2,v3,k*9.0-2.0,0.0);',
+    ' ink+=drawSeg(uv,v3,v4,k*9.0-3.0,0.0);',
+    ' ink+=drawSeg(uv,v4,v5,k*9.0-4.0,0.0);',
+    ' ink+=drawSeg(uv,v5,v0,k*9.0-5.0,0.0);',
+    ' ink+=drawSeg(uv,O, v1,k*9.0-6.0,0.0);',
+    ' ink+=drawSeg(uv,O, v3,k*9.0-7.0,0.0);',
+    ' ink+=drawSeg(uv,O, v5,k*9.0-8.0,0.0);',
+
+    // ── red never draws the object. it dimensions it.
+    //    an extension line, a witness line, and the dimension itself.
+    ' float kd=clamp(k*9.0-8.4,0.0,1.0);',
+    ' vec2 d0=v3+vec2(-0.085,0.0);',
+    ' vec2 d1=v2+vec2(-0.085,0.0);',
+    ' red+=line(seg(uv,v3,d0+vec2(0.014,0.0)),0.0)*0.75;',
+    ' red+=line(seg(uv,v2,d1+vec2(0.014,0.0)),0.0)*0.75;',
+    ' red+=drawSeg(uv,d0,d1,kd,0.0);',
+    // arrow ticks at 45°, the way a dimension terminates on a drawing sheet
+    ' red+=line(seg(uv,d0+vec2(-0.010,-0.010),d0+vec2(0.010,0.010)),0.0)*kd;',
+    ' red+=line(seg(uv,d1+vec2(-0.010,-0.010),d1+vec2(0.010,0.010)),0.0)*kd;',
+
+    // a leader line to a callout, struck at 35° then running horizontal
+    ' vec2 L0=v5+vec2(0.030,-0.022);',
+    ' vec2 L1=L0+vec2(0.072,-0.050);',
+    ' vec2 L2=L1+vec2(0.108,0.0);',
+    ' float kl=clamp(k*9.0-8.0,0.0,1.0);',
+    ' ink+=drawSeg(uv,L0,L1,kl*2.0,0.0);',
+    ' ink+=drawSeg(uv,L1,L2,kl*2.0-1.0,0.0);',
+    // the dot that anchors a leader is the one filled mark permitted
+    ' ink+=(1.0-smoothstep(0.0028,0.0040,length(uv-L0)))*kl;',
+
+    // ── revision cloud, drawn as a run of arcs. red: it asserts a change.
+    ' vec2 rc=vec2(ar*0.500,0.845);',
+    ' for(int i=0;i<7;i++){',
+    '   float fi=float(i);',
+    '   vec2 cc=rc+vec2(fi*0.0260,0.0);',
+    '   float dd=abs(length(uv-cc)-0.0150);',
+    '   float half_=step(uv.y,cc.y+0.0150);',
+    '   red+=line(dd,0.0)*half_*0.85*clamp(k*9.0-8.2,0.0,1.0);',
+    ' }',
+
+    // ── exactly one cross is coloured, and it marks the reading position
+    //    the way a cursor would. so: it IS the cursor.
+    ' vec2 mu=uMouse/uRes.y;',
+    ' vec2 nid=floor(mu/LAT+0.5);',
+    // same origin as the lattice, or the coloured cross lands half a cell off
+    // the mark it is meant to be standing in for
+    ' vec2 np=(uv/LAT-nid)*LAT;',
+    ' float sel=step(length(lid-nid),0.01);',
+    ' float big=max(line(max(abs(np.x)-0.0230,abs(np.y)),0.0),',
+    '               line(max(abs(np.y)-0.0230,abs(np.x)),0.0));',
+    ' red+=big*sel;',
+    // and the lattice coordinate is asserted beside it, in red, as a drawing
+    // would assert a grid reference — a short witness tick, not invented text
+    ' red+=line(seg(uv,vec2(mu.x,0.0),vec2(mu.x,0.0180)),0.0)*0.55;',
+    ' red+=line(seg(uv,vec2(0.0,mu.y),vec2(0.0180,mu.y)),0.0)*0.55;',
+
+    // ── compose. two inks, no blending between them, nothing else.
+    ' ink=clamp(ink,0.0,1.0);',
+    ' red=clamp(red,0.0,1.0);',
+    ' c=mix(c,vec3(.086,.090,.102),ink*0.92);',
+    ' c=mix(c,vec3(.784,.196,.165),red);',
+
+    ' gl_FragColor=vec4(c,1.0);}'
+  ].join('\n');
+
+  function sh(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(s)); return null;
+    }
+    return s;
+  }
+  var prog = gl.createProgram();
+  var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) return;
+  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var aloc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(aloc);
+  gl.vertexAttribPointer(aloc, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes = gl.getUniformLocation(prog, 'uRes');
+  var uTime = gl.getUniformLocation(prog, 'uTime');
+  var uMouse = gl.getUniformLocation(prog, 'uMouse');
+  var uPx = gl.getUniformLocation(prog, 'uPx');
+  var uDraw = gl.getUniformLocation(prog, 'uDraw');
+
+  var dpr = 1, W = 0, H = 0;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.floor(innerWidth * dpr); H = Math.floor(innerHeight * dpr);
+    cv.width = W; cv.height = H;
+    gl.viewport(0, 0, W, H);
+    document.getElementById('r-vp').textContent = innerWidth + '×' + innerHeight;
+    document.getElementById('r-dpr').textContent = dpr.toFixed(2) + '×';
+    // the lattice pitch is 0.125 of viewport height, stated in real pixels
+    document.getElementById('r-lat').textContent = (innerHeight * 0.125).toFixed(0) + 'px';
+  }
+  addEventListener('resize', resize); resize();
+
+  var mx = -9999, my = -9999;
+  addEventListener('pointermove', function (e) {
+    mx = e.clientX * dpr; my = (innerHeight - e.clientY) * dpr;
+    document.getElementById('r-cur').textContent =
+      String(e.clientX).padStart(4, '0') + ' / ' + String(e.clientY).padStart(4, '0');
+  });
+  addEventListener('pointerleave', function () { mx = my = -9999; });
+
+  // the sheet redraws on demand — a plotter running the file again
+  var drawT0 = performance.now();
+  document.getElementById('cta').addEventListener('click', function () {
+    drawT0 = performance.now();
+  });
+
+  var t0 = performance.now(), last = t0, acc = 0, frames = 0;
+  var msEl = document.getElementById('r-ms');
+  (function loop(now) {
+    var dt = now - last; last = now;
+    acc += dt; frames++;
+    if (acc > 400) { msEl.textContent = (acc / frames).toFixed(1) + 'ms'; acc = 0; frames = 0; }
+    gl.uniform2f(uRes, W, H);
+    gl.uniform1f(uTime, (now - t0) / 1000);
+    gl.uniform2f(uMouse, mx, my);
+    gl.uniform1f(uPx, 1 / H);
+    gl.uniform1f(uDraw, Math.min((now - drawT0) / 4200, 1));
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(loop);
+  })(t0);
+})();
+</script>
+</body>
+</html>

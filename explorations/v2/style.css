@@ -1,0 +1,434 @@
+/* ===========================================================================
+   v2 — INSTRUMENT
+   The page as a hard-surface industrial object.
+   Family: instrument (21 items)
+
+   Ground first. The WildCompanion Explorer X1 is the archetype and it settles
+   the question the family brief leaves open: forest green is not an accent
+   here, it is the entire housing — the ground everything else sits on. So the
+   page is a forest housing carrying bone plates, not a bone page with green
+   trim.
+
+   Three rules from the Sony MG+ govern the detail:
+     · Labels live on the HOUSING, outside and beneath their control. A control
+       can be pressed, worn or lit; the label beneath it cannot change.
+     · Panels meet at hard seams with a consistent shadow gap. Nothing blends.
+     · Depth is real displacement — recessed wells behind chamfered bezels —
+       never a blur under a flat rectangle.
+
+   Colour is muted and functional. Every lit element is amber, against dark
+   recessed panels, exactly as the cassette deck runs it. One warning accent
+   and no second hue anywhere.
+   =========================================================================== */
+
+@font-face { font-family: "Barlow Cond"; src: url("fonts/barlow-cond-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Barlow Cond"; src: url("fonts/barlow-cond-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Barlow Semi"; src: url("fonts/barlow-semi-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow Semi"; src: url("fonts/barlow-semi-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Barlow Semi"; src: url("fonts/barlow-semi-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --housing:       #2e3a2f;  /* forest fascia — the ground                     */
+  --housing-lit:   #384636;  /* where the moulding catches light               */
+  --housing-shade: #212b22;  /* seam shadow gap                                */
+  --bone:          #dcd5c2;  /* bone plate                    8.14:1 on housing */
+  --bone-shade:    #c3bca7;  /* plate underside / mould shadow                 */
+  --recess:        #26251f;  /* display well                                   */
+  --ink:           #2a2823;  /* on bone                         10.05:1        */
+  --quiet:         #5c594e;  /* on bone                          4.79:1        */
+  --legend:        #b8bcac;  /* engraved on housing              6.14:1        */
+  --warn:          #ffb162;  /* BURNING FLAME — lit elements     8.57:1 on well */
+
+  /* Two registers and nothing between them: a figure for a spectator at
+     distance, specification text for the person holding it. */
+  --t:         0.75rem;                      /* every legend and every value  */
+  --t-display: clamp(2.5rem, 6.4vw, 5.75rem);
+
+  --seam: 2px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --pad: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--housing);
+  color: var(--bone);
+  font-family: "Barlow Semi", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--t);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.void { color: var(--quiet); }
+a { color: inherit; text-underline-offset: 0.25em; }
+:focus-visible { outline: 2px solid var(--warn); outline-offset: 3px; }
+
+/* Engraved legend: small, tracked, cut into the housing rather than printed
+   on the part it names. */
+.legend {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--t);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--legend);
+}
+.legend--band { padding: 0 var(--pad) 0.6rem; }
+
+/* --- housing and seams -----------------------------------------------------
+   Bands are divided by a moulded parting line — a shadow gap with a lit edge
+   below it — not by a rule. The division is physical. */
+
+.housing {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 0 0;
+}
+
+.band { padding: 1.75rem 0 2rem; }
+.band + .band {
+  border-top: var(--seam) solid var(--housing-shade);
+  box-shadow: inset 0 var(--seam) 0 0 var(--housing-lit);
+}
+.band__inner { padding: 0 var(--pad); }
+
+/* Bone plate: chamfered, not radiused, so it reads as machined. Lit along the
+   top edge and shadowed along the bottom, which is where its thickness is. */
+.plate {
+  background: var(--bone);
+  color: var(--ink);
+  border-top: 1px solid #ece6d6;
+  border-bottom: 1px solid var(--bone-shade);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+}
+
+/* Visible fastener. Leaving fixings exposed says the object can be opened. */
+.screw {
+  position: absolute;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bone-shade);
+  box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.28);
+}
+.screw::after {
+  content: ""; position: absolute; inset: 3px 1px auto;
+  height: 1px; background: rgba(0,0,0,0.45);
+}
+.screw:nth-of-type(1) { top: 10px; left: 10px; }
+.screw:nth-of-type(2) { top: 10px; right: 10px; }
+.screw:nth-of-type(3) { bottom: 10px; left: 10px; }
+.screw:nth-of-type(4) { bottom: 10px; right: 10px; }
+
+/* --- band A · identity ----------------------------------------------------
+   Brand block in three descending weights against a spec block, and that
+   diagonal is the only asymmetry. */
+
+.identity {
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: flex-end;
+  gap: 2rem;
+}
+.brand { margin: 0; }
+.brand > * { margin: 0; }
+.brand__maker {
+  font-family: "Barlow Cond", sans-serif;
+  font-weight: 700;
+  font-size: var(--t-display);
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  color: var(--bone);
+  max-width: 14ch;              /* a real name of 6–14 characters drops in */
+}
+.brand__model {
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-top: 0.5rem !important;
+}
+.brand__name {
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: lowercase;
+  color: var(--legend);
+}
+
+.plate-spec {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.15rem 1.25rem;
+  align-content: end;
+}
+.plate-spec dt { color: var(--legend); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600; }
+.plate-spec dd { margin: 0; color: var(--bone); }
+
+/* --- band B · subject -----------------------------------------------------
+   The ground is split into two flat fields at different values by one hard
+   horizontal band, and the object sits across that division so it is read
+   against both at once. */
+
+.split {
+  position: relative;
+  padding: clamp(2rem, 5vw, 4rem) var(--pad);
+  background: linear-gradient(
+    to bottom,
+    var(--housing-shade) 0 46%,
+    var(--housing-lit)  46% 100%
+  );
+}
+.object { margin: 0; display: grid; justify-items: center; gap: 0.8rem; }
+.object__plate {
+  position: relative;
+  width: min(34rem, 100%);
+  aspect-ratio: 1 / 1;
+  background: var(--bone);
+  border-top: 1px solid #ece6d6;
+  border-bottom: 1px solid var(--bone-shade);
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  display: grid; place-items: center;
+}
+.object__label {
+  color: var(--quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-weight: 600;
+}
+
+/* --- band C · readout -----------------------------------------------------
+   Things to read and things to touch never interleave: screens to one side,
+   the control to the other. */
+
+.readout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+.screens {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.42fr) minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+/* Set into the housing behind a chamfered bezel, so it reads as glass in a
+   case rather than as a panel applied to it. */
+.screen {
+  background: var(--recess);
+  padding: 0.85rem 1rem 0.95rem;
+  clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 11px);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.55);
+}
+.screen__key { margin-bottom: 0.5rem; }
+.screen__lit {
+  margin: 0;
+  font-family: "Barlow Cond", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--warn);
+  text-transform: uppercase;
+}
+.screen__rows { margin: 0; display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 0.2rem 0.9rem; }
+.screen__rows dt { color: var(--legend); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600; }
+.screen__rows dd { margin: 0; color: var(--bone); font-variant-numeric: tabular-nums; }
+
+/* --- the control ----------------------------------------------------------
+   Knurled, so the form states the gesture. Detented, so the positions are
+   countable. Labelled on the housing beneath it, never on its face. */
+
+.control { display: grid; justify-items: center; gap: 0.7rem; }
+.dial { position: relative; width: 9.5rem; height: 9.5rem; }
+
+.knob {
+  position: absolute; inset: 1rem;
+  border: 0; padding: 0;
+  border-radius: 50%;
+  cursor: grab;
+  background:
+    repeating-conic-gradient(
+      var(--bone) 0deg 4deg,
+      var(--bone-shade) 4deg 8deg
+    );
+  box-shadow:
+    inset 0 3px 7px rgba(0,0,0,0.32),
+    0 4px 0 0 var(--housing-shade);
+  transform: rotate(0deg);
+  /* steps() gives the rotation a ratchet rather than a glide */
+  transition: transform 200ms steps(4, end);
+}
+.knob:active { cursor: grabbing; }
+
+/* Real knurling is a rim band. The centre is a flat turned cap, and the index
+   mark is cut across it. */
+.knob::before {
+  content: "";
+  position: absolute; inset: 22%;
+  border-radius: 50%;
+  background: var(--bone);
+  box-shadow:
+    0 0 0 1px var(--bone-shade),
+    inset 0 -2px 4px rgba(0,0,0,0.16);
+}
+.knob__index {
+  z-index: 1;
+  position: absolute;
+  left: 50%; top: 6%;
+  width: 3px; height: 26%;
+  margin-left: -1px;
+  background: var(--ink);
+}
+
+/* Detent marks are on the housing, around the control, not on it. */
+/* The detent marks sit over the control but must never intercept it — they
+   are engraved on the housing, not part of the knob. */
+.detents {
+  list-style: none; margin: 0; padding: 0;
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+.detents li {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 2px; height: 0.55rem;
+  margin-left: -1px;
+  background: var(--legend);
+  transform-origin: 50% 4.75rem;
+  opacity: 0.5;
+  transition: opacity 150ms var(--ease), background 150ms var(--ease);
+}
+.detents li:nth-child(1) { transform: rotate(0deg); }
+.detents li:nth-child(2) { transform: rotate(60deg); }
+.detents li:nth-child(3) { transform: rotate(120deg); }
+.detents li:nth-child(4) { transform: rotate(180deg); }
+.detents li.is-set { opacity: 1; background: var(--warn); height: 0.8rem; }
+
+/* --- bands D and E · work and capability ---------------------------------- */
+
+.entries { display: grid; gap: 1.1rem; }
+.band--work .band__inner, .band--capability .band__inner { padding-top: 0.4rem; }
+.entry { display: grid; gap: 0.45rem; }
+.entry__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15rem;
+  gap: 1.5rem;
+  background: var(--bone);
+  color: var(--ink);
+  padding: 1.1rem 1.25rem 1.25rem;
+  border-top: 1px solid #ece6d6;
+  border-bottom: 1px solid var(--bone-shade);
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+}
+.entry__panel h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--t);
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.entry__panel > p { margin: 0.4rem 0 0; max-width: 56ch; color: var(--ink); }
+.entry__panel > p.void { color: var(--quiet); }
+
+.spec {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.1rem 1rem;
+}
+.spec dt { color: var(--quiet); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600; }
+.spec dd { margin: 0; }
+
+/* Keycaps are lightly dished with their legend set low on the cap face, so
+   the field reads as a surface first. */
+.keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
+.key { display: grid; gap: 0.45rem; }
+.key__cap {
+  background: var(--bone);
+  color: var(--ink);
+  min-height: 5.5rem;
+  padding: 0.9rem;
+  display: flex; align-items: flex-end;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-top: 1px solid #ece6d6;
+  border-bottom: 2px solid var(--bone-shade);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+}
+.key__cap.void { color: var(--quiet); }
+
+/* --- band F · contact ------------------------------------------------------ */
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: end;
+}
+.contact__line { margin: 0; max-width: 48ch; color: var(--bone); }
+.spec--contact { margin-top: 1.4rem; }
+.entry__text > p { margin: 0.5rem 0 0; }
+.spec--contact dt { color: var(--legend); }
+.spec--contact dd { color: var(--bone); }
+.primary { display: grid; gap: 0.45rem; justify-items: start; }
+
+/* One coloured control against an otherwise monochrome object. It is pigment,
+   not light, so it is still there when nothing is running. */
+.act {
+  display: inline-block;
+  background: var(--warn);
+  color: #2a2318;
+  text-decoration: none;
+  font-family: "Barlow Cond", sans-serif;
+  font-weight: 700;
+  font-size: 1.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.75rem 1.6rem 0.6rem;
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  /* the throw is drawn as a shadow, not as a border, so pressing the control
+     moves it without changing the space it occupies */
+  box-shadow: 0 3px 0 0 #a96b30;
+  transition: transform 110ms var(--ease), box-shadow 110ms var(--ease);
+}
+.act:hover, .act:focus-visible { transform: translateY(2px); box-shadow: 0 1px 0 0 #a96b30; }
+
+/* --- underside ------------------------------------------------------------- */
+
+.underside {
+  border-top: var(--seam) solid var(--housing-shade);
+  box-shadow: inset 0 var(--seam) 0 0 var(--housing-lit);
+  padding: 1.75rem var(--pad) 3rem;
+}
+.marks { margin: 0; display: grid; gap: 0.25rem; }
+.marks div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
+.marks dt { color: var(--legend); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600; }
+.marks dd { margin: 0; color: var(--bone); }
+.code {
+  margin: 1.5rem 0 0;
+  color: var(--legend);
+  letter-spacing: 0.28em;
+  font-weight: 500;
+}
+.colophon { margin: 0.4rem 0 0; }
+
+/* --- narrow ---------------------------------------------------------------
+   Scope: does not break. */
+@media (max-width: 52rem) {
+  .readout, .contact { grid-template-columns: minmax(0, 1fr); }
+  .entry__panel { grid-template-columns: minmax(0, 1fr); }
+  .screens { grid-template-columns: minmax(0, 1fr); }
+  .control { justify-items: start; }
+  .identity { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}
