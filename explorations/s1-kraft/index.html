@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO — · substrate s1 · kraft</title>
+<meta name="description" content="Substrate variation 1 of 5. Uncoated kraft, pulp colour through.">
+<style>
+/* ===========================================================================
+   s1 — KRAFT
+   "Uncoated kraft in a flat warm tan, with the pulp colour running all the
+   way through rather than sitting on the surface."
+
+   The stock is mid-tone, not pale-and-tinted. That is the whole difference:
+   a warm wash over white gives you a warm white, and kraft is not a warm
+   white. It is a darker paper, which means the ink has less room and every
+   value on the sheet has to sit closer to its neighbours.
+   =========================================================================== */
+
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-700.woff2") format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --stock:#AE9068;   /* uncoated kraft, pulp colour all the way through  */
+  --ink:#241C12;     /* 5.59:1 on stock                                  */
+  --quiet:#332818;   /* 4.80:1 on stock                                  */
+  --accent:#7A3B22;  /* 2.82:1 — area only, never small text             */
+  --lip:#D9CDB6;     /* the fibre core at a torn edge                    */
+  --t:0.75rem;
+  --t-display:clamp(2.75rem,7.4vw,6.5rem);
+  --pad:clamp(1.5rem,5vw,5rem);
+  --measure:74rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;color-scheme:light}
+body{color:var(--ink);background:var(--stock);
+  font-family:"Courier Prime",ui-monospace,Menlo,monospace;
+  font-size:var(--t);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* the sheet itself, drawn rather than tiled. it scrolls with the page,
+   because the paper is not a backdrop behind the page — it IS the page. */
+#stock{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.sheet{position:relative;z-index:1;max-width:var(--measure);margin:0 auto;
+  padding:0 var(--pad) 4rem}
+
+.void{color:var(--quiet)}
+a{color:inherit;text-underline-offset:.25em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* set below the threshold of reading and cropped by the edge: it announces a
+   printed sheet without offering anything to read */
+.crop{padding-top:.9rem;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--quiet);opacity:.62;white-space:nowrap;overflow:hidden}
+
+.mast{display:grid;grid-template-columns:minmax(0,1fr) 24rem;
+  gap:clamp(2rem,6vw,6rem);align-items:center;
+  padding:clamp(3rem,8vw,7rem) 0 clamp(3rem,7vw,6rem)}
+.stamp{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.wordmark{font-family:"Young Serif",Georgia,serif;font-size:var(--t-display);
+  line-height:.92;letter-spacing:-.02em;margin:1rem 0 0;max-width:14ch}
+
+/* the positioning line is NOT written. it is ruled, the way a specimen sheet
+   rules the space a caption will occupy, and labelled as empty. */
+.slot{margin:1.6rem 0 0;max-width:44ch}
+.slot__label{display:block;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--quiet);margin-bottom:.55rem}
+.slot__rules{display:grid;gap:.72rem}
+.slot__rules i{display:block;height:1px;background:rgba(51,40,24,.34)}
+.slot__rules i:nth-child(2){width:86%}
+.slot__rules i:nth-child(3){width:54%}
+
+/* THE PLATE. reserved, and honest about it — but no longer a hole, because
+   the stock is real material and the plate is a window cut into it one step
+   of value away. depth from overlap and value only; nothing casts a shadow. */
+.plate{position:relative;aspect-ratio:4/5;background:rgba(36,28,18,.11);
+  clip-path:polygon(3% 0,100% 0,100% 100%,4% 100%,
+    2.4% 92%,4.4% 84%,1.8% 76%,4% 67%,2% 59%,
+    4.6% 51%,2.2% 43%,4.2% 34%,1.6% 26%,3.8% 17%,2.6% 9%)}
+.plate__lip{position:absolute;top:0;bottom:0;left:0;width:1.1rem;
+  background:linear-gradient(to right,var(--lip) 0%,var(--lip) 52%,rgba(217,205,182,0) 100%);
+  clip-path:inherit;pointer-events:none}
+.plate__face{padding:1.5rem 1.4rem 1.4rem 2.6rem;display:grid;gap:.3rem}
+.plate__face p{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.plate__cap{margin-top:.75rem;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--quiet)}
+
+.wet{position:relative;height:4.5rem;margin:2.5rem 0 0;
+  background:linear-gradient(to bottom,rgba(122,59,34,0) 0%,rgba(122,59,34,.10) 42%,
+    rgba(122,59,34,.26) 88%,rgba(122,59,34,.34) 99%,rgba(122,59,34,.34) 100%)}
+/* the boundary is the sharpest thing in the frame, never a blur */
+.wet::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--accent);
+  clip-path:polygon(0 0,6% 40%,13% 0,21% 55%,29% 10%,37% 45%,45% 0,53% 50%,
+    61% 15%,70% 45%,78% 0,86% 40%,93% 10%,100% 35%,100% 100%,0 100%)}
+
+.section{padding-top:clamp(2.5rem,6vw,4.5rem)}
+.head{font-family:"Young Serif",Georgia,serif;font-size:1.75rem;line-height:1.1;
+  letter-spacing:-.01em;margin:0 0 1.75rem}
+.specimens{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
+  gap:2.5rem 3rem}
+.specimen{max-width:34ch}
+.no{display:block;text-transform:uppercase;letter-spacing:.2em;color:var(--quiet);
+  margin-bottom:.5rem}
+.specimen h3{font-family:"Young Serif",Georgia,serif;font-size:1.125rem;
+  line-height:1.2}
+.specimen>p{margin:.5rem 0 0}
+.spec{margin:1rem 0 0;display:grid;grid-template-columns:5.5rem minmax(0,1fr);
+  gap:.1rem 1rem}
+.spec dt{color:var(--quiet);text-transform:uppercase;letter-spacing:.12em}
+.spec--contact{margin-top:1.75rem;max-width:30rem}
+.services{list-style:none;display:grid;max-width:40rem}
+.services li{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;
+  padding:.9rem 0;border-bottom:1px solid rgba(51,40,24,.26)}
+.services li:first-child{border-top:1px solid rgba(51,40,24,.26)}
+.services li>span:last-child{font-family:"Young Serif",Georgia,serif;font-size:1.125rem}
+
+.act{display:inline-block;margin-top:1.4rem;background:var(--accent);color:var(--lip);
+  text-decoration:none;font-family:"Young Serif",Georgia,serif;font-size:1.25rem;
+  padding:.65rem 1.4rem;transition:background 140ms cubic-bezier(.2,0,0,1)}
+.act:hover,.act:focus-visible{background:#5E2C19}
+
+.colophon{margin-top:clamp(3rem,7vw,5rem);padding-top:1.4rem;
+  border-top:1px solid rgba(51,40,24,.26);color:var(--quiet)}
+.colophon dl{display:grid;gap:.5rem}
+.colophon div{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:1.25rem}
+.colophon dt{text-transform:uppercase;letter-spacing:.12em}
+.colophon dd{max-width:68ch}
+.colophon__note{margin-top:1.75rem}
+
+@media(max-width:58rem){
+  .mast{grid-template-columns:minmax(0,1fr)}
+  .plate{max-width:24rem}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+</style>
+</head>
+<body>
+<canvas id="stock" aria-hidden="true"></canvas>
+
+<div class="sheet">
+  <p class="crop" aria-hidden="true">
+    STUDIO&nbsp;— &middot; specimen sheet &middot; uncoated kraft &middot; #AE9068 &middot;
+    pulp colour through &middot; even illumination &middot; no vignette &middot; no hotspot &middot;
+    warmth in the fibre &middot; substrate s1 of 5 &middot; sheet 1 of 5 &middot;
+  </p>
+
+  <header class="mast">
+    <div>
+      <p class="stamp">Sheet 1 of 5 &middot; substrate s1 of 5 &middot; kraft</p>
+      <h1 class="wordmark">STUDIO&nbsp;—</h1>
+      <div class="slot">
+        <span class="slot__label">Positioning line &middot; slot empty</span>
+        <div class="slot__rules" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+    </div>
+
+    <figure class="plate-wrap">
+      <div class="plate">
+        <div class="plate__lip" aria-hidden="true"></div>
+        <div class="plate__face">
+          <p>Plate 1 &middot; image reserved</p>
+          <p>4:5 portrait</p>
+        </div>
+      </div>
+      <figcaption class="plate__cap">Stock at full strength. Nothing casts a shadow.</figcaption>
+    </figure>
+  </header>
+
+  <div class="wet" role="separator" aria-hidden="true"></div>
+
+  <main>
+    <section class="section" aria-labelledby="s-work">
+      <h2 id="s-work" class="head">Selected work</h2>
+      <div class="specimens">
+        <article class="specimen">
+          <p class="no">Specimen A</p>
+          <h3>Malmesbury Abbey</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen B</p>
+          <h3 class="void">CLIENT A</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen C</p>
+          <h3 class="void">CLIENT B</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="s-cap">
+      <h2 id="s-cap" class="head">What I do</h2>
+      <ul class="services">
+        <li><span class="no">Specimen D</span><span class="void">SERVICE A</span></li>
+        <li><span class="no">Specimen E</span><span class="void">SERVICE B</span></li>
+        <li><span class="no">Specimen F</span><span class="void">SERVICE C</span></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="s-contact">
+      <h2 id="s-contact" class="head">Contact</h2>
+      <div>
+        <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+        <dl class="spec spec--contact">
+          <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+          <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+          <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <dl>
+        <div><dt>Stock</dt><dd>Uncoated kraft #AE9068. A mid-tone paper, not a pale one tinted warm — the pulp colour runs all the way through.</dd></div>
+        <div><dt>Light</dt><dd>Even throughout. No vignette, no hotspot, no directional drama anywhere on the sheet.</dd></div>
+        <div><dt>Depth</dt><dd>Read from overlap order and one step of value. Nothing casts a shadow.</dd></div>
+        <div><dt>Range</dt><dd>Every value within a step or two of its neighbours. Widen it and this becomes a composition about contrast rather than a material.</dd></div>
+        <div><dt>Pigment</dt><dd>#7A3B22 at 2.82:1, so it carries areas and never small text. The fibre lip on it reaches 5.39:1.</dd></div>
+        <div><dt>Type</dt><dd>Young Serif 400 and Courier Prime 400/700, both SIL OFL 1.1. Licence files are not yet vendored alongside them.</dd></div>
+        <div><dt>Measured</dt><dd>Ink on stock 5.59:1 &middot; quiet 4.80:1 &middot; lip on pigment 5.39:1</dd></div>
+        <div><dt>Site</dt><dd>6 routes &middot; 1 case study &middot; 6 placeholder slots unfilled &middot; astro 7.0.6 &middot; Cloudflare Pages</dd></div>
+      </dl>
+      <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var cv = document.getElementById('stock');
+  var gl = cv.getContext('webgl', { antialias: false, alpha: false });
+  if (!gl) return;   // the CSS stock colour is already correct without this
+
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+
+  var FS = [
+    'precision highp float;',
+    'uniform vec2 uRes; uniform float uScroll;',
+
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+    'float hash1(vec2 p){return fract(sin(dot(p,vec2(269.5,183.3)))*43758.5453123);}',
+    'float vn(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
+    ' return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),',
+    '            mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}',
+    'float fbm(vec2 p){float v=0.,a=.5;',
+    ' for(int i=0;i<5;i++){v+=a*vn(p);p=p*2.06;a*=.5;}return v;}',
+    'mat2 rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);}',
+    // a strand is a speck stretched many times along one axis. it is that
+    // RANGE, not the density, that stops a scatter reading as generated.
+    'float strand(vec2 p,float a,float len){return vn(rot(a)*p*vec2(1.0,len));}',
+
+    'void main(){',
+    ' vec2 frag=gl_FragCoord.xy;',
+    // the paper scrolls with the page; it is the page, not a backdrop
+    ' vec2 sp=vec2(frag.x,frag.y-uScroll);',
+    ' vec2 uv=sp/uRes.y;',
+
+    // ── the stock. warmth is IN the pulp: the base colour varies in the body
+    //    of the material, never as a wash laid over a paler sheet.
+    ' vec3 kraft=vec3(.682,.565,.408);',
+    ' float body=fbm(uv*2.0);',
+    ' vec3 c=kraft*(0.955+0.085*body);',
+    // kraft is coarse. a heavier tooth than a smooth stock, and it is the
+    // tooth that carries the light, since there is no lamp anywhere here.
+    ' float tooth=hash(floor(sp*0.72))-0.5;',
+    ' c*=1.0+tooth*0.070;',
+
+    // ── long fibres, three orientations, genuinely irregular spacing
+    ' float s1=strand(uv*26.0+7.0, 0.28, 44.0);',
+    ' float s2=strand(uv*26.0+61.0, 1.95, 51.0);',
+    ' float s3=strand(uv*26.0+113.0,-1.15, 36.0);',
+    ' float pale=max(smoothstep(.79,.98,s1),smoothstep(.81,.99,s3));',
+    ' float dark=smoothstep(.82,.99,s2);',
+    // fibres run both ways against the pulp: some paler, some darker, because
+    // they are different material and not a shadow of the same material
+    ' c=mix(c,vec3(.800,.706,.545),pale*0.40);',
+    ' c=mix(c,vec3(.400,.318,.216),dark*0.30);',
+
+    // ── specks at the small end of the same distribution
+    ' vec2 fg=floor(sp/2.2);',
+    ' float fh=hash1(fg);',
+    ' c=mix(c,vec3(.235,.184,.118),step(0.9945,fh)*0.55);',
+    // and the occasional saturated one, at very low density
+    ' c=mix(c,vec3(.478,.231,.133),step(0.99955,hash1(fg+29.3))*0.60);',
+
+    // ── coverage drifts into slightly heavier regions with NO boundary.
+    //    uniform noise reads as a screen; noise with an edge reads as a stain.
+    ' c*=1.0-0.045*smoothstep(0.30,0.95,fbm(uv*0.85+vec2(3.2,1.1)));',
+
+    ' gl_FragColor=vec4(c,1.0);}'
+  ].join('\n');
+
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(o));return null;}return o;}
+  var prog=gl.createProgram(), vs=sh(gl.VERTEX_SHADER,VS), fs=sh(gl.FRAGMENT_SHADER,FS);
+  if(!vs||!fs) return;
+  gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.linkProgram(prog);gl.useProgram(prog);
+
+  var buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var al=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+
+  var uRes=gl.getUniformLocation(prog,'uRes'), uScroll=gl.getUniformLocation(prog,'uScroll');
+  var dpr=1,W=0,H=0;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.floor(innerWidth*dpr);H=Math.floor(innerHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+    draw();
+  }
+  function draw(){
+    gl.uniform2f(uRes,W,H);
+    // negative because gl_FragCoord.y runs up the screen and scroll runs down
+    gl.uniform1f(uScroll,-(window.scrollY||0)*dpr);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  }
+  // static material: it redraws on scroll and resize only. there is no
+  // animation here, because an evenly lit sheet of paper does not move.
+  addEventListener('resize',resize);
+  addEventListener('scroll',function(){requestAnimationFrame(draw);},{passive:true});
+  resize();
+})();
+</script>
+</body>
+</html>

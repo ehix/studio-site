@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO — · substrate s4 · linen</title>
+<meta name="description" content="Substrate variation 4 of 5. Linen.">
+<style>
+/* ===========================================================================
+   s4 — LINEN
+   "Off-white throughout, with the shadows in the weave carrying a faint cool
+   cast against the warmer thread crowns." · "Colour is not flat — the cloth
+   shifts between grey-green and a paler bloom where the surface has been
+   crushed and creased." · "Pale sage and celadon with a faint iridescent
+   shift toward blue at the edges."
+
+   Woven, not pulped, so this is the one substrate with a direction in it. The
+   temperature split is the whole thing: crowns warm because they face out,
+   valleys cool because they are in their own shade. Render both at the same
+   temperature and it stops being cloth and becomes a hatch pattern. Widen
+   the range and it stops being a stack of paper and becomes a colour scheme.
+   =========================================================================== */
+
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-700.woff2") format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --stock:#D3D6C6;
+  --ink:#242A21;
+  --quiet:#4C5347;
+  --accent:#5C6842;
+  --lip:#EDEEE4;
+  --t:0.75rem;
+  --t-display:clamp(2.75rem,7.4vw,6.5rem);
+  --pad:clamp(1.5rem,5vw,5rem);
+  --measure:74rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;color-scheme:light}
+body{color:var(--ink);background:var(--stock);
+  font-family:"Courier Prime",ui-monospace,Menlo,monospace;
+  font-size:var(--t);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+#stock{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.sheet{position:relative;z-index:1;max-width:var(--measure);margin:0 auto;
+  padding:0 var(--pad) 4rem}
+
+.void{color:var(--quiet)}
+a{color:inherit;text-underline-offset:.25em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.crop{padding-top:.9rem;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--quiet);opacity:.62;white-space:nowrap;overflow:hidden}
+
+.mast{display:grid;grid-template-columns:minmax(0,1fr) 24rem;
+  gap:clamp(2rem,6vw,6rem);align-items:center;
+  padding:clamp(3rem,8vw,7rem) 0 clamp(3rem,7vw,6rem)}
+.stamp{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.wordmark{font-family:"Young Serif",Georgia,serif;font-size:var(--t-display);
+  line-height:.92;letter-spacing:-.02em;margin:1rem 0 0;max-width:14ch}
+
+.slot{margin:1.6rem 0 0;max-width:44ch}
+.slot__label{display:block;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--quiet);margin-bottom:.55rem}
+.slot__rules{display:grid;gap:.72rem}
+.slot__rules i{display:block;height:1px;background:rgba(76,83,71,.34)}
+.slot__rules i:nth-child(2){width:86%}
+.slot__rules i:nth-child(3){width:54%}
+
+.plate{position:relative;aspect-ratio:4/5;background:rgba(237,238,228,.34);
+  clip-path:polygon(3% 0,100% 0,100% 100%,4% 100%,
+    2.4% 92%,4.4% 84%,1.8% 76%,4% 67%,2% 59%,
+    4.6% 51%,2.2% 43%,4.2% 34%,1.6% 26%,3.8% 17%,2.6% 9%)}
+.plate__lip{position:absolute;top:0;bottom:0;left:0;width:1.1rem;
+  background:linear-gradient(to right,var(--lip) 0%,var(--lip) 52%,rgba(237,238,228,0) 100%);
+  clip-path:inherit;pointer-events:none}
+.plate__face{padding:1.5rem 1.4rem 1.4rem 2.6rem;display:grid;gap:.3rem}
+.plate__face p{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.plate__cap{margin-top:.85rem;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--quiet)}
+
+.wet{position:relative;height:4.5rem;margin:2.5rem 0 0;
+  background:linear-gradient(to bottom,rgba(92,104,66,0) 0%,rgba(92,104,66,.10) 42%,
+    rgba(92,104,66,.26) 88%,rgba(92,104,66,.34) 99%,rgba(92,104,66,.34) 100%)}
+.wet::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--accent);
+  clip-path:polygon(0 0,6% 40%,13% 0,21% 55%,29% 10%,37% 45%,45% 0,53% 50%,
+    61% 15%,70% 45%,78% 0,86% 40%,93% 10%,100% 35%,100% 100%,0 100%)}
+
+.section{padding-top:clamp(2.5rem,6vw,4.5rem)}
+.head{font-family:"Young Serif",Georgia,serif;font-size:1.75rem;line-height:1.1;
+  letter-spacing:-.01em;margin:0 0 1.75rem}
+.specimens{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
+  gap:2.5rem 3rem}
+.specimen{max-width:34ch}
+.no{display:block;text-transform:uppercase;letter-spacing:.2em;color:var(--quiet);
+  margin-bottom:.5rem}
+.specimen h3{font-family:"Young Serif",Georgia,serif;font-size:1.125rem;line-height:1.2}
+.specimen>p{margin:.5rem 0 0}
+.spec{margin:1rem 0 0;display:grid;grid-template-columns:5.5rem minmax(0,1fr);
+  gap:.1rem 1rem}
+.spec dt{color:var(--quiet);text-transform:uppercase;letter-spacing:.12em}
+.spec--contact{margin-top:1.75rem;max-width:30rem}
+.services{list-style:none;display:grid;max-width:40rem}
+.services li{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;
+  padding:.9rem 0;border-bottom:1px solid rgba(76,83,71,.26)}
+.services li:first-child{border-top:1px solid rgba(76,83,71,.26)}
+.services li>span:last-child{font-family:"Young Serif",Georgia,serif;font-size:1.125rem}
+
+.act{display:inline-block;margin-top:1.4rem;background:var(--accent);color:var(--lip);
+  text-decoration:none;font-family:"Young Serif",Georgia,serif;font-size:1.25rem;
+  padding:.65rem 1.4rem;transition:background 140ms cubic-bezier(.2,0,0,1)}
+.act:hover,.act:focus-visible{background:#434D2F}
+
+.colophon{margin-top:clamp(3rem,7vw,5rem);padding-top:1.4rem;
+  border-top:1px solid rgba(76,83,71,.26);color:var(--quiet)}
+.colophon dl{display:grid;gap:.5rem}
+.colophon div{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:1.25rem}
+.colophon dt{text-transform:uppercase;letter-spacing:.12em}
+.colophon dd{max-width:68ch}
+.colophon__note{margin-top:1.75rem}
+
+@media(max-width:58rem){
+  .mast{grid-template-columns:minmax(0,1fr)}
+  .plate{max-width:24rem}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+</style>
+</head>
+<body>
+<canvas id="stock" aria-hidden="true"></canvas>
+
+<div class="sheet">
+  <p class="crop" aria-hidden="true">
+    STUDIO&nbsp;— &middot; specimen sheet &middot; plain weave &middot; #D3D6C6 &middot; warm crowns against cool valleys &middot; crush bloom &middot;
+    even illumination &middot; no vignette &middot; substrate s4 of 5 &middot; sheet 1 of 5 &middot;
+  </p>
+
+  <header class="mast">
+    <div>
+      <p class="stamp">Sheet 1 of 5 &middot; substrate s4 of 5 &middot; linen</p>
+      <h1 class="wordmark">STUDIO&nbsp;—</h1>
+      <div class="slot">
+        <span class="slot__label">Positioning line &middot; slot empty</span>
+        <div class="slot__rules" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="plate">
+        <div class="plate__lip" aria-hidden="true"></div>
+        <div class="plate__face">
+          <p>Plate 1 &middot; image reserved</p>
+          <p>4:5 portrait</p>
+        </div>
+      </div>
+      <figcaption class="plate__cap">Reserved as a crush: the cloth flattened, so it blooms paler.</figcaption>
+    </figure>
+  </header>
+
+  <div class="wet" role="separator" aria-hidden="true"></div>
+
+  <main>
+    <section class="section" aria-labelledby="s-work">
+      <h2 id="s-work" class="head">Selected work</h2>
+      <div class="specimens">
+        <article class="specimen">
+          <p class="no">Specimen A</p>
+          <h3>Malmesbury Abbey</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen B</p>
+          <h3 class="void">CLIENT A</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen C</p>
+          <h3 class="void">CLIENT B</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="s-cap">
+      <h2 id="s-cap" class="head">What I do</h2>
+      <ul class="services">
+        <li><span class="no">Specimen D</span><span class="void">SERVICE A</span></li>
+        <li><span class="no">Specimen E</span><span class="void">SERVICE B</span></li>
+        <li><span class="no">Specimen F</span><span class="void">SERVICE C</span></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="s-contact">
+      <h2 id="s-contact" class="head">Contact</h2>
+      <div>
+        <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+        <dl class="spec spec--contact">
+          <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+          <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+          <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <dl>
+        <div><dt>Stock</dt><dd>Off-white linen #D3D6C6, drifting between grey-green and a paler bloom. Colour is not flat anywhere on it.</dd></div>
+        <div><dt>Weave</dt><dd>Plain weave, warp over weft and back. The only substrate here with a direction in it.</dd></div>
+        <div><dt>Temperature</dt><dd>Thread crowns run warm because they face outward; the shadows in the weave carry a faint cool cast. Render both the same and the cloth becomes a hatch pattern.</dd></div>
+        <div><dt>Crush</dt><dd>Where the surface has been crushed and creased it blooms paler, and the iridescent shift toward blue shows at those edges.</dd></div>
+        <div><dt>Pigment</dt><dd>#5C6842 at 4.04:1, so it carries areas and large type but never small text. The lip on it reaches 5.11:1.</dd></div>
+        <div><dt>Type</dt><dd>Young Serif 400 and Courier Prime 400/700, both SIL OFL 1.1. Licence files are not yet vendored alongside them.</dd></div>
+        <div><dt>Measured</dt><dd>Ink on stock 9.95:1 &middot; quiet 5.39:1 &middot; lip on pigment 5.11:1</dd></div>
+        <div><dt>Site</dt><dd>6 routes &middot; 1 case study &middot; 6 placeholder slots unfilled &middot; astro 7.0.6 &middot; Cloudflare Pages</dd></div>
+      </dl>
+      <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var cv = document.getElementById('stock');
+  var gl = cv.getContext('webgl', { antialias: false, alpha: false });
+  if (!gl) return;
+
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+
+  var FS = [
+    'precision highp float;',
+    'uniform vec2 uRes; uniform float uScroll;',
+
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+    'float hash1(vec2 p){return fract(sin(dot(p,vec2(269.5,183.3)))*43758.5453123);}',
+    'float vn(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
+    ' return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),',
+    '            mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}',
+    'float fbm(vec2 p){float v=0.,a=.5;',
+    ' for(int i=0;i<5;i++){v+=a*vn(p);p=p*2.06;a*=.5;}return v;}',
+
+    // signed distance to a rectangle: negative inside, positive outside
+    'float box(vec2 p,vec2 b){vec2 d=abs(p)-b;',
+    ' return length(max(d,0.0))+min(max(d.x,d.y),0.0);}',
+
+    'void main(){',
+    ' vec2 frag=gl_FragCoord.xy;',
+    ' vec2 sp=vec2(frag.x,frag.y-uScroll);',
+    ' vec2 uv=sp/uRes.y;',
+    ' float ar=uRes.x/uRes.y;',
+
+    // ── plain weave. warp and weft at one pitch, each thread a rounded
+    //    crown with its own shade beside it.
+    ' float PITCH=118.0;',
+    ' vec2 w=uv*PITCH;',
+    ' vec2 wi=floor(w), wf=fract(w);',
+    // over/under alternates on the diagonal, which is what makes it a weave
+    // rather than two gratings laid on top of one another
+    ' float over=mod(wi.x+wi.y,2.0);',
+
+    // a thread crown is round in section: brightest along its spine, falling
+    // away to the valley where it passes under its neighbour
+    ' float crownX=sin(wf.x*3.14159);',
+    ' float crownY=sin(wf.y*3.14159);',
+    ' float crown=mix(crownY,crownX,over);',
+    ' float valley=1.0-crown;',
+
+    // slub: real linen thread varies in thickness along its length, and that
+    // irregularity is most of what separates it from a printed check
+    ' float slub=fbm(vec2(wi.x*0.14,wi.y*0.05))*0.5+fbm(vec2(wi.y*0.13,wi.x*0.06))*0.5;',
+    ' crown*=0.82+0.36*slub;',
+
+    // ── off-white, drifting between grey-green and a paler bloom
+    ' vec3 cloth=vec3(.827,.839,.776);',
+    ' float drift=fbm(uv*2.2);',
+    ' vec3 c=mix(cloth*vec3(.985,1.005,.968),cloth*1.020,drift);',
+
+    // ── THE TEMPERATURE SPLIT. crowns face out and run warm; valleys sit in
+    //    their own shade and run cool. this is the whole material.
+    ' vec3 warmC=vec3(1.030,1.008,0.966);',
+    ' vec3 coolC=vec3(0.950,0.968,0.985);',
+    ' c*=mix(coolC,warmC,smoothstep(0.18,0.86,crown));',
+    ' c*=0.90+0.20*crown;',
+    ' c*=1.0-valley*0.085;',
+
+    // the fibre in each thread, running ALONG it and not across it
+    ' float along=mix(wf.y,wf.x,over);',
+    ' c*=1.0+(hash(vec2(floor(along*22.0),dot(wi,vec2(1.0,57.0))))-0.5)*0.055;',
+
+    // ── crush bloom. where the cloth has been creased the surface flattens,
+    //    so it goes paler and the weave loses a little of its relief.
+    ' float crush=smoothstep(.58,.86,fbm(uv*3.4+vec2(7.0,2.0)));',
+    ' c=mix(c,c*vec3(1.055,1.060,1.075),crush*0.70);',
+    // and the iridescent shift toward blue shows at the edges of the crush
+    ' float edgeC=smoothstep(.52,.62,fbm(uv*3.4+vec2(7.0,2.0)))*(1.0-crush);',
+    ' c=mix(c,c*vec3(0.975,1.000,1.045),edgeC*0.55);',
+
+    // ── a few scattered dark blemishes breaking the field, at low density
+    ' vec2 fg=floor(sp/2.4);',
+    ' c=mix(c,vec3(.353,.365,.310),step(0.9975,hash1(fg))*0.45);',
+
+    ' gl_FragColor=vec4(c,1.0);}'
+  ].join('\n');
+
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(o));return null;}return o;}
+  var prog=gl.createProgram(), vs=sh(gl.VERTEX_SHADER,VS), fs=sh(gl.FRAGMENT_SHADER,FS);
+  if(!vs||!fs) return;
+  gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.linkProgram(prog);gl.useProgram(prog);
+
+  var buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var al=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+
+  var uRes=gl.getUniformLocation(prog,'uRes'), uScroll=gl.getUniformLocation(prog,'uScroll');
+  var dpr=1,W=0,H=0;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.floor(innerWidth*dpr);H=Math.floor(innerHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+    draw();
+  }
+  function draw(){
+    gl.uniform2f(uRes,W,H);
+    gl.uniform1f(uScroll,-(window.scrollY||0)*dpr);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  }
+  addEventListener('resize',resize);
+  addEventListener('scroll',function(){requestAnimationFrame(draw);},{passive:true});
+  resize();
+})();
+</script>
+</body>
+</html>

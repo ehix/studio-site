@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO — · substrate s3 · granite</title>
+<meta name="description" content="Substrate variation 3 of 5. Granite.">
+<style>
+/* ===========================================================================
+   s3 — GRANITE
+   "Grey granite with a coarse crystalline break, every fragment showing both
+   a weathered outer face and a fresh fractured one." · "The fresh faces are
+   lighter and sharper, the weathered ones darker and rounded, and both appear
+   on nearly every piece."
+
+   The only substrate here with no warmth in it at all. Warmth in this family
+   comes from the material, and granite has none to give, so the whole sheet
+   runs cool and the single pigment has to carry every degree of it. The
+   fresh/weathered pairing is the thing to get right: a stone with only fresh
+   faces reads as gravel, and one with only weathered faces reads as mud. Widen
+   the range and it stops being a stack of paper and becomes a colour scheme.
+   =========================================================================== */
+
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-700.woff2") format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --stock:#A9A69F;
+  --ink:#1E1E1D;
+  --quiet:#3A3A37;
+  --accent:#7C4A3A;
+  --lip:#DEDCD7;
+  --t:0.75rem;
+  --t-display:clamp(2.75rem,7.4vw,6.5rem);
+  --pad:clamp(1.5rem,5vw,5rem);
+  --measure:74rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;color-scheme:light}
+body{color:var(--ink);background:var(--stock);
+  font-family:"Courier Prime",ui-monospace,Menlo,monospace;
+  font-size:var(--t);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+#stock{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.sheet{position:relative;z-index:1;max-width:var(--measure);margin:0 auto;
+  padding:0 var(--pad) 4rem}
+
+.void{color:var(--quiet)}
+a{color:inherit;text-underline-offset:.25em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.crop{padding-top:.9rem;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--quiet);opacity:.62;white-space:nowrap;overflow:hidden}
+
+.mast{display:grid;grid-template-columns:minmax(0,1fr) 24rem;
+  gap:clamp(2rem,6vw,6rem);align-items:center;
+  padding:clamp(3rem,8vw,7rem) 0 clamp(3rem,7vw,6rem)}
+.stamp{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.wordmark{font-family:"Young Serif",Georgia,serif;font-size:var(--t-display);
+  line-height:.92;letter-spacing:-.02em;margin:1rem 0 0;max-width:14ch}
+
+.slot{margin:1.6rem 0 0;max-width:44ch}
+.slot__label{display:block;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--quiet);margin-bottom:.55rem}
+.slot__rules{display:grid;gap:.72rem}
+.slot__rules i{display:block;height:1px;background:rgba(58,58,55,.34)}
+.slot__rules i:nth-child(2){width:86%}
+.slot__rules i:nth-child(3){width:54%}
+
+.plate{position:relative;aspect-ratio:4/5;background:rgba(30,30,29,.11);
+  clip-path:polygon(3% 0,100% 0,100% 100%,4% 100%,
+    2.4% 92%,4.4% 84%,1.8% 76%,4% 67%,2% 59%,
+    4.6% 51%,2.2% 43%,4.2% 34%,1.6% 26%,3.8% 17%,2.6% 9%)}
+.plate__lip{position:absolute;top:0;bottom:0;left:0;width:1.1rem;
+  background:linear-gradient(to right,var(--lip) 0%,var(--lip) 52%,rgba(222,220,215,0) 100%);
+  clip-path:inherit;pointer-events:none}
+.plate__face{padding:1.5rem 1.4rem 1.4rem 2.6rem;display:grid;gap:.3rem}
+.plate__face p{text-transform:uppercase;letter-spacing:.2em;color:var(--quiet)}
+.plate__cap{margin-top:.85rem;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--quiet)}
+
+.wet{position:relative;height:4.5rem;margin:2.5rem 0 0;
+  background:linear-gradient(to bottom,rgba(124,74,58,0) 0%,rgba(124,74,58,.10) 42%,
+    rgba(124,74,58,.26) 88%,rgba(124,74,58,.34) 99%,rgba(124,74,58,.34) 100%)}
+.wet::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--accent);
+  clip-path:polygon(0 0,6% 40%,13% 0,21% 55%,29% 10%,37% 45%,45% 0,53% 50%,
+    61% 15%,70% 45%,78% 0,86% 40%,93% 10%,100% 35%,100% 100%,0 100%)}
+
+.section{padding-top:clamp(2.5rem,6vw,4.5rem)}
+.head{font-family:"Young Serif",Georgia,serif;font-size:1.75rem;line-height:1.1;
+  letter-spacing:-.01em;margin:0 0 1.75rem}
+.specimens{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
+  gap:2.5rem 3rem}
+.specimen{max-width:34ch}
+.no{display:block;text-transform:uppercase;letter-spacing:.2em;color:var(--quiet);
+  margin-bottom:.5rem}
+.specimen h3{font-family:"Young Serif",Georgia,serif;font-size:1.125rem;line-height:1.2}
+.specimen>p{margin:.5rem 0 0}
+.spec{margin:1rem 0 0;display:grid;grid-template-columns:5.5rem minmax(0,1fr);
+  gap:.1rem 1rem}
+.spec dt{color:var(--quiet);text-transform:uppercase;letter-spacing:.12em}
+.spec--contact{margin-top:1.75rem;max-width:30rem}
+.services{list-style:none;display:grid;max-width:40rem}
+.services li{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;
+  padding:.9rem 0;border-bottom:1px solid rgba(58,58,55,.26)}
+.services li:first-child{border-top:1px solid rgba(58,58,55,.26)}
+.services li>span:last-child{font-family:"Young Serif",Georgia,serif;font-size:1.125rem}
+
+.act{display:inline-block;margin-top:1.4rem;background:var(--accent);color:var(--lip);
+  text-decoration:none;font-family:"Young Serif",Georgia,serif;font-size:1.25rem;
+  padding:.65rem 1.4rem;transition:background 140ms cubic-bezier(.2,0,0,1)}
+.act:hover,.act:focus-visible{background:#5A3529}
+
+.colophon{margin-top:clamp(3rem,7vw,5rem);padding-top:1.4rem;
+  border-top:1px solid rgba(58,58,55,.26);color:var(--quiet)}
+.colophon dl{display:grid;gap:.5rem}
+.colophon div{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:1.25rem}
+.colophon dt{text-transform:uppercase;letter-spacing:.12em}
+.colophon dd{max-width:68ch}
+.colophon__note{margin-top:1.75rem}
+
+@media(max-width:58rem){
+  .mast{grid-template-columns:minmax(0,1fr)}
+  .plate{max-width:24rem}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+</style>
+</head>
+<body>
+<canvas id="stock" aria-hidden="true"></canvas>
+
+<div class="sheet">
+  <p class="crop" aria-hidden="true">
+    STUDIO&nbsp;— &middot; specimen sheet &middot; crystalline break &middot; #A9A69F &middot; fresh face against weathered &middot; no warmth in the stone &middot;
+    even illumination &middot; no vignette &middot; substrate s3 of 5 &middot; sheet 1 of 5 &middot;
+  </p>
+
+  <header class="mast">
+    <div>
+      <p class="stamp">Sheet 1 of 5 &middot; substrate s3 of 5 &middot; granite</p>
+      <h1 class="wordmark">STUDIO&nbsp;—</h1>
+      <div class="slot">
+        <span class="slot__label">Positioning line &middot; slot empty</span>
+        <div class="slot__rules" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="plate">
+        <div class="plate__lip" aria-hidden="true"></div>
+        <div class="plate__face">
+          <p>Plate 1 &middot; image reserved</p>
+          <p>4:5 portrait</p>
+        </div>
+      </div>
+      <figcaption class="plate__cap">Fresh faces sharp, weathered faces rounded.</figcaption>
+    </figure>
+  </header>
+
+  <div class="wet" role="separator" aria-hidden="true"></div>
+
+  <main>
+    <section class="section" aria-labelledby="s-work">
+      <h2 id="s-work" class="head">Selected work</h2>
+      <div class="specimens">
+        <article class="specimen">
+          <p class="no">Specimen A</p>
+          <h3>Malmesbury Abbey</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen B</p>
+          <h3 class="void">CLIENT A</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+        <article class="specimen">
+          <p class="no">Specimen C</p>
+          <h3 class="void">CLIENT B</h3>
+          <p class="void">&mdash;&mdash;&mdash;</p>
+          <dl class="spec">
+            <dt>Role</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Delivered</dt><dd class="void">&mdash;&mdash;&mdash;</dd>
+            <dt>Outcome</dt><dd class="void">&mdash;&mdash;&percnt;</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="s-cap">
+      <h2 id="s-cap" class="head">What I do</h2>
+      <ul class="services">
+        <li><span class="no">Specimen D</span><span class="void">SERVICE A</span></li>
+        <li><span class="no">Specimen E</span><span class="void">SERVICE B</span></li>
+        <li><span class="no">Specimen F</span><span class="void">SERVICE C</span></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="s-contact">
+      <h2 id="s-contact" class="head">Contact</h2>
+      <div>
+        <p><a class="act" href="mailto:hello@studio.example">Start a project</a></p>
+        <dl class="spec spec--contact">
+          <dt>Email</dt><dd class="void">&mdash;&mdash;&mdash;&nbsp;@&nbsp;studio.example</dd>
+          <dt>Based</dt><dd class="void">&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;N&nbsp;&nbsp;&mdash;&mdash;.&mdash;&mdash;&mdash;&deg;W</dd>
+          <dt>Source</dt><dd><a href="https://github.com/ehix">github.com/ehix</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      <dl>
+        <div><dt>Stock</dt><dd>Grey granite #A9A69F. The one substrate here with no warmth in it, so the sheet runs cool and the pigment carries every degree of warmth on it.</dd></div>
+        <div><dt>Break</dt><dd>Coarse and crystalline. Fragment boundaries are the sharpest lines on the sheet, because a fracture is not a fade.</dd></div>
+        <div><dt>Faces</dt><dd>Every piece shows both a fresh fractured face and a weathered outer one. Fresh is lighter and sharper, weathered darker and rounded.</dd></div>
+        <div><dt>Light</dt><dd>Even throughout. No vignette, no hotspot. The value change is the stone, never a lamp.</dd></div>
+        <div><dt>Pigment</dt><dd>#7A4A3A at 2.98:1, so it carries areas and never small text. The lip on it reaches 5.29:1.</dd></div>
+        <div><dt>Type</dt><dd>Young Serif 400 and Courier Prime 400/700, both SIL OFL 1.1. Licence files are not yet vendored alongside them.</dd></div>
+        <div><dt>Measured</dt><dd>Ink on stock 6.87:1 &middot; quiet 4.70:1 &middot; lip on pigment 5.29:1</dd></div>
+        <div><dt>Site</dt><dd>6 routes &middot; 1 case study &middot; 6 placeholder slots unfilled &middot; astro 7.0.6 &middot; Cloudflare Pages</dd></div>
+      </dl>
+      <p class="colophon__note">&copy; STUDIO&nbsp;— 2026 &middot; studio.example</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var cv = document.getElementById('stock');
+  var gl = cv.getContext('webgl', { antialias: false, alpha: false });
+  if (!gl) return;
+
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+
+  var FS = [
+    'precision highp float;',
+    'uniform vec2 uRes; uniform float uScroll;',
+
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+    'float hash1(vec2 p){return fract(sin(dot(p,vec2(269.5,183.3)))*43758.5453123);}',
+    'float vn(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
+    ' return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),',
+    '            mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}',
+    'float fbm(vec2 p){float v=0.,a=.5;',
+    ' for(int i=0;i<5;i++){v+=a*vn(p);p=p*2.06;a*=.5;}return v;}',
+
+    // signed distance to a rectangle: negative inside, positive outside
+    'float box(vec2 p,vec2 b){vec2 d=abs(p)-b;',
+    ' return length(max(d,0.0))+min(max(d.x,d.y),0.0);}',
+
+    'void main(){',
+    ' vec2 frag=gl_FragCoord.xy;',
+    ' vec2 sp=vec2(frag.x,frag.y-uScroll);',
+    ' vec2 uv=sp/uRes.y;',
+    ' float ar=uRes.x/uRes.y;',
+
+    // ── voronoi. the cell IS the crystal, so the boundary has to be found
+    //    rather than drawn: nearest and second-nearest, and the gap between
+    //    them is the distance to the fracture.
+    //    the pitch matters more than anything else here. granite breaks at a
+    //    few millimetres; at cell sizes you can point at, it is terrazzo.
+    ' vec2 g=uv*52.0;',
+    ' vec2 gi=floor(g), gf=fract(g);',
+    ' float d1=8.0,d2=8.0; vec2 id1=vec2(0.0);',
+    ' for(int y=-1;y<=1;y++){ for(int x=-1;x<=1;x++){',
+    '   vec2 o=vec2(float(x),float(y));',
+    '   vec2 pt=o+vec2(hash(gi+o),hash1(gi+o));',
+    '   float d=length(pt-gf);',
+    '   if(d<d1){ d2=d1; d1=d; id1=gi+o; } else if(d<d2){ d2=d; }',
+    ' }}',
+    ' float edge=d2-d1;',
+
+    // ── the stone. cool grey, and every crystal within a step or two of its
+    //    neighbours: this is a material, not a composition about contrast.
+    ' float ph=hash(id1*1.7);',
+    ' vec3 c=vec3(.663,.651,.624);',
+    ' c*=0.945+0.105*ph;',
+    // a few crystals are a different mineral entirely: darker, and rarer
+    ' c=mix(c,c*vec3(0.760,0.775,0.800),step(0.88,hash(id1+13.0))*0.85);',
+
+    // ── every piece shows BOTH faces. a plane through the crystal splits it:
+    //    one side fresh, one side weathered, and nearly every piece has both.
+    ' float ang=ph*6.2831;',
+    ' vec2 nrm=vec2(cos(ang),sin(ang));',
+    ' float split=dot(gf-0.5,nrm)+(hash(id1+3.9)-0.5)*0.50;',
+    ' float fresh=smoothstep(-0.03,0.03,split);',
+
+    // fresh: lighter and SHARP. a fracture face is crystalline, so its
+    // variation is hard-edged. sampled on the voronoi cell rather than on a
+    // screen-aligned grid, or the facets come out rectangular.
+    ' vec3 cf=c*1.055;',
+    ' cf*=0.972+0.055*step(0.5,hash(id1*4.0+floor(gf*3.0)));',
+
+    // weathered: darker and ROUNDED. the same stone with its edges taken off,
+    // so the variation is low frequency and nothing in it is sharp.
+    ' vec3 cw=c*0.952;',
+    ' cw*=0.978+0.042*fbm(uv*14.0+id1);',
+
+    ' c=mix(cw,cf,fresh);',
+
+    // ── the fracture itself: fine, dark and the sharpest thing on the sheet
+    ' c*=1.0-(1.0-smoothstep(0.0,0.055,edge))*0.16;',
+    // ── mica: fine bright specks that belong to the rock, not to the light
+    ' vec2 fg=floor(sp/2.0);',
+    ' c+=vec3(.055,.055,.060)*step(0.9972,hash1(fg));',
+    ' c=mix(c,vec3(.13,.13,.135),step(0.9975,hash1(fg+41.0))*0.55);',
+
+    // ── the tooth of the cut surface, even across the whole plane
+    ' c*=1.0+(hash(floor(sp*0.95))-0.5)*0.042;',
+
+    ' gl_FragColor=vec4(c,1.0);}'
+  ].join('\n');
+
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(o));return null;}return o;}
+  var prog=gl.createProgram(), vs=sh(gl.VERTEX_SHADER,VS), fs=sh(gl.FRAGMENT_SHADER,FS);
+  if(!vs||!fs) return;
+  gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.linkProgram(prog);gl.useProgram(prog);
+
+  var buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var al=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+
+  var uRes=gl.getUniformLocation(prog,'uRes'), uScroll=gl.getUniformLocation(prog,'uScroll');
+  var dpr=1,W=0,H=0;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.floor(innerWidth*dpr);H=Math.floor(innerHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+    draw();
+  }
+  function draw(){
+    gl.uniform2f(uRes,W,H);
+    gl.uniform1f(uScroll,-(window.scrollY||0)*dpr);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  }
+  addEventListener('resize',resize);
+  addEventListener('scroll',function(){requestAnimationFrame(draw);},{passive:true});
+  resize();
+})();
+</script>
+</body>
+</html>
