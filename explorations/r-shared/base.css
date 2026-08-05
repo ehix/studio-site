@@ -1,0 +1,117 @@
+/* ===========================================================================
+   SHARED BASE — the five directions
+   Structure, accessibility and motion only. Every direction supplies its own
+   tokens, typefaces, layout treatment and graphics; nothing here decides how
+   a direction looks.
+
+   Everything in this file exists because the r1 critique found it. Each fix
+   is applied once, so a defect cannot survive in four other places.
+   =========================================================================== */
+
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,canvas,svg{display:block;max-width:100%}
+
+/* focus is never removed, only restyled by each direction */
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* CRITIQUE: 0 of 5 sections carried an accessible name, and there was no
+   skip link. Six focusable elements across 5,078px with no way past them. */
+.skip{position:absolute;left:-9999px;top:0;z-index:200;
+  padding:12px 18px;background:var(--ink);color:var(--bg);
+  font-size:13px;letter-spacing:.04em}
+.skip:focus{left:12px;top:12px}
+
+.wrap{max-width:var(--measure,1360px);margin-inline:auto;
+  padding-inline:var(--pad)}
+
+/* CRITIQUE: 31.1% of the page measured as empty band, single voids of 281px.
+   The gap is now tighter by default; a direction may open it up where it has
+   something to put in the space. */
+section{padding-block:var(--gap)}
+
+/* ── work ──────────────────────────────────────────────────────────────────
+   CRITIQUE: nothing in the work section was clickable — no link, no hover, no
+   cursor change — on the one interaction a portfolio visitor will certainly
+   attempt. The whole row is now the link. */
+.piece{display:grid;gap:var(--piece-gap,24px);
+  /* CRITIQUE: captions were vertically centred against 497px media, floating
+     ~180px clear of the thing they describe. Top-aligned now. */
+  align-items:start}
+a.piece{cursor:pointer}
+a.piece .piece__name{text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:.22em;
+  text-decoration-color:transparent;
+  transition:text-decoration-color .3s var(--out,ease)}
+a.piece:hover .piece__name{text-decoration-color:currentColor}
+.piece__media{position:relative;overflow:hidden;background:var(--raised)}
+.piece__media canvas{width:100%;height:100%}
+
+/* CRITIQUE: nth-child(even) moved the media into the narrower column without
+   swapping the ratio, silently rendering the middle project 20% smaller.
+   The ratio swaps with the order now, so both sides are the same size. */
+@media(min-width:900px){
+  .work--alt .piece{grid-template-columns:var(--piece-cols,1.25fr 1fr)}
+  .work--alt .piece:nth-child(even){grid-template-columns:var(--piece-cols-rev,1fr 1.25fr)}
+  .work--alt .piece:nth-child(even) .piece__media{order:2}
+}
+
+/* ── gaps ──────────────────────────────────────────────────────────────────
+   CRITIQUE: `.gap` (0,1,0) lost to `.piece__body p` (0,1,1), so 3 of 12
+   placeholders rendered identical to real copy. And at 62% mix the ones that
+   did dim measured 3.787:1 — failing AA at 10px and 11px.
+
+   Both fixed: the selector now wins on its own, and the mix is high enough to
+   clear 4.5:1. A gap reads as a gap because of the em-dash and the rule under
+   it, not because the text has been faded toward illegibility. */
+.gap,p.gap,h3.gap,span.gap,b.gap,.piece__body p.gap{
+  color:var(--gap-ink)}
+.slot{display:inline-flex;align-items:baseline;gap:10px;
+  min-width:6ch;border-bottom:1px solid var(--edge);padding-bottom:3px}
+
+/* ── motion ────────────────────────────────────────────────────────────────
+   CRITIQUE, and this was mine: the hidden state was applied after first paint
+   *together with* its transition, so eleven elements animated 1 → 0 over
+   900ms. On a 844px viewport the first one sat at 822px — you watched the
+   headline appear and dissolve. The observer's -12% root margin then put its
+   trigger line above the element, so it never fired, and a 3s failsafe did
+   all the revealing.
+
+   Now the class is set by a blocking script in <head>, before the first
+   paint, so nothing is ever visible-then-hidden. The observer has no negative
+   root margin, so anything already on screen fires immediately. The failsafe
+   stays, and it no longer strips the transition from what it reveals. */
+@media(prefers-reduced-motion:no-preference){
+  html.reveal .rise{opacity:0;transform:translateY(14px);
+    transition:opacity .8s var(--out,ease),transform .8s var(--out,ease)}
+  html.reveal .rise.is-in{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html.reveal .rise{opacity:1;transform:none}
+  *{animation-duration:1ms!important;transition-duration:1ms!important}
+  html{scroll-behavior:auto}
+}
+
+/* ── shared components ─────────────────────────────────────────────────── */
+.pill{display:inline-flex;align-items:center;gap:10px;
+  padding:12px 12px 12px 20px;
+  font-size:12px;letter-spacing:.10em;text-transform:uppercase;
+  /* CRITIQUE: the ghost pill's only boundary was --edge at 1.365:1, which is
+     the one genuine 1.4.11 failure in the set. Borders on interactive
+     controls use --edge-ui, which every direction must keep above 3:1. */
+  transition:background .3s var(--out,ease),color .3s var(--out,ease),
+    border-color .3s var(--out,ease)}
+.pill__icon{display:grid;place-items:center;width:26px;height:26px;
+  border-radius:999px;font-size:13px;
+  transition:transform .35s var(--out,ease)}
+.pill:hover .pill__icon{transform:translateX(3px)}
+
+/* CRITIQUE: the wordmark was 61x30 — under the 44px minimum on touch. */
+@media(pointer:coarse){
+  .nav a,.pill{min-height:44px;display:inline-flex;align-items:center}
+}
+
+footer{padding-block:var(--gap-sm,56px)}

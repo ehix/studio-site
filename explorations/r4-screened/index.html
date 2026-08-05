@@ -3,81 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Studio — cinematic</title>
-<meta name="description" content="Dark, filmic, one large image carrying the page.">
+<title>Studio — screened</title>
+<meta name="description" content="Ink ground, screened imagery, editorial scale.">
 <!-- set before first paint, or the page renders then visibly fades out -->
 <script>if(matchMedia('(prefers-reduced-motion:no-preference)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('reveal');</script>
 <link rel="stylesheet" href="../r-shared/base.css">
 <style>
 @font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
 :root{
-  --bg:oklch(0.155 0.008 62);
-  --raised:oklch(0.215 0.010 62);
-  --edge:oklch(0.300 0.012 62);
-  --edge-ui:oklch(0.520 0.020 62);
-  --ink:oklch(0.945 0.012 78);
-  --muted:oklch(0.760 0.014 74);
-  --gap-ink:oklch(0.620 0.016 74);
-  --accent:oklch(0.720 0.140 58);
+  --bg:oklch(0.230 0.032 252);
+  --raised:oklch(0.285 0.034 252);
+  --edge:oklch(0.380 0.032 252);
+  --edge-ui:oklch(0.580 0.030 252);
+  --ink:oklch(0.955 0.010 92);
+  --muted:oklch(0.775 0.016 92);
+  --gap-ink:oklch(0.640 0.018 92);
+  --accent:oklch(0.740 0.150 62);
   --serif:"Young Serif",Georgia,serif;
   --sans:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --out:cubic-bezier(0.16,1,0.3,1);
-  --pad:clamp(20px,4.2vw,72px);
-  --gap:clamp(64px,9vh,120px);
+  --pad:clamp(18px,4vw,68px);
+  --gap:clamp(64px,9vh,124px);
   --gap-sm:56px;
-  --measure:1360px;
+  --measure:1400px;
 }
 
 html{color-scheme:dark;scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.62}
-::selection{background:var(--accent);color:oklch(0.16 0.01 62)}
-h1,h2,.piece__name,.cap__row h3,.app__row h3{font-family:var(--serif);font-weight:400;letter-spacing:-0.025em;line-height:1.04;text-wrap:balance}
-h1{font-size:clamp(2.8rem,7vw,5.4rem)}
-h2{font-size:clamp(1.9rem,4vw,3.2rem)}
-.nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px var(--pad);background:color-mix(in oklch,var(--bg) 86%,transparent);border-bottom:1px solid transparent;transition:border-color .4s var(--out)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6}
+::selection{background:var(--accent);color:oklch(0.23 0.03 252)}
+h1,h2,.piece__name{font-family:var(--serif);font-weight:400;letter-spacing:-0.028em;line-height:1.0;text-wrap:balance}
+h1{font-size:clamp(3rem,8vw,5.6rem)}
+h2{font-size:clamp(1.9rem,4vw,3.1rem)}
+.nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:14px var(--pad);background:color-mix(in oklch,var(--bg) 88%,transparent);border-bottom:1px solid transparent;transition:border-color .4s var(--out)}
 .nav.is-stuck{border-bottom-color:var(--edge)}
 .nav__mark{font-family:var(--serif);font-size:20px}
-.nav__links{display:flex;gap:clamp(14px,2.2vw,30px);align-items:center;font-size:13px}
+.nav__links{display:flex;gap:clamp(14px,2.2vw,28px);align-items:center;font-size:13px}
 .nav__links a:not(.pill){color:var(--muted)}
-.nav__links a:not(.pill):hover{color:var(--ink)}
 @media(max-width:760px){.nav__links a:not(.pill){display:none}}
-.pill{background:var(--ink);color:var(--bg);border-radius:999px}
-.pill__icon{background:var(--bg);color:var(--ink)}
-.pill:hover{background:var(--accent);color:oklch(0.16 0.01 62)}
+.pill{background:var(--accent);color:oklch(0.23 0.03 252);border-radius:999px}
+.pill__icon{background:oklch(0.23 0.03 252);color:var(--accent)}
+.pill:hover{background:var(--ink);color:oklch(0.23 0.03 252)}
 .pill--ghost{background:transparent;color:var(--ink);border:1px solid var(--edge-ui)}
 .pill--ghost .pill__icon{background:var(--ink);color:var(--bg)}
-.hero{padding-top:clamp(14px,2.4vh,28px)}
-.hero__frame{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/8.2;min-height:min(70vh,620px);background:var(--raised)}
-@media(max-width:820px){.hero__frame{aspect-ratio:4/5;min-height:0}}
-.hero__frame canvas{position:absolute;inset:0;width:100%;height:100%}
-.hero__mark{position:relative;z-index:2;margin-top:-0.30em;padding-left:clamp(4px,1.2vw,20px)}
-.hero__prop{margin-top:clamp(14px,2vh,26px);max-width:26ch;font-family:var(--serif);font-size:clamp(1.4rem,2.5vw,2.1rem);line-height:1.16;letter-spacing:-0.015em;color:var(--ink)}
-.hero__cta{margin-top:clamp(20px,3vh,34px);display:flex;gap:14px;flex-wrap:wrap}
-.statement{text-align:center;max-width:19ch;margin-inline:auto}
+/* full-bleed screened plate with the headline set over it */
+.hero{padding:0}
+.hero__bleed{position:relative;min-height:min(84vh,760px);display:grid;align-items:end;overflow:hidden}
+.hero__bleed canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero__bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in oklch,var(--bg) 30%,transparent) 0%,transparent 34%,color-mix(in oklch,var(--bg) 82%,transparent) 100%)}
+.hero__over{position:relative;z-index:2;padding:0 var(--pad) clamp(32px,6vh,72px);max-width:var(--measure);margin-inline:auto;width:100%}
+.hero__prop{margin-top:16px;max-width:30ch;font-size:clamp(1.2rem,2vw,1.6rem);line-height:1.3;color:var(--ink)}
+.hero__cta{margin-top:24px;display:flex;gap:14px;flex-wrap:wrap}
+.statement{max-width:18ch}
 .statement em{font-style:normal;color:var(--accent)}
-.statement + p{text-align:center;max-width:46ch;margin:22px auto 0;color:var(--muted)}
-.work--alt{display:grid;gap:clamp(48px,7vh,96px)}
-.piece__media{border-radius:12px;aspect-ratio:4/3}
-.piece__name{font-size:clamp(1.3rem,2.1vw,1.8rem)}
-.piece__kind{margin-top:8px;font-size:13px;color:var(--muted)}
-.piece__media--empty{opacity:.5}
+.statement + p{max-width:50ch;margin-top:20px;color:var(--muted)}
+/* work stacked full width, media leading */
+.work--stack{display:grid;gap:clamp(40px,6vh,80px)}
+.work--stack .piece{grid-template-columns:1fr;gap:18px}
+.work--stack .piece__media{aspect-ratio:21/9}
+.work--stack .piece__body{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;border-top:1px solid var(--edge);padding-top:14px}
+.work--stack .piece__name{font-size:clamp(1.4rem,2.6vw,2.2rem)}
+.work--stack .piece__kind{margin:0;font-size:13px;color:var(--muted)}
+.piece__media--empty{opacity:.45}
 .cap,.app{display:grid;gap:clamp(26px,4.5vw,64px)}
 @media(min-width:900px){.cap,.app{grid-template-columns:1fr 1.15fr;align-items:start}}
 .cap__row,.app__row{display:grid;grid-template-columns:1fr auto;gap:10px 22px;align-items:baseline;padding:20px 0;border-top:1px solid var(--edge)}
 .cap__list .cap__row:last-child,.app__list .app__row:last-child{border-bottom:1px solid var(--edge)}
-.cap__row h3,.app__row h3{font-size:1.2rem}
-.cap__meta{font-size:12px;color:var(--muted);letter-spacing:.06em}
+.cap__row h3,.app__row h3{font-family:var(--serif);font-size:1.2rem;font-weight:400}
+.cap__meta{font-size:12px;color:var(--muted)}
 .cap__row p,.app__row p{grid-column:1/-1;color:var(--muted);font-size:15.5px;max-width:58ch}
 .lede{color:var(--muted);max-width:44ch;margin-top:18px}
 .close{text-align:center}
 .close h2{max-width:15ch;margin-inline:auto}
 .close em{font-style:normal;color:var(--accent)}
-.close__sub{max-width:44ch;margin:20px auto 0;color:var(--muted)}
-.contact-line{margin-top:28px}
-.contact-note{margin-top:18px;font-size:13px;color:var(--gap-ink)}
-.signoff{padding-top:clamp(36px,6vh,80px);overflow:hidden}
-.signoff span{display:block;font-family:var(--serif);font-size:clamp(3rem,15vw,13rem);line-height:.84;letter-spacing:-0.035em;text-align:center;color:oklch(0.300 0.014 62)}
-footer{border-top:1px solid var(--edge);margin-top:clamp(28px,4vh,56px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.close__sub{max-width:46ch;margin:20px auto 0;color:var(--muted)}
+.contact-line{margin-top:26px}
+.contact-note{margin-top:16px;font-size:13px;color:var(--gap-ink)}
+.signoff{padding-top:clamp(32px,5vh,72px);overflow:hidden}
+.signoff span{display:block;font-family:var(--serif);font-size:clamp(3rem,15vw,12.5rem);line-height:.86;letter-spacing:-0.035em;text-align:center;color:var(--raised)}
+footer{border-top:1px solid var(--edge);margin-top:clamp(26px,4vh,52px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 
 </style>
 </head>
@@ -93,13 +96,17 @@ footer{border-top:1px solid var(--edge);margin-top:clamp(28px,4vh,56px);display:
   </div>
 </nav>
 <main id="main">
-  <header class="hero wrap" id="top">
-    <div class="hero__frame"><canvas data-f="hero" aria-hidden="true"></canvas></div>
-    <h1 class="hero__mark">Studio</h1>
-    <p class="hero__prop">Websites, games and publications. Designed, built and finished by one pair of hands.</p>
-    <div class="hero__cta">
-      <a class="pill" href="#contact">Start a conversation <span class="pill__icon" aria-hidden="true">&rarr;</span></a>
-      <a class="pill pill--ghost" href="#work">See the work <span class="pill__icon" aria-hidden="true">&rarr;</span></a>
+  <header class="hero" id="top">
+    <div class="hero__bleed">
+      <canvas data-f="hero" aria-hidden="true"></canvas>
+      <div class="hero__over">
+        <h1>Studio</h1>
+        <p class="hero__prop">Websites, games and publications. Designed, built and finished by one pair of hands.</p>
+        <div class="hero__cta">
+          <a class="pill" href="#contact">Start a conversation <span class="pill__icon" aria-hidden="true">&rarr;</span></a>
+          <a class="pill pill--ghost" href="#work">See the work <span class="pill__icon" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -110,7 +117,7 @@ footer{border-top:1px solid var(--edge);margin-top:clamp(28px,4vh,56px);display:
 
   <section class="wrap" id="work" aria-labelledby="s-work">
     <h2 class="rise" id="s-work">Selected work</h2>
-    <div class="work work--alt" data-stagger>
+    <div class="work work--stack" data-stagger>
       <a class="piece rise" href="/work/malmesbury-abbey">
         <div class="piece__media"><canvas data-f="w1" aria-hidden="true"></canvas></div>
         <div class="piece__body">
@@ -195,7 +202,7 @@ footer{border-top:1px solid var(--edge);margin-top:clamp(28px,4vh,56px);display:
   </footer>
 </main>
 <script>
-var PAINTER="cinematic";
+var PAINTER="screened";
 /* Stand-in graphics. Each direction paints a different material, and each
    canvas within a direction gets a different composition — the r1 critique
    found the four fields were one drawing with the light nudged. */
