@@ -81,7 +81,7 @@
     /* shape */
     amp:        96,     /* valley floor to peak, world units                 */
     ridge:      1.7,    /* >1 deepens valleys and keeps the peaks            */
-    octaves:    6,
+    octaves:    8,      /* two more than the grid used to hold — see N above */
     baseFreq:   4,      /* how many ranges across the map                    */
     roughness:  0.5,    /* amplitude falloff per octave                      */
     mask:       0.94,   /* plains-to-ranges variation. 0 = mountains everywhere */
@@ -198,8 +198,28 @@
   }
 
   /* ── the world ────────────────────────────────────────────────────────── */
-  var N = 384;                     /* heightmap resolution */
-  var CELL_WORLD = 2.9;            /* world units per map cell */
+  /* ── resolution, and what the landing does to it ──────────────────────────
+     384 cells at 2.9 world units carried the hero and the survey perfectly
+     well, because from a hundred units up a map cell is a screen cell and the
+     grid is invisible. The flight ends six metres off the ground, and there a
+     single cell spans fifty to a hundred screen cells: what fills the bottom
+     of the frame is the interpolation between four height samples, magnified,
+     which reads as smooth rounded lobes sliding under the camera.
+
+     Sampling the same field more finely would not have helped — six octaves
+     from `baseFreq` put the smallest real feature at about twelve world units,
+     so the surface genuinely has nothing in it below that and a finer grid
+     would only have drawn the same smooth shape more accurately. The detail
+     has to exist before it can be resolved, so the octave count goes up with
+     the grid: two more octaves take the finest feature to about three world
+     units, and 1.45 per cell is what it takes to hold them.
+
+     The world keeps its extent — N × CELL_WORLD is unchanged at 1113.6 — so
+     the landscape is the same landscape, the same keyframes fly over it, and
+     the large octaves are untouched. What is new is only what was missing:
+     form at the scale the reader's feet are on. */
+  var N = 768;                     /* heightmap resolution */
+  var CELL_WORLD = 1.45;           /* world units per map cell */
 
   var HEIGHT = new Float32Array(N * N);
   var SHADE  = new Float32Array(N * N);
