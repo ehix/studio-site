@@ -147,40 +147,22 @@
       var lat = Math.pow(Math.max(0, 1 - Math.abs(u - (0.44 + 0.05 * Math.sin(t * 0.21))) * 1.10), 1.7);
       var haze = fbm(u * 2.5 + t * 0.08, v * 1.9 - t * 0.05);
       return clamp01(g * lat * (0.46 + 0.86 * haze) + 0.016);
-    },
-
-    /* the sign-off. a low wide swell behind the wordmark. */
-    swell: function (u, v, t) {
-      var g = Math.pow(Math.max(0, 1 - Math.abs(v - 0.86) * 1.9), 2.2);
-      var lat = 0.55 + 0.45 * Math.sin(u * 2.2 + t * 0.16);
-      var haze = fbm(u * 2.2 + t * 0.07, v * 2.4 + t * 0.09);
-      /* ceiling rather than a lower gain: the wordmark sits on this, and a
-         blown-out band behind white type is a legibility problem as well as an
-         ugly one — but dropping the gain far enough to avoid it flattened the
-         whole field. Clamp the top instead and keep the falloff. */
-      return Math.min(0.90, clamp01(g * lat * (0.46 + 0.88 * haze) + 0.012));
     }
+
+    /* There was a sixth scene here, `swell` — a low wide glow behind the
+       wordmark. The sign-off is grass now (grass.js) and nothing referenced it,
+       so it is gone rather than left sitting under a comment claiming to be the
+       footer. It is in the history if the glow is ever wanted back. */
   };
 
-  /* ── indexed palettes ─────────────────────────────────────────────────────
-     Eight steps, hand-picked rather than interpolated, so the ramp has a shape:
-     the shadows stay near-neutral and the colour arrives only in the last three
-     steps, which is how a warm key actually behaves on film. */
-  var RAMP = {
-    amber: [
-      [10, 9, 8], [22, 18, 15], [42, 31, 22], [70, 47, 29],
-      [112, 71, 36], [170, 108, 47], [225, 163, 88], [248, 226, 182]
-    ],
-    cool: [
-      [8, 9, 11], [17, 21, 26], [30, 38, 48], [46, 60, 76],
-      [70, 92, 112], [110, 137, 158], [163, 187, 203], [226, 238, 245]
-    ]
-  };
-
-  /* 4x4 Bayer. The dither is the point, not a compromise: it is what lets an
-     8-entry palette carry a continuous falloff without banding, and it is the
-     texture the pixel family is named for. */
-  var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  /* ── screening ────────────────────────────────────────────────────────────
+     The palettes and the Bayer table live in screen.js, because the sign-off
+     grass screens through them too and "the same dither" has to mean the same
+     code. The loop below still quantises inline rather than calling
+     SCREEN.screen(): these scenes produce luminance one cell at a time and
+     have nothing to gain from a buffer between the two steps. */
+  var RAMP = SCREEN.RAMP;
+  var BAYER = SCREEN.BAYER;
 
   /* ── a field ──────────────────────────────────────────────────────────── */
   function Field(cv, cfg) {

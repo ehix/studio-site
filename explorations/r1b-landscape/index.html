@@ -284,6 +284,13 @@ em{font-style:normal;color:var(--accent)}
 .signoff canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.75}
 .signoff::after{content:"";position:absolute;inset:0;
   background:linear-gradient(to bottom,var(--bg) 0%,transparent 40%)}
+/* The near blades sit above the wordmark so the field has the type standing in
+   it rather than pasted over it. Higher opacity than the plate behind, because
+   these read as objects in front of something rather than as light: at .75 the
+   near-black stalks came out mid-grey over the letterforms and looked like a
+   rendering fault. Two classes deep on purpose — `.signoff canvas` above is
+   0-1-1 and would otherwise win. */
+.signoff .signoff__near{z-index:3;opacity:.94;pointer-events:none}
 /* The wordmark sits flush to the bottom edge rather than being sliced through
    the middle of its letterforms — an arbitrary cut across "Studio" with the
    footer rule landing in it reads as a clipping bug, not as a bleed. */
@@ -458,8 +465,10 @@ footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
   </section>
 
   <div class="signoff" aria-hidden="true">
-    <canvas data-field='{"scene":"swell","ramp":"amber","cell":5,"drift":0.30,"seed":63.4}'></canvas>
+    <canvas data-grass="back"
+            data-grass-cfg='{"ramp":"amber","cell":3,"drift":1,"seed":63.4}'></canvas>
     <span>Studio</span>
+    <canvas class="signoff__near" data-grass="front"></canvas>
   </div>
 
   <footer class="wrap">
@@ -468,8 +477,15 @@ footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
   </footer>
 </main>
 
+<!-- screen.js first: it owns the palettes and the dither table the other three
+     screen through. -->
+<script src="screen.js"></script>
 <script src="terrain.js"></script>
 <script src="field.js"></script>
+<script src="grass.js"></script>
 <script src="motion.js"></script>
+<!-- Development only. Hidden unless you press ` or add ?tune — and not carried
+     across to the real site when a direction is chosen. -->
+<script src="tune.js"></script>
 </body>
 </html>
