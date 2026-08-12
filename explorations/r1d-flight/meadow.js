@@ -68,7 +68,7 @@ var MEADOW = (function () {
     reliefScale: 2.4,  /* world units per cycle of the fine octave         */
     reliefStep:  3.6,  /* × that, for the coarse one                       */
     reliefCoarse: 0.85,/* how much the coarse octave counts                */
-    reliefFar:  160,   /* world units. past this it is not the near field  */
+    reliefFar:  800,   /* world units. where the form has faded out anyway */
 
 
     /* ── weather on the ground ───────────────────────────────────────────
@@ -256,20 +256,26 @@ var MEADOW = (function () {
      key light, because a bump in shadow has no lit side and no dark side —
      unlit relief is the giveaway of a normal map applied without thinking. */
   function relief(px, pz, foot, range, sunX, sunZ) {
-    /* ── the near field, and meaning it ────────────────────────────────────
-       The Nyquist fade alone is not a distance limit. One screen cell is
-       about 0.003 world units per unit of range here, so the coarse octave
-       does not reach its own limit until three thousand units out — which is
-       to say the fade was letting this run on every ground pixel in the
-       frame, and it cost nine and a half milliseconds of a fifty-one
-       millisecond hero to do it.
+    /* ── where the form is allowed to stop ─────────────────────────────────
+       A cost gate, and it has to be set where the thing it is cutting has
+       already faded, or it does not save work — it deletes a feature.
 
-       This exists to put form under the reader's feet at the landing, where
-       one map cell covers twenty-eight screen cells. Past a hundred and sixty
-       units the heightmap and the grain are carrying the ground perfectly
-       well and there is nothing for it to add, so it stops — which costs one
-       comparison on the pixels that skip it and takes the whole feature down
-       to under two milliseconds. */
+       It was set at a hundred and sixty units, which is about a tenth of the
+       range where this pass fades out on its own: one screen cell is 0.005
+       world units per unit of range, so the coarse octave does not reach its
+       own Nyquist limit until about sixteen hundred. Relief was therefore
+       being switched off at full strength, and because it rides on `sh` it is
+       strongest exactly on sunlit crests — so ridges and peaks visibly gained
+       and lost their surface form as they crossed the boundary, and the
+       boundary swept across the frame whenever the camera moved. That is what
+       read as peaks being cut off and put back on at a certain distance.
+
+       The gate was worth nine and a half milliseconds when it was written and
+       is worth under one now, because the per-octave fades below do the same
+       work in the right variable. So it moves out to where the fade has
+       genuinely taken hold and the haze has the ground anyway. It still ends
+       the pass before the survey, which sits past it and never wanted near
+       field form in the first place. */
     if (range >= P.reliefFar) return 0;
     var near = 1 - smooth01((range - P.reliefFar * 0.45) / (P.reliefFar * 0.55));
     if (near <= 0) return 0;

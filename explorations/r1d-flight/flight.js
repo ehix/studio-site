@@ -1864,7 +1864,7 @@
           ['reliefScale',0.5, 12, 0.1,  'live', 'world units per cycle of it'],
           ['reliefStep', 1.5, 8,  0.1,  'live', '× that, for the coarse octave'],
           ['reliefCoarse',0, 2.0, 0.05, 'live', 'how much that one counts'],
-          ['reliefFar',  20, 600, 10,   'live', 'how far out it is drawn'],
+          ['reliefFar',  20, 1600, 10,  'live', 'how far out it is drawn'],
           ['grain',     0,   1.0, 0.01, 'live', 'how hard the fine texture bites'],
           ['grainScale',0.3, 8.0, 0.05, 'live', 'world units per cycle of it'],
           ['clumpScale',1.0, 30,  0.5,  'live', 'and of the coarse one'],
