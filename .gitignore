@@ -27,5 +27,8 @@ pnpm-debug.log*
 # playwright mcp artefacts
 .playwright-mcp/
 
+# impeccable hook cache
+.impeccable/
+
 # wrangler local dev cache
 .wrangler/
