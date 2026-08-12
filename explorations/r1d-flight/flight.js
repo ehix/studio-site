@@ -75,7 +75,7 @@
     surveyAlt: 900,    /* the top of the rise                               */
     landAlt:   5.5,    /* where it comes to rest                            */
     surveyPitch: -1.36,/* radians. -1.57 is straight down                   */
-    camGround:  7,     /* radius the camera averages its ground over       */
+    camGround:  2,     /* radius the camera averages its ground over       */
     landPitch: -0.14,  /* the same high horizon the opening has              */
     fov:       0.92,
     pan:       3.0,    /* opening drift, world units a second               */
@@ -624,12 +624,22 @@
 
      So the camera rides the large form instead: the mean of the point it is
      over and a ring around it, which is a low pass with the fine octaves in
-     the stop band. It costs nine height lookups a frame against the several
-     hundred thousand the march is already doing, it takes the wobble down to
-     0.08, and it keeps the shape of the land — the height still ranges over
-     thirteen units across the approach where the raw signal ranges over
-     seventeen. The bumps are still there to look at; the camera just stops
-     trying to climb each one. */
+     the stop band. Nine height lookups a frame against the several hundred
+     thousand the march is already doing, and it takes the wobble from 0.21
+     to 0.09.
+
+     The radius is small, and that is the whole of the difficulty. This ground
+     is ridged — `1 - |n|`, creased at every zero crossing — so a neighbourhood
+     mean does not sit level with the point at its centre, it sits *below* it,
+     and the wider the ring the further below. Since the keyframe altitude is
+     measured from this reference, that bias is not a rounding error: it flies
+     the camera lower than the flight says it does, and low is exactly what
+     brings the near field's magnification back. A radius of seven, tried
+     first, cost 0.59 units of mean clearance and 2.56 at worst — a third of
+     the height the camera is meant to have at the landing — while damping no
+     better than a radius of three. Two gets most of the smoothing for a bias
+     of 0.02, and that is the trade: take the wobble out of the ride without
+     quietly lowering it. */
   function groundFor(x, z) {
     var r = P.camGround, s = W.heightAt(x, z), k, a;
     for (k = 0; k < 8; k++) {
