@@ -1901,6 +1901,7 @@
         ]],
         ['how it looks', [
           ['albedo',    0.3, 1.4, 0.01, 'live', 'grass against rock'],
+          ['aa',        0.1, 0.6, 0.01, 'live', 'octave fade margin. 0.5 boils'],
           ['relief',    0,   8.0, 0.1,  'live', 'small form in the near field'],
           ['reliefScale',0.5, 12, 0.1,  'live', 'world units per cycle of it'],
           ['reliefStep', 1.5, 8,  0.1,  'live', '× that, for the coarse octave'],

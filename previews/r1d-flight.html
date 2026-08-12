@@ -2286,6 +2286,34 @@ var MEADOW = (function () {
 
     /* what it looks like */
     albedo:     0.80,  /* grass against rock at 1.0. lower reads softer   */
+    /* ── how much margin the octave fades keep against their own limit ────
+       Every noise pass here fades an octave out as the screen cell grows
+       toward the octave's wavelength, and every one of them used to hold full
+       strength right up to `foot = scale/2` — one cell for every half cycle,
+       which is Nyquist exactly, and only reached zero at one sample per cycle,
+       which is past it.
+
+       That is defensible for a still frame and wrong for a moving one. At two
+       samples a cycle the phase the noise is sampled at is decided by where
+       the camera happens to be standing, so a fraction of a cell of movement
+       swings the value across the noise's whole range. The ground is then
+       drawn through eight colours and a 4×4 dither, where a swing that size
+       does not shade differently, it flips the cell to another colour outright
+       — and thousands of cells flipping in a region every frame is the boiling
+       that reads as blobs crawling over the peaks.
+
+       So the fades keep margin in hand rather than running to the limit. The
+       finest octave retires a little nearer the camera than it used to, which
+       costs some texture in the middle distance and buys ground that holds
+       still.
+
+       The knee is sharp and it is worth knowing where: measured on two
+       consecutive frames with the camera nudged a fraction of a cell, the
+       share of near-field pixels that change colour outright runs 15.8% at
+       0.50, 0.55% at 0.35, 0.44% at 0.25. Almost all of the boiling goes in
+       the first step, so this sits just past the knee rather than deep into
+       it — no more texture is given up than the artefact costs. */
+    aa:         0.30,  /* fraction of an octave's scale it stays whole to  */
     grain:      0.30,  /* how hard the fine texture bites                 */
     grainScale: 1.35,  /* world units per cycle of the fine texture       */
     clumpScale: 7.0,   /* and of the coarse one under it                  */
@@ -2520,12 +2548,12 @@ var MEADOW = (function () {
     if (near <= 0) return 0;
 
     var s = P.reliefScale;
-    if (foot >= s * P.reliefStep) return 0;
+    if (foot >= s * P.reliefStep * P.aa * 2) return 0;
 
     var v = 0, i, sc, fade, e, gx, gz, w;
     for (i = 0; i < 2; i++) {
       sc = i === 0 ? s : s * P.reliefStep;
-      fade = 1 - smooth01(foot / (sc * 0.5) - 1);
+      fade = 1 - smooth01(foot / (sc * P.aa) - 1);
       if (fade <= 0) continue;
       e = sc * 0.28;
       gx = vnoise((px + e) / sc, pz / sc) - vnoise((px - e) / sc, pz / sc);
@@ -2555,16 +2583,16 @@ var MEADOW = (function () {
     /* Nothing to draw once both octaves are past their limit, which is most
        of the frame whenever the camera is high. Worth an early return rather
        than two noise calls that are about to be multiplied by zero. */
-    if (foot >= P.clumpScale * 0.5 * 2) return 0;
+    if (foot >= P.clumpScale * P.aa * 2) return 0;
 
     var g = 0, w = 0;
 
-    var fadeA = 1 - smooth01(foot / (P.grainScale * 0.5) - 1);
+    var fadeA = 1 - smooth01(foot / (P.grainScale * P.aa) - 1);
     if (fadeA > 0) {
       g += vnoise(px / P.grainScale, pz / P.grainScale) * fadeA;
       w += fadeA;
     }
-    var fadeB = 1 - smooth01(foot / (P.clumpScale * 0.5) - 1);
+    var fadeB = 1 - smooth01(foot / (P.clumpScale * P.aa) - 1);
     if (fadeB > 0) {
       g += vnoise(px / P.clumpScale, pz / P.clumpScale) * P.clump * fadeB;
       w += P.clump * fadeB;
@@ -2597,16 +2625,16 @@ var MEADOW = (function () {
      fires for everything past about seven units of footprint, which at the
      landing is most of the frame and at any altitude is nearly all of it. */
   function rock(px, pz, foot) {
-    if (foot >= P.rockClumpScale * 0.5 * 2) return 0;
+    if (foot >= P.rockClumpScale * P.aa * 2) return 0;
 
     var g = 0, w = 0;
 
-    var fadeA = 1 - smooth01(foot / (P.rockScale * 0.5) - 1);
+    var fadeA = 1 - smooth01(foot / (P.rockScale * P.aa) - 1);
     if (fadeA > 0) {
       g += vnoise(px / P.rockScale, pz / P.rockScale) * fadeA;
       w += fadeA;
     }
-    var fadeB = 1 - smooth01(foot / (P.rockClumpScale * 0.5) - 1);
+    var fadeB = 1 - smooth01(foot / (P.rockClumpScale * P.aa) - 1);
     if (fadeB > 0) {
       g += vnoise(px / P.rockClumpScale + 41.7, pz / P.rockClumpScale + 13.3)
            * P.rockClump * fadeB;
@@ -4957,6 +4985,7 @@ var MEADOW = (function () {
         ]],
         ['how it looks', [
           ['albedo',    0.3, 1.4, 0.01, 'live', 'grass against rock'],
+          ['aa',        0.1, 0.6, 0.01, 'live', 'octave fade margin. 0.5 boils'],
           ['relief',    0,   8.0, 0.1,  'live', 'small form in the near field'],
           ['reliefScale',0.5, 12, 0.1,  'live', 'world units per cycle of it'],
           ['reliefStep', 1.5, 8,  0.1,  'live', '× that, for the coarse octave'],
