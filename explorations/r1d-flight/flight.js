@@ -75,6 +75,7 @@
     surveyAlt: 900,    /* the top of the rise                               */
     landAlt:   5.5,    /* where it comes to rest                            */
     surveyPitch: -1.36,/* radians. -1.57 is straight down                   */
+    camGround:  7,     /* radius the camera averages its ground over       */
     landPitch: -0.14,  /* the same high horizon the opening has              */
     fov:       0.92,
     pan:       3.0,    /* opening drift, world units a second               */
@@ -608,6 +609,36 @@
     findClearing(spot.x, spot.z);
   }
 
+  /* ── what the camera stands on ────────────────────────────────────────────
+     The altitude in the keyframes is height above ground, so the camera needs
+     a ground to be above, and it used to take one height sample directly under
+     itself. That was fine while the smallest thing in the landscape was nine
+     world units across: the reference moved slowly and the camera glided.
+
+     It stopped being fine when the ground gained the detail the landing needed
+     — the finest feature is now a bit over two units, so a single sample under
+     a camera crossing the ground picks up every small rise and the whole frame
+     bobs with it. Measured along the landing approach it wobbled 0.21 units a
+     step against a camera seven units up, which is not a landscape moving, it
+     is the camera shaking.
+
+     So the camera rides the large form instead: the mean of the point it is
+     over and a ring around it, which is a low pass with the fine octaves in
+     the stop band. It costs nine height lookups a frame against the several
+     hundred thousand the march is already doing, it takes the wobble down to
+     0.08, and it keeps the shape of the land — the height still ranges over
+     thirteen units across the approach where the raw signal ranges over
+     seventeen. The bumps are still there to look at; the camera just stops
+     trying to climb each one. */
+  function groundFor(x, z) {
+    var r = P.camGround, s = W.heightAt(x, z), k, a;
+    for (k = 0; k < 8; k++) {
+      a = k * 0.7854;
+      s += W.heightAt(x + Math.cos(a) * r, z + Math.sin(a) * r);
+    }
+    return s / 9;
+  }
+
   function rig(p) {
     var i = 0;
     while (i < KF.length - 2 && KF[i + 1].p < p) i++;
@@ -642,7 +673,7 @@
     while (dy < -Math.PI) dy += 6.2832;
     cam.yaw = spot.heading + dy * turn;
 
-    cam.ground = W.heightAt(cam.x, cam.z);
+    cam.ground = groundFor(cam.x, cam.z);
     cam.alt = alt;
     cam.y = cam.ground + alt;
     cam.pitch = pitch;
@@ -1936,6 +1967,7 @@
         ['surveyAlt',200,1800, 10,    'live', 'the top of the rise'],
         ['landAlt',  0.5,  20,  0.1,  'live', 'where it comes to rest'],
         ['surveyPitch', -1.57, -0.6, 0.01, 'live', 'survey pitch (-1.57 = straight down)'],
+        ['camGround',  0,   30,  0.5,  'live', 'how far the camera averages its ground'],
         ['landPitch', -0.4, 0.4, 0.01, 'live', 'pitch at the landing'],
         ['fov',      0.4, 1.6,  0.01, 'live', '× field of view'],
         ['pan',        0,  12,  0.1,  'live', 'opening drift speed'],
