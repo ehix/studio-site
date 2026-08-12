@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>s2 · altitude in the margin — r1c</title>
+<meta name="description" content="A hairline in the gutter that falls from a kilometre to eight centimetres as you read.">
+<meta name="theme-color" content="#131110">
+<script>if(matchMedia('(prefers-reduced-motion:no-preference)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('reveal');</script>
+<link rel="stylesheet" href="../r-shared/base.css">
+<link rel="stylesheet" href="shell.css">
+<style>
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+/* ── the rail ──────────────────────────────────────────────────────────────
+   Fixed to the viewport, in the gutter outside the measure. It is the one
+   piece of the page that is always visible, so it is also the quietest: a
+   hairline, a number, and station names that only light up once you are past
+   them. */
+.alt{position:fixed;left:max(14px,calc((100vw - var(--measure)) / 2 - 78px));
+  top:16vh;bottom:16vh;width:78px;z-index:60;pointer-events:none;
+  font-family:var(--mono);color:var(--gap-ink)}
+
+.alt__line{position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:var(--edge)}
+.alt__fill{position:absolute;inset:0;background:var(--accent);opacity:.75;
+  transform:scaleY(0);transform-origin:top}
+
+.alt__read{position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;width:66px}
+.alt__num{font-weight:400;font-size:16px;letter-spacing:-0.02em;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.alt__unit{font-size:9.5px;letter-spacing:.08em;color:var(--muted)}
+/* The station name and the tick labels are peers — the same kind of thing at
+   two positions — so they share a size. Three steps in a 78px rail (16 / 10.5
+   / 9.5) is a hierarchy; four was just four small sizes. */
+.alt__name{flex:0 0 100%;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gap-ink);margin-top:2px}
+
+.alt__ticks{position:absolute;left:0;top:0;bottom:0;width:100%;list-style:none;
+  margin:0;padding:0}
+.alt__ticks li{position:absolute;left:0;transform:translateY(-50%);
+  padding-left:10px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--edge-ui);white-space:nowrap;
+  transition:color .4s var(--out),opacity .4s var(--out);opacity:.55}
+.alt__ticks li::before{content:"";position:absolute;left:0;top:50%;width:5px;
+  height:1px;background:currentColor}
+.alt__ticks li.is-past{color:var(--muted);opacity:1}
+/* a tick that would print underneath the readout gets out of the way */
+.alt__ticks li.is-hidden{opacity:0}
+
+/* Below the point where a 78px gutter stops existing, the rail becomes a
+   single line across the top of the viewport. The alternative — hiding it —
+   loses the idea entirely on the devices most people will read this on. */
+@media(max-width:1180px){
+  .alt{left:0;right:0;top:auto;bottom:0;width:auto;height:30px;
+    display:flex;align-items:center;gap:12px;padding:0 var(--pad);
+    background:color-mix(in oklch,var(--bg) 88%,transparent);
+    border-top:1px solid var(--edge);backdrop-filter:blur(10px)}
+  .alt__line{left:0;right:0;top:auto;bottom:0;width:auto;height:1px}
+  .alt__fill{transform:scaleX(0);transform-origin:left}
+  .alt__read{position:static;transform:none;width:auto;align-items:baseline}
+  .alt__name{flex:0 0 auto;margin:0 0 0 10px}
+  .alt__ticks{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="bar">
+  <a href="index.html">&larr; r1c</a>
+  <b>s2 · altitude in the margin</b>
+  <span class="sp">scroll — the number falls</span>
+</div>
+
+<!-- aria-hidden: it is a restatement of where you already are in the document,
+     and read aloud it would be a stream of changing numbers with no purpose. -->
+<aside class="alt" data-altitude aria-hidden="true"></aside>
+
+<main id="main">
+
+  <header class="hero">
+    <div class="hero__field" data-terrain aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <h1 data-split>Websites, games and publications.</h1>
+      <p class="hero__sub rise">Designed, built and finished by one pair of hands.</p>
+    </div>
+  </header>
+
+  <section class="wrap" id="statement">
+    <div class="note">
+      <h2>What this is</h2>
+      <p><b>No new graphic at all.</b> A hairline in the gutter carries a height
+      that falls as you read — 1,240m over the range in the hero, 8cm in the
+      grass at the sign-off. It does not illustrate the descent, it states it.</p>
+      <p>The number is anchored to <i>elements</i>, not to scroll percentage: add
+      a case study and every altitude still reads correctly. And it falls
+      logarithmically, because four and a half orders of magnitude done linearly
+      sits above 1,000 for half the page and then drops off a cliff.</p>
+      <p>Watch the station names in the rail — <code>range</code>,
+      <code>hillside</code>, <code>field</code>, <code>path</code>,
+      <code>tussock</code>, <code>stem</code>, <code>blade</code>. That ladder is
+      the whole idea, written down.</p>
+    </div>
+    <h2 data-split>Small studio. <em>Whole projects.</em></h2>
+    <p class="lede rise" style="margin-top:clamp(20px,3vh,34px)">Not a stage in somebody else&rsquo;s process. The thing gets designed, built and shipped by the person you spoke to on the first call.</p>
+  </section>
+
+  <section class="wrap" id="work">
+    <div class="head"><h2 data-split>Selected work</h2></div>
+    <p class="lede rise">Two projects in progress and one shipped. The plates here are still placeholders &mdash; they will carry real screenshots.</p>
+  </section>
+
+  <div class="band">
+    <canvas data-field='{"scene":"shaft","ramp":"amber","cell":4,"drift":0.48,"seed":18.6}' aria-hidden="true"></canvas>
+    <p class="band__line rise">The site you are reading is the same argument as the work.</p>
+  </div>
+
+  <section class="wrap" id="capability">
+    <div class="head"><h2 data-split>What I make</h2></div>
+    <div data-stagger>
+      <article class="cap__row rise">
+        <h3>Websites</h3>
+        <p>Marketing sites, portfolios and small applications. Designed and built end to end, on infrastructure you could hand to somebody else later without an apology attached.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Games</h3>
+        <p>Small games and interactive pieces, built with the same attention to how a thing feels under the hand as to how it looks on the page.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Publications</h3>
+        <p>Print and digital. Type set properly, images prepared properly, and files a printer will accept without needing to telephone you about them.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" id="close">
+    <h2 data-split>Tell me what you are <em>trying to build.</em></h2>
+    <p class="lede rise" style="margin-top:clamp(20px,3vh,34px)">I will tell you honestly whether I am the right person to make it, and what it would take.</p>
+  </section>
+
+  <div class="signoff" aria-hidden="true">
+    <canvas data-grass="back"
+            data-grass-cfg='{"ramp":"amber","cell":3,"drift":1,"seed":63.4}'></canvas>
+    <span>Studio</span>
+    <canvas class="signoff__near" data-grass="front"></canvas>
+  </div>
+
+  <footer class="wrap">
+    <p>&copy; Studio 2026</p>
+    <p>r1c · showcase 2 of 5</p>
+  </footer>
+</main>
+
+<script src="../r1b-landscape/screen.js"></script>
+<script src="../r1b-landscape/terrain.js"></script>
+<script src="../r1b-landscape/field.js"></script>
+<script src="../r1b-landscape/grass.js"></script>
+<script src="s2-altitude.js"></script>
+<script src="../r1b-landscape/motion.js"></script>
+<script src="../r1b-landscape/tune.js"></script>
+</body>
+</html>

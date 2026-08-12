@@ -1,0 +1,154 @@
+/* ===========================================================================
+   r1c — SHOWCASE SHELL
+
+   The five pages in this directory each demonstrate one idea for the middle of
+   the page. They are deliberately NOT r1b: r1b-landscape is the page being
+   shaped, and a showcase that edited it would make every experiment a risk to
+   the thing that already works.
+
+   What they do share is r1b's actual machinery — terrain.js, grass.js,
+   screen.js, motion.js are loaded from ../r1b-landscape/ by relative path, so
+   these pages demonstrate the real hero and the real sign-off rather than a
+   copy that has quietly drifted.
+
+   The tokens below are duplicated from r1b's <style> block on purpose. They
+   could have been extracted to r-shared and linked from both, but that means
+   editing the page under iteration to serve the experiments, and the tokens
+   are the part of r1b least likely to change. If they do start moving, extract
+   them then.
+   =========================================================================== */
+
+:root{
+  --bg:oklch(0.128 0.006 58);
+  --bg-2:oklch(0.172 0.008 58);
+  --raised:oklch(0.150 0.007 58);
+  --edge:oklch(0.262 0.010 58);
+  --edge-ui:oklch(0.520 0.018 58);
+  --ink:oklch(0.962 0.008 82);
+  --muted:oklch(0.752 0.012 76);
+  --gap-ink:oklch(0.628 0.014 76);
+  --accent:oklch(0.775 0.150 64);
+
+  --serif:"Young Serif",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Courier Prime",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --out:cubic-bezier(0.16,1,0.3,1);
+  --pad:clamp(20px,4.4vw,76px);
+  --gap:clamp(52px,7.4vh,98px);
+  --gap-sm:clamp(36px,5vh,60px);
+  --measure:1400px;
+}
+
+html{color-scheme:dark;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.62;letter-spacing:-0.002em}
+::selection{background:var(--accent);color:oklch(0.14 0.008 58)}
+
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-0.028em;
+  line-height:1.02;text-wrap:balance}
+h1{font-size:clamp(2.55rem,6.4vw,5.5rem)}
+h2{font-size:clamp(1.95rem,4.4vw,3.5rem)}
+h3{font-size:clamp(1.4rem,2.6vw,2.1rem)}
+p{text-wrap:pretty}
+em{font-style:normal;color:var(--accent)}
+
+.wd{display:inline-block;overflow:hidden;vertical-align:bottom;
+  padding-bottom:.16em;margin-bottom:-.16em}
+.wd>i{display:block;font-style:inherit}
+@media(prefers-reduced-motion:no-preference){
+  html.reveal .is-split .wd>i{transform:translateY(108%);
+    transition:transform .95s var(--out)}
+  html.reveal .is-split.is-in .wd>i{transform:none}
+}
+
+/* ── showcase chrome ──────────────────────────────────────────────────────
+   Every page in this set says what it is and how to get back. Without it a
+   directory of five near-identical dark pages is unnavigable a week later. */
+.bar{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;gap:14px;padding:10px var(--pad);
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  color:var(--gap-ink);
+  background:color-mix(in oklch,var(--bg) 82%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--edge)}
+.bar a{color:var(--muted);border-bottom:1px solid transparent}
+.bar a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.bar b{font-weight:400;color:var(--ink);text-transform:uppercase;
+  letter-spacing:.12em}
+.bar .sp{margin-left:auto}
+
+/* the note that opens every showcase: what you are looking at, and why */
+.note{border:1px solid var(--edge);background:var(--raised);
+  padding:clamp(18px,2.6vw,28px);margin-block:var(--gap-sm);
+  font-family:var(--mono);font-size:13.5px;line-height:1.66;color:var(--muted)}
+.note h2{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gap-ink);margin-bottom:12px}
+.note p+p{margin-top:11px}
+.note b{font-weight:400;color:var(--ink)}
+.note code{color:var(--accent)}
+
+/* ── grain ─────────────────────────────────────────────────────────────── */
+.grain{position:fixed;inset:-60%;z-index:80;pointer-events:none;
+  opacity:.32;mix-blend-mode:overlay;background-size:200px 200px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero{position:relative;min-height:86svh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding-bottom:clamp(28px,5vh,64px);overflow:hidden}
+.hero__field{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero__field canvas{width:100%;height:100%;display:block}
+.hero__scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+  linear-gradient(to bottom,
+    oklch(0.128 0.006 58 / .80) 0,
+    oklch(0.128 0.006 58 / .30) 66px,
+    transparent 160px),
+  linear-gradient(to right,
+    oklch(0.118 0.005 58 / .70) 0%,
+    oklch(0.118 0.005 58 / .40) 34%,
+    transparent 64%),
+  linear-gradient(to top,
+    oklch(0.128 0.006 58 / .94) 0%,
+    oklch(0.128 0.006 58 / .80) 20%,
+    oklch(0.128 0.006 58 / .44) 42%,
+    oklch(0.128 0.006 58 / .10) 62%,
+    transparent 78%)}
+.hero__inner{position:relative;z-index:2;width:100%;
+  padding-top:clamp(90px,14vh,150px)}
+.hero h1{max-width:15ch}
+.hero__sub{margin-top:clamp(18px,2.6vh,32px);max-width:44ch;
+  font-size:clamp(1.02rem,1.35vw,1.24rem);color:var(--muted)}
+
+/* ── sections ──────────────────────────────────────────────────────────── */
+section.wrap{padding-block:var(--gap)}
+.head{padding-bottom:clamp(18px,2.4vh,28px);border-bottom:1px solid var(--edge);
+  margin-bottom:clamp(38px,6vh,80px)}
+.cap__row{display:grid;gap:8px 4vw;padding-block:clamp(30px,4.6vh,58px);
+  border-top:1px solid var(--edge)}
+.cap__row:last-child{border-bottom:1px solid var(--edge)}
+@media(min-width:820px){.cap__row{grid-template-columns:minmax(0,22ch) 1fr}}
+.cap__row p{max-width:52ch;color:var(--muted)}
+.lede{max-width:48ch;font-size:clamp(1.05rem,1.5vw,1.35rem);color:var(--muted)}
+
+/* ── band ──────────────────────────────────────────────────────────────── */
+.band{position:relative;height:min(78svh,720px);display:grid;place-items:center;
+  overflow:hidden;margin-block:var(--gap)}
+.band canvas{position:absolute;inset:0;width:100%;height:100%}
+.band__line{position:relative;z-index:2;text-align:center;
+  max-width:min(20ch,86vw);font-family:var(--serif);
+  font-size:clamp(1.6rem,4vw,3.1rem);line-height:1.12;letter-spacing:-0.028em}
+
+/* ── sign-off ──────────────────────────────────────────────────────────── */
+.signoff{position:relative;margin-top:var(--gap);height:clamp(190px,30vh,340px);
+  overflow:hidden;display:grid;align-items:end}
+.signoff canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.75}
+.signoff::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,var(--bg) 0%,transparent 40%)}
+.signoff span{position:relative;z-index:2;display:block;text-align:center;
+  font-family:var(--serif);font-size:clamp(5rem,22vw,17rem);line-height:.78;
+  letter-spacing:-0.045em;color:var(--ink);opacity:.92;transform:translateY(2%)}
+.signoff .signoff__near{z-index:3;opacity:.94;pointer-events:none}
+
+footer.wrap{border-top:1px solid var(--edge);padding-block:26px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:12.5px;color:var(--gap-ink)}

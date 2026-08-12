@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>s4 · one weather system — r1c</title>
+<meta name="description" content="One gust field shared by the hero, the middle of the page and the grass, so the page becomes one afternoon.">
+<meta name="theme-color" content="#131110">
+<script>if(matchMedia('(prefers-reduced-motion:no-preference)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('reveal');</script>
+<link rel="stylesheet" href="../r-shared/base.css">
+<link rel="stylesheet" href="shell.css">
+<style>
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+.wband{position:relative;height:min(72svh,660px);overflow:hidden;
+  margin-block:var(--gap);display:grid;place-items:center}
+.wband canvas{position:absolute;inset:0;width:100%;height:100%}
+.wband::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 50% 50%,
+    oklch(0.10 0.005 58 / .10) 0%,oklch(0.10 0.005 58 / .74) 100%)}
+.wband p{position:relative;z-index:2;text-align:center;
+  max-width:min(22ch,86vw);font-family:var(--serif);
+  font-size:clamp(1.5rem,3.6vw,2.8rem);line-height:1.14;letter-spacing:-0.028em}
+
+/* the gauge: fixed, small, and honest about being an instrument rather than
+   part of the design — this is the thing that lets you verify the claim */
+.gauge{position:fixed;right:14px;bottom:14px;z-index:70;width:190px;
+  border:1px solid var(--edge);background:color-mix(in oklch,var(--bg) 86%,transparent);
+  backdrop-filter:blur(10px);padding:8px 10px 6px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gap-ink)}
+.gauge canvas{display:block;width:100%;height:42px;margin-top:5px}
+.gauge b{font-weight:400;color:var(--accent);font-variant-numeric:tabular-nums;
+  letter-spacing:0}
+@media(max-width:700px){.gauge{display:none}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="bar">
+  <a href="index.html">&larr; r1c</a>
+  <b>s4 · one weather system</b>
+  <span class="sp">press ` for controls</span>
+</div>
+
+<div class="gauge" aria-hidden="true">
+  gust <b data-weather-read>+0.00</b>
+  <canvas data-weather="gauge"></canvas>
+</div>
+
+<main id="main">
+
+  <header class="hero">
+    <div class="hero__field" data-terrain aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <h1 data-split>Websites, games and publications.</h1>
+      <p class="hero__sub rise">The haze over the range is the same gust that bends the grass three thousand pixels below it.</p>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="note">
+      <h2>What this is</h2>
+      <p><b>Nothing new appears on the page.</b> There was already wind in the
+      grass and haze in the hero, and they knew nothing about each other — two
+      noise fields at similar frequencies, which reads as two weathers in one
+      place. This makes them one.</p>
+      <p>A single clock and a single gust field, sampled at a <i>depth</i>: the
+      hero at the top of the descent, the grass at the bottom. A gust arrives
+      everywhere, a little later further down. Watch the trace in the corner,
+      then watch the same shape arrive in the grass at the end of the page.</p>
+      <p>It drives <code>TERRAIN.params</code> and <code>GRASS.params</code> —
+      the same knobs the tuning panel turns, sixty times a second. No file is
+      patched and nothing is replaced, which is why the panel still works while
+      the weather is running. Open it and watch the sliders move.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="head"><h2 data-split>What I make</h2></div>
+    <div data-stagger>
+      <article class="cap__row rise">
+        <h3>Websites</h3>
+        <p>Marketing sites, portfolios and small applications. Designed and built end to end, on infrastructure you could hand to somebody else later without an apology attached.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Games</h3>
+        <p>Small games and interactive pieces, built with the same attention to how a thing feels under the hand as to how it looks on the page.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Publications</h3>
+        <p>Print and digital. Type set properly, images prepared properly, and files a printer will accept without needing to telephone you about them.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="wband">
+    <canvas data-weather="band" aria-hidden="true"></canvas>
+    <p class="rise">The site you are reading is the same argument as the work.</p>
+  </div>
+
+  <section class="wrap">
+    <div class="head"><h2 data-split>How it goes</h2></div>
+    <p class="lede rise">You describe the problem. I tell you whether I am the right person to solve it, and roughly what it costs. If I am not, I say so.</p>
+  </section>
+
+  <div class="signoff" aria-hidden="true">
+    <canvas data-grass="back"
+            data-grass-cfg='{"ramp":"amber","cell":3,"drift":1,"seed":63.4}'></canvas>
+    <span>Studio</span>
+    <canvas class="signoff__near" data-grass="front"></canvas>
+  </div>
+
+  <footer class="wrap">
+    <p>&copy; Studio 2026</p>
+    <p>r1c · showcase 4 of 5</p>
+  </footer>
+</main>
+
+<script src="../r1b-landscape/screen.js"></script>
+<script src="../r1b-landscape/terrain.js"></script>
+<script src="../r1b-landscape/grass.js"></script>
+<script src="s4-weather.js"></script>
+<script src="../r1b-landscape/motion.js"></script>
+<script src="../r1b-landscape/tune.js"></script>
+</body>
+</html>

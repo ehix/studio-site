@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>s1 · the same place, surveyed — r1c</title>
+<meta name="description" content="The middle of the page as a contour survey of the terrain the hero is flying over.">
+<meta name="theme-color" content="#131110">
+<script>if(matchMedia('(prefers-reduced-motion:no-preference)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('reveal');</script>
+<link rel="stylesheet" href="../r-shared/base.css">
+<link rel="stylesheet" href="shell.css">
+<style>
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+/* The survey plates are instruments, so they get a frame and a caption rather
+   than bleeding into the page the way the light fields did. A map with no edge
+   is a texture; a map with an edge is a document. */
+.survey{position:relative;border:1px solid var(--edge);background:oklch(0.105 0.005 58);
+  overflow:hidden}
+.survey canvas{display:block;width:100%;height:100%}
+.survey figcaption{position:absolute;left:0;bottom:0;z-index:2;
+  padding:6px 10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gap-ink);
+  background:color-mix(in oklch,var(--bg) 74%,transparent);
+  border-top:1px solid var(--edge);border-right:1px solid var(--edge)}
+
+/* the plan map behind the band line */
+.band .survey{position:absolute;inset:0;border:0}
+.band::after{content:"";position:absolute;inset:0;z-index:1;
+  background:radial-gradient(115% 85% at 50% 46%,
+    oklch(0.10 0.005 58 / .30) 0%,oklch(0.10 0.005 58 / .86) 100%)}
+
+.profile{height:clamp(180px,26vh,300px);margin-block:var(--gap)}
+.plan-pair{display:grid;gap:clamp(14px,2vw,26px);margin-top:var(--gap-sm)}
+@media(min-width:820px){.plan-pair{grid-template-columns:1fr 1fr}}
+.plan-pair .survey{aspect-ratio:4/3}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="bar">
+  <a href="index.html">&larr; r1c</a>
+  <b>s1 · the same place, surveyed</b>
+  <span class="sp">press ` for controls</span>
+</div>
+
+<main id="main">
+
+  <header class="hero">
+    <div class="hero__field" data-terrain aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <h1 data-split>Websites, games and publications.</h1>
+      <p class="hero__sub rise">Designed, built and finished by one pair of hands.</p>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="note">
+      <h2>What this is</h2>
+      <p><b>The middle of the page is a survey of the terrain the hero is flying
+      over.</b> Not terrain-like imagery — the same heightmap, read straight out
+      of <code>TERRAIN.world</code> and drawn two ways: in plan as a contour map,
+      and in section as an elevation profile cut along the flight line.</p>
+      <p>The crosshair on the plan is the camera. It is where you actually are.
+      Watch it for a minute and it moves, because the hero is still flying.</p>
+      <p>The argument for it: a contour map of <i>this</i> terrain cannot also be
+      a coffee roaster's, which was the exact charge against the four light
+      fields it replaces. It is also nearly free — the 885,000 Perlin
+      evaluations were already paid for by the hero at load.</p>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="survey" aria-hidden="true"><canvas data-survey="plan"></canvas></div>
+    <p class="band__line rise">The site you are reading is the same argument as the work.</p>
+  </div>
+
+  <section class="wrap">
+    <div class="head"><h2 data-split>What I make</h2></div>
+    <div data-stagger>
+      <article class="cap__row rise">
+        <h3>Websites</h3>
+        <p>Marketing sites, portfolios and small applications. Designed and built end to end, on infrastructure you could hand to somebody else later without an apology attached.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Games</h3>
+        <p>Small games and interactive pieces, built with the same attention to how a thing feels under the hand as to how it looks on the page.</p>
+      </article>
+      <article class="cap__row rise">
+        <h3>Publications</h3>
+        <p>Print and digital. Type set properly, images prepared properly, and files a printer will accept without needing to telephone you about them.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <figure class="survey profile rise" aria-hidden="true">
+      <canvas data-survey="section"></canvas>
+      <figcaption>section · along the flight line</figcaption>
+    </figure>
+  </div>
+
+  <section class="wrap">
+    <div class="head"><h2 data-split>How it goes</h2></div>
+    <p class="lede rise">You describe the problem. I tell you whether I am the right person to solve it, and roughly what it costs. If I am not, I say so.</p>
+
+    <div class="plan-pair" data-stagger>
+      <figure class="survey rise">
+        <canvas data-survey="plan"></canvas>
+        <figcaption>plan · 1 : the whole range</figcaption>
+      </figure>
+      <figure class="survey rise">
+        <canvas data-survey="section"></canvas>
+        <figcaption>section · the ground beneath</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="signoff" aria-hidden="true">
+    <canvas data-grass="back"
+            data-grass-cfg='{"ramp":"amber","cell":3,"drift":1,"seed":63.4}'></canvas>
+    <span>Studio</span>
+    <canvas class="signoff__near" data-grass="front"></canvas>
+  </div>
+
+  <footer class="wrap">
+    <p>&copy; Studio 2026</p>
+    <p>r1c · showcase 1 of 5</p>
+  </footer>
+</main>
+
+<script src="../r1b-landscape/screen.js"></script>
+<script src="../r1b-landscape/terrain.js"></script>
+<script src="../r1b-landscape/grass.js"></script>
+<script src="s1-contours.js"></script>
+<script src="../r1b-landscape/motion.js"></script>
+<script src="../r1b-landscape/tune.js"></script>
+</body>
+</html>
