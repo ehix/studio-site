@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>r1d · the flight</title>
+<meta name="description" content="One camera, one world, one sun. Scrolling flies it from a low pan over the range to the wordmark in the grass.">
+<meta name="theme-color" content="#131110">
+<script>if(matchMedia('(prefers-reduced-motion:no-preference)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('reveal');</script>
+<link rel="stylesheet" href="../r-shared/base.css">
+<!-- The showcase shell lives with r1c. A deliberate sibling dependency rather
+     than a third copy of the tokens: r1b has them inline, r1c has them in
+     shell.css, and one more copy is where duplication stops being tolerable. -->
+<link rel="stylesheet" href="../r1c-middle/shell.css">
+<style>
+@font-face{font-family:"Young Serif";src:url("../fonts/young-serif.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url("../fonts/courier-prime-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+/* ── bare mode: press b, or add ?bare ──────────────────────────────────────
+   A working view with the copy taken off, for looking at the landscape on its
+   own while it is being tuned. Not part of the page — a tool.
+
+   Opacity rather than `display:none`, and that is the whole trick. The flight
+   is driven by scroll position over document height, so removing the content
+   from layout would shorten the page and change the entire rig: a shorter
+   document means the same wheel movement covers more of the flight, and the
+   thing being looked at would no longer be the thing that ships. Hidden this
+   way the page is exactly as tall as it was, and the camera flies the same
+   arc it always did.
+
+   The instrument rail deliberately stays. It is not website copy, it is the
+   altimeter — and knowing whether you are at 900m or 5m is most of what makes
+   a landscape judgeable. */
+.is-bare main > * { opacity: 0; pointer-events: none; }
+
+/* ── the flight ────────────────────────────────────────────────────────────
+   Fixed behind everything for the whole document.
+
+   There is deliberately no wash over this. The previous cut laid a full-
+   viewport gradient across it — 88% of the page background at the left edge,
+   still 40% at the right — on the grounds that the camera is under no
+   obligation to put something dark behind the type. True, but the fix was
+   applied to the whole document rather than to the type, and a landscape
+   under a permanent 40-to-88% veil is not a darker landscape, it is a
+   different and much worse one. r1b's hero scrim reaches transparent at 64%
+   of the frame and the hero is the better picture for it.
+
+   Legibility is handled where it is actually needed instead: the hero has
+   r1b's three-layer scrim, and the body sections sit on .slab panels that
+   carry their own ground. Nothing else needs the landscape dimmed. */
+.flight{position:fixed;inset:0;z-index:0;pointer-events:none}
+.flight canvas{width:100%;height:100%;display:block}
+
+/* A narrower measure than the other directions use, because this page has to
+   find 130px of gutter for an instrument rail at ordinary laptop widths. At
+   r1b's 1400 there is no gutter at 1440 and the plates printed straight over
+   the body copy. */
+:root{--measure:1180px}
+
+main{position:relative;z-index:1}
+.hero{min-height:100svh}
+/* r1b's hero scrim, layer for layer, because r1b's hero is the one that
+   works: a bed under the top bar so the links stay legible without the bar
+   needing its own opaque strip; a directional wash from the left so the
+   headline has near-black under it while the key stays hot on the right; the
+   bottom lift into the page; and a corner vignette. All four reach
+   transparent well inside the frame. */
+.hero__scrim{background:
+  linear-gradient(to bottom,
+    oklch(0.128 0.006 58 / .80) 0,
+    oklch(0.128 0.006 58 / .30) 66px,
+    transparent 160px),
+  linear-gradient(to right,
+    oklch(0.118 0.005 58 / .70) 0%,
+    oklch(0.118 0.005 58 / .40) 34%,
+    transparent 64%),
+  linear-gradient(to top,
+    oklch(0.128 0.006 58 / .94) 0%,
+    oklch(0.128 0.006 58 / .80) 20%,
+    oklch(0.128 0.006 58 / .44) 42%,
+    oklch(0.128 0.006 58 / .10) 62%,
+    transparent 78%),
+  radial-gradient(125% 95% at 58% 34%,transparent 40%,oklch(0.10 0.005 58 / .42) 100%)}
+
+/* ── the top bar ───────────────────────────────────────────────────────────
+   The showcase bar arrives from r1c's shell opaque, blurred and ruled, which
+   is right on a page whose top is a text section and wrong on one whose top
+   is a landscape — it cut a hard seam straight across the frame. Over the
+   hero it is transparent and the scrim above carries the legibility; it takes
+   its ground back the moment the page has scrolled, exactly as r1b's nav
+   does. */
+.bar{background:transparent;backdrop-filter:none;border-bottom-color:transparent;
+  transition:background .5s var(--out),backdrop-filter .5s var(--out),
+    border-color .5s var(--out)}
+html.is-flown .bar{background:color-mix(in oklch,var(--bg) 82%,transparent);
+  backdrop-filter:blur(12px);border-bottom-color:var(--edge)}
+
+/* Content floats over the survey. Slabs, because body copy directly on a
+   moving hillside is unreadable and no scrim fixes that honestly. */
+.slab{background:color-mix(in oklch,var(--bg) 84%,transparent);
+  backdrop-filter:blur(4px);border:1px solid var(--edge);
+  padding:clamp(22px,3.4vw,44px)}
+section.wrap{padding-block:clamp(70px,11vh,130px)}
+.airy{min-height:70svh;display:grid;align-items:center}
+
+/* ── the instrument rail ───────────────────────────────────────────────────
+   Down the left gutter: the readouts, the tape you can fly the page with, the
+   five stations, and two live plates. It takes pointer events now — it is a
+   control surface, not marginalia — so `pointer-events` is granted per part
+   rather than to the whole rail, which would otherwise sit over the gutter
+   swallowing clicks aimed at nothing. */
+.rail{position:fixed;left:max(12px,calc((100vw - var(--measure)) / 2 - 128px));
+  top:11vh;bottom:6vh;width:118px;z-index:60;pointer-events:none;
+  display:flex;flex-direction:column;gap:11px;
+  font-family:var(--mono);color:var(--gap-ink)}
+
+/* The rail's own ground, and only the rail's. Instruments are 9.5px mono in
+   --gap-ink, which over a sunlit survey at full strength is not text, it is
+   texture — the one place on this page that genuinely cannot be read off the
+   landscape. So the wash is back, but as a gutter this time: it is the width
+   of the rail plus its margin, and it reaches transparent. That is the whole
+   difference between this and the full-viewport version it replaces. */
+.rail::before{content:"";position:fixed;top:0;bottom:0;left:0;
+  width:calc(max(12px,(100vw - var(--measure)) / 2 - 128px) + 205px);
+  z-index:-1;pointer-events:none;
+  background:linear-gradient(to right,
+    color-mix(in oklch,var(--bg) 88%,transparent) 0%,
+    color-mix(in oklch,var(--bg) 74%,transparent) 42%,
+    color-mix(in oklch,var(--bg) 34%,transparent) 76%,
+    transparent 100%)}
+
+.rail__alt{flex:0 0 auto;font-size:19px;letter-spacing:-0.02em;color:var(--ink);
+  font-variant-numeric:tabular-nums;line-height:1}
+
+/* the small readings, as a table because they are one. Labels stay put and
+   values are tabular, so nothing shifts sideways as the numbers run. */
+.rail__vals{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;
+  gap:1px 8px;font-size:9.5px;letter-spacing:.06em;
+  font-variant-numeric:tabular-nums}
+.rail__vals dt{text-transform:uppercase;letter-spacing:.14em;color:var(--edge-ui)}
+.rail__vals dd{margin:0;text-align:right;color:var(--gap-ink)}
+
+/* the tape. min-height is load-bearing: it is the flex child that absorbs the
+   slack, and without a floor it collapses to nothing on a short viewport and
+   takes the only scrubber on the page with it. */
+.rail__tape{position:relative;flex:1 1 auto;min-height:96px;
+  pointer-events:auto;cursor:ns-resize;touch-action:none}
+.rail__tape canvas{display:block;width:100%;height:100%;
+  border-left:1px solid var(--edge)}
+.rail__tape::after{content:"";position:absolute;inset:-4px -6px;
+  border:1px solid transparent;transition:border-color .15s var(--out);
+  pointer-events:none}
+.rail__tape:hover::after{border-color:var(--edge)}
+.rail__tape.is-held::after{border-color:var(--accent)}
+
+.rail__stations{flex:0 0 auto;display:flex;flex-direction:column;
+  pointer-events:auto;border-top:1px solid var(--edge)}
+.rail__stations button{appearance:none;background:none;border:0;
+  border-bottom:1px solid var(--edge);
+  font:inherit;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--edge-ui);text-align:left;padding:4px 0 4px 9px;cursor:pointer;
+  position:relative;transition:color .15s var(--out)}
+.rail__stations button::before{content:"";position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .15s var(--out)}
+.rail__stations button:hover{color:var(--ink)}
+.rail__stations button.is-at{color:var(--ink)}
+.rail__stations button.is-at::before{transform:scaleX(1)}
+
+.plates{display:flex;flex-direction:column;gap:9px;flex:0 0 auto}
+.plate canvas{display:block;width:100%;height:54px;border:1px solid var(--edge);
+  background:oklch(0.105 0.005 58)}
+.plate figcaption{margin-top:3px;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--edge-ui)}
+.plate--act canvas{pointer-events:auto;cursor:pointer;
+  transition:border-color .15s var(--out)}
+.plate--act canvas:hover{border-color:var(--accent)}
+
+/* ── the rail, narrow ──────────────────────────────────────────────────────
+   Under 1420px there is no gutter to hang it in. The previous cut laid it
+   across the full width of the viewport as a blurred, ruled strip — which
+   with the showcase bar at the top meant the landscape was banded top and
+   bottom, and read as letterboxed rather than full-bleed.
+
+   So it becomes a chip in the corner instead: the width of its own contents,
+   no rule across the frame, and the plates and the tape drop out rather than
+   shrink to four illegible smudges. The stations survive, because being able
+   to fly to a phase is the part of this that is a control. */
+@media(max-width:1420px){
+  .rail{left:var(--pad);right:auto;top:auto;bottom:var(--pad);width:auto;
+    flex-direction:row;align-items:center;gap:12px;
+    padding:7px 11px;background:color-mix(in oklch,var(--bg) 78%,transparent);
+    border:1px solid var(--edge);backdrop-filter:blur(10px);
+    /* Out of the way while reading, out during a gesture — flight.js sets
+       is-flying from real scrolling. Hidden it is also inert, so it is never
+       an invisible click target sitting over the copy. Deliberately no
+       hover-to-reveal: an element with pointer-events:none cannot be hovered,
+       and a rule that reads as though it can is worse than not having one.
+       Keyboard focus is unaffected by pointer-events, so tabbing to a station
+       brings the whole chip back. */
+    opacity:0;transform:translateY(6px);pointer-events:none;
+    transition:opacity .22s var(--out),transform .22s var(--out)}
+  html.is-flying .rail,.rail:focus-within{opacity:1;transform:none;
+    pointer-events:auto}
+  /* the gutter wash has nothing to light here — the chip carries its own */
+  .rail::before{display:none}
+  .rail__alt{font-size:15px}
+  .rail__vals{display:flex;gap:10px}
+  .rail__vals dt{display:none}
+  .rail__tape,.plates{display:none}
+  .rail__stations{flex-direction:row;border-top:0;gap:1px}
+  .rail__stations button{border-bottom:0;padding:2px 7px}
+  .rail__stations button::before{width:auto;right:0;height:2px;bottom:auto;top:0;
+    transform:scaleY(0);transform-origin:top}
+  .rail__stations button.is-at::before{transform:scaleY(1)}
+}
+@media(max-width:640px){
+  .rail__vals,.rail__stations{display:none}
+}
+
+/* the sign-off, over the landing. The back plate is hidden on this page: the
+   terrain is behind the grass now, so a second sky behind it would be two
+   skies. Everything comes through the near layer, which carries alpha. */
+.signoff{margin-top:0;height:clamp(240px,42vh,460px)}
+/* Both layers are invisible now: the vegetation on this page grows on the
+   terrain, and the sign-off's own flat field would be a second one at a
+   different scale. They stay in the document because grass.js publishes the
+   shared gust field and will not initialise without them — see flight.js.
+
+   opacity, NOT display:none. grass.js gates its render loop on an
+   IntersectionObserver watching the back canvas, and a display:none element
+   never intersects anything, which stops the observer and the wind with it. */
+.signoff canvas{opacity:0}
+/* The shell's version of this starts at 70% of the page background on the
+   sign-off's very first row and clears by 46%. On r1c that row is against a
+   flat ground and nobody sees it. Here it lands in the middle of a lit
+   hillside and draws a hard horizontal rule the full width of the frame —
+   the seam across the landing. There is nothing for it to do on this page:
+   the terrain behind the wordmark is a picture, and the wordmark is
+   near-white type at 4rem. So it does nothing. */
+.signoff::after{background:none}
+</style>
+</head>
+<body>
+<div class="flight" data-flight data-grass-front-only aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="bar">
+  <a href="../r1c-middle/index.html">&larr; r1c</a>
+  <b>r1d · the flight</b>
+  <span class="sp">press ` for controls</span>
+</div>
+
+<!-- The rail is a control surface, so it is a real landmark with real buttons
+     rather than the aria-hidden decoration it used to be. The canvases stay
+     hidden from assistive tech: they restate the terrain, which is itself
+     decorative, and the stations give a keyboard the same reach the tape
+     gives a pointer. -->
+<aside class="rail" data-rail aria-label="Flight instruments">
+  <b class="rail__alt" data-r="alt">52m</b>
+
+  <dl class="rail__vals">
+    <dt>gnd</dt><dd data-r="gnd">0m</dd>
+    <dt>brg</dt><dd data-r="brg">000° N</dd>
+    <dt>ptch</dt><dd data-r="pitch">0°</dd>
+    <dt>rlf</dt><dd data-r="relief">0m</dd>
+  </dl>
+
+  <div class="rail__tape" title="Drag to fly">
+    <canvas data-tape aria-hidden="true"></canvas>
+  </div>
+
+  <nav class="rail__stations" aria-label="Fly to">
+    <button type="button" data-station="0">pan</button>
+    <button type="button" data-station="0.23">rise</button>
+    <button type="button" data-station="0.55">survey</button>
+    <button type="button" data-station="0.88">descent</button>
+    <button type="button" data-station="1">landing</button>
+  </nav>
+
+  <div class="plates" aria-hidden="true">
+    <figure class="plate"><canvas data-panel="ahead"></canvas><figcaption>ahead</figcaption></figure>
+    <figure class="plate plate--act"><canvas data-panel="locator" title="Click to move the column"></canvas><figcaption>locator</figcaption></figure>
+  </div>
+</aside>
+
+<main id="main">
+
+  <header class="hero">
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <h1 data-split>Websites, games and publications.</h1>
+      <p class="hero__sub rise">Designed, built and finished by one pair of hands. No account layer, no handover, no stage where the thing stops being anybody&rsquo;s problem.</p>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="note slab">
+      <h2>What this is</h2>
+      <p><b>One camera, one world, one sun, one weather, for the whole page.</b>
+      It opens low over the range and flies. Scrolling takes it straight up off
+      the flight line and pitches it over into a survey; the page you are
+      reading floats on that. Further down it descends back down the same
+      column and turns to finish on the wordmark in the grass, facing whichever
+      way has the most high ground on it.</p>
+      <p>It goes up and down over one spot rather than travelling to a chosen
+      one. An earlier cut searched the terrain for the best place to land and
+      flew there during the climb, which guaranteed a good backdrop and was
+      thoroughly disorientating — a climb and a long sideways traverse at the
+      same time, with no way to read either against the other. The backdrop is
+      guaranteed by turning instead. A turn is a motion you can follow.</p>
+      <p><b>There is a water table</b>, not a lake: one level, and wherever the
+      ground falls below it there is water. That costs a divide per ray rather
+      than a surface to march, and it pays for itself — nothing under the
+      surface is visible, so the crossing is a hard draw-distance cap.</p>
+      <p>The last part of the descent slides across to a clearing. On a
+      generated map, two thirds of all spots have ground above head height
+      within sixty units, and landing on one of those puts the camera inside a
+      hillside — the frame fills with near ground and there is no horizon in it
+      at all. So the flight looks around on the way down and puts itself on
+      open, level ground with something to see. Median move: a hundred and
+      sixty units, while it is already falling.</p>
+      <p>The hero renderer could not do this. It is a Voxel Space column
+      marcher, fast because it assumes every screen column is a vertical plane
+      in the world, which is true at zero pitch and at no other angle. This
+      needed eighty degrees, so it is a per-pixel march instead. What keeps that
+      affordable: for a heightfield seen from above, hit distance falls
+      monotonically down a column, so each pixel starts from the one above it
+      and lands in two or three steps.</p>
+      <p>The rail in the margin is the instruments, and it flies the page as
+      well as reporting on it: drag the tape, or pick a phase by name. The camera
+      trails the scrollbar rather than tracking it, so a shove on the wheel
+      arrives as an acceleration and a settle rather than a lurch.</p>
+    </div>
+  </section>
+
+  <section class="wrap airy">
+    <div class="slab">
+      <h2 data-split>Small studio. <em>Whole projects.</em></h2>
+      <p class="lede rise" style="margin-top:clamp(18px,2.6vh,30px)">Not a stage in somebody else&rsquo;s process. The thing gets designed, built and shipped by the person you spoke to on the first call.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="slab">
+      <div class="head"><h2 data-split>What I make</h2></div>
+      <div data-stagger>
+        <article class="cap__row rise">
+          <h3>Websites</h3>
+          <p>Marketing sites, portfolios and small applications. Designed and built end to end, on infrastructure you could hand to somebody else later without an apology attached.</p>
+        </article>
+        <article class="cap__row rise">
+          <h3>Games</h3>
+          <p>Small games and interactive pieces, built with the same attention to how a thing feels under the hand as to how it looks on the page.</p>
+        </article>
+        <article class="cap__row rise">
+          <h3>Publications</h3>
+          <p>Print and digital. Type set properly, images prepared properly, and files a printer will accept without needing to telephone you about them.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap airy">
+    <!-- a slab like every other block of copy on this page. It used to sit
+         straight on the landscape, which worked only because a full-viewport
+         wash was holding the whole frame down; over a lit survey it is one
+         line of serif type on a bright hillside. -->
+    <div class="slab" style="max-width:32ch;margin-inline:auto">
+      <p class="band__line rise" style="text-align:center">The site you are reading is the same argument as the work.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="slab">
+      <div class="head"><h2 data-split>How it goes</h2></div>
+      <div data-stagger>
+        <article class="cap__row rise">
+          <h3>One conversation</h3>
+          <p>You describe the problem. I tell you whether I am the right person to solve it, and roughly what it costs. If I am not, I say so.</p>
+        </article>
+        <article class="cap__row rise">
+          <h3>One person</h3>
+          <p>The same pair of hands from the first sketch to the deploy. Nothing gets handed over, and so nothing gets lost in the handing.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap airy">
+    <div class="slab">
+      <h2 data-split>Tell me what you are <em>trying to build.</em></h2>
+      <p class="lede rise" style="margin-top:clamp(18px,2.6vh,30px)">I will tell you honestly whether I am the right person to make it, and what it would take.</p>
+    </div>
+  </section>
+
+  <div class="signoff" aria-hidden="true">
+    <canvas data-grass="back"
+            data-grass-cfg='{"ramp":"amber","cell":3,"drift":1,"seed":63.4}'></canvas>
+    <span>Studio</span>
+    <canvas class="signoff__near" data-grass="front"></canvas>
+  </div>
+
+  <footer class="wrap">
+    <p>&copy; Studio 2026</p>
+    <p>r1d · one flight</p>
+  </footer>
+</main>
+
+<!-- terrain.js builds the world and publishes it, but has no host to draw
+     into on this page, so it costs one heightmap and renders nothing. That is
+     deliberate: it guarantees this is the same terrain and the same sun as
+     r1b rather than a second world that merely looks similar. -->
+<div data-terrain hidden aria-hidden="true"></div>
+
+<script src="../r1b-landscape/screen.js"></script>
+<script src="../r1b-landscape/terrain.js"></script>
+<script src="../r1b-landscape/grass.js"></script>
+<script src="meadow.js"></script>
+<script src="flight.js"></script>
+<script src="instruments.js"></script>
+<script src="../r1b-landscape/motion.js"></script>
+<script src="../r1b-landscape/tune.js"></script>
+<script>
+/* bare mode — see the note in the stylesheet. `b` because the tuning panel
+   already owns the backtick, and the two are meant to be used together. */
+(function () {
+  var root = document.documentElement;
+  if (/[?&]bare\b/.test(location.search)) root.classList.add('is-bare');
+  addEventListener('keydown', function (e) {
+    if (e.key !== 'b' && e.key !== 'B') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    root.classList.toggle('is-bare');
+  });
+})();
+</script>
+</body>
+</html>
