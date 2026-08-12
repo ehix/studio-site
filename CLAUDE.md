@@ -63,8 +63,9 @@ Motion is seasoning:
 - Scroll reveals: single subtle translate/fade, once, never re-triggering.
   CSS scroll-driven animations preferred; IntersectionObserver fallback.
 - Hovers ≤150ms — terminals don't ease languidly.
-- One signature interaction site-wide (the hero cube, future work). Everything
-  else stays quiet.
+- One signature interaction site-wide: **the hero landscape** — a generated,
+  eroded terrain flown over on scroll (`explorations/r1d-flight`). Everything
+  else stays quiet. The cube is retired; do not reintroduce it.
 - Honour `prefers-reduced-motion` completely: reveals instant, autorotation off.
 - No animation that delays reading content.
 
@@ -91,12 +92,13 @@ Motion is seasoning:
   only — components, meta tags, and `astro.config.ts` import from it. Never
   write the studio name or domain inline.
 - Static output; Cloudflare Pages from GitHub.
-- No client-side framework. The only script island will be the future cube
-  (`client:visible`).
+- No client-side framework. The only script island is the hero landscape
+  (`client:visible`) — terrain, flight, meadow and instruments, plain ES5 in
+  IIFEs, no build step of their own.
 - Semantic HTML throughout: heading order, fieldset forms, hr dividers must
   validate cleanly — view-source is part of the audience.
 - Case studies are markdown content collections (`src/content/case-studies/`).
-- Budget: < 300KB total first-load transfer including fonts (and cube, later).
+- Budget: < 300KB total first-load transfer including fonts and the landscape.
 - Contact form: honeypot, no CAPTCHA.
 
 ## Anti-goals (hard rules)
